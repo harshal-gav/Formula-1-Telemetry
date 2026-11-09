@@ -22,7 +22,7 @@ export default function ReplayProPage() {
         </p>
       </div>
 
-      <ReplayTower totalLaps={57} />
+      <ReplayTower />
 
       <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 flex items-start gap-3 text-xs text-zinc-400 font-mono">
         <ShieldAlert className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />

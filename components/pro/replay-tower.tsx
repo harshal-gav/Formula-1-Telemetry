@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useGP } from "@/context/gp-context";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -159,11 +160,20 @@ const INITIAL_GRID: ReplayDriverRow[] = [
   },
 ];
 
-export function ReplayTower({ totalLaps = 57 }: { totalLaps?: number }) {
+export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }) {
+  const { selectedGP } = useGP();
+  const totalLaps = propTotalLaps || selectedGP.totalLaps;
   const [currentLap, setCurrentLap] = useState(14);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState<1 | 2 | 4>(1);
   const [grid, setGrid] = useState<ReplayDriverRow[]>(INITIAL_GRID);
+
+  // Clamp current lap if user switches to a circuit with fewer laps
+  useEffect(() => {
+    if (currentLap > totalLaps) {
+      setCurrentLap(totalLaps);
+    }
+  }, [totalLaps, currentLap]);
 
   // Playback timer loop
   useEffect(() => {
@@ -224,10 +234,10 @@ export function ReplayTower({ totalLaps = 57 }: { totalLaps?: number }) {
               </Badge>
             </div>
             <CardTitle className="text-xl font-black tracking-tight text-white mt-1">
-              Live Timing & Replay Tower
+              Live Timing & Replay Tower — {selectedGP.name}
             </CardTitle>
             <CardDescription className="text-xs text-zinc-400">
-              Interactive session telemetry tower buffered client-side to respect rate limits.
+              Interactive session telemetry tower for {selectedGP.circuitName} ({selectedGP.country}). Buffered client-side to respect rate limits.
             </CardDescription>
           </div>
 

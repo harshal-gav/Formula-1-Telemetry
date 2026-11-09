@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ProGate } from "@/components/pro/pro-gate";
 import { ProBadge } from "@/components/layout/pro-badge";
+import { GPSelector } from "@/components/pro/gp-selector";
 import {
   Activity,
   BarChart2,
@@ -62,9 +63,13 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <ProGate>{children}</ProGate>
+        <ProGate>
+          <div className="space-y-6">
+            <GPSelector />
+            {children}
+          </div>
+        </ProGate>
       </div>
     </div>
   );
 }
-

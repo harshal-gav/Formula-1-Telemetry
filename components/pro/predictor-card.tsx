@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { useGP } from "@/context/gp-context";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -81,17 +82,24 @@ const SAMPLE_GRID_INPUT: DriverPredictionInput[] = [
   },
 ];
 
-const DEFAULT_CIRCUIT: CircuitContext = {
-  circuitId: "spa",
-  circuitName: "Circuit de Spa-Francorchamps",
-  overtakingDifficulty: "Low",
-  safetyCarProbability: 0.65,
-  totalLaps: 44,
-};
-
 export function PredictorCard() {
-  const [circuit, setCircuit] = useState<CircuitContext>(DEFAULT_CIRCUIT);
-  const predictions: PredictionResult[] = predictRaceOutcomes(SAMPLE_GRID_INPUT, circuit);
+  const { selectedGP } = useGP();
+
+  const circuit: CircuitContext = useMemo(
+    () => ({
+      circuitId: selectedGP.id,
+      circuitName: selectedGP.circuitName,
+      overtakingDifficulty: selectedGP.overtakingDifficulty,
+      safetyCarProbability: selectedGP.safetyCarProbability,
+      totalLaps: selectedGP.totalLaps,
+    }),
+    [selectedGP]
+  );
+
+  const predictions: PredictionResult[] = useMemo(
+    () => predictRaceOutcomes(SAMPLE_GRID_INPUT, circuit),
+    [circuit]
+  );
 
   return (
     <Card className="border-zinc-800 bg-carbon-900/95 shadow-2xl">

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
+import { useGP } from "@/context/gp-context";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ProBadge } from "@/components/layout/pro-badge";
@@ -16,21 +17,26 @@ import {
 } from "recharts";
 import { BarChart2, TrendingDown, Timer } from "lucide-react";
 
-// Generate realistic race lap progression data
-function generateRaceLaps(totalLaps = 57) {
+// Generate realistic race lap progression data based on circuit specifications
+function generateRaceLaps(totalLaps: number, baseLapTime: number) {
   const data = [];
+  const pitLapNorris = Math.floor(totalLaps * 0.42);
+  const pitLapVerstappen = Math.floor(totalLaps * 0.32);
+  const pitLapLeclerc1 = Math.floor(totalLaps * 0.38);
+  const pitLapLeclerc2 = Math.floor(totalLaps * 0.74);
+
   for (let lap = 1; lap <= totalLaps; lap++) {
-    // Norris (Winner): Base 84.5s with gradual degradation and pit stops at lap 24
-    let norris = 84.2 + (lap % 25) * 0.05 + (Math.random() - 0.5) * 0.2;
-    if (lap === 24) norris += 21.5; // Pit stop in-lap
+    // Norris (P1 pace)
+    let norris = baseLapTime - 0.3 + (lap % 25) * 0.05 + (Math.random() - 0.5) * 0.2;
+    if (lap === pitLapNorris) norris += 21.5; // Pit stop in-lap
 
-    // Verstappen: Base 84.4s, pit at lap 18
-    let verstappen = 84.3 + (lap % 20) * 0.06 + (Math.random() - 0.5) * 0.25;
-    if (lap === 18) verstappen += 21.8;
+    // Verstappen (P2 pace)
+    let verstappen = baseLapTime - 0.1 + (lap % 20) * 0.06 + (Math.random() - 0.5) * 0.25;
+    if (lap === pitLapVerstappen) verstappen += 21.8;
 
-    // Leclerc: Base 84.6s, pit at lap 22 & 43
-    let leclerc = 84.5 + (lap % 21) * 0.05 + (Math.random() - 0.5) * 0.2;
-    if (lap === 22 || lap === 43) leclerc += 22.0;
+    // Leclerc (P3 pace)
+    let leclerc = baseLapTime + 0.1 + (lap % 21) * 0.05 + (Math.random() - 0.5) * 0.2;
+    if (lap === pitLapLeclerc1 || lap === pitLapLeclerc2) leclerc += 22.0;
 
     data.push({
       lap,
@@ -43,7 +49,15 @@ function generateRaceLaps(totalLaps = 57) {
 }
 
 export default function LapsProPage() {
-  const lapsData = generateRaceLaps();
+  const { selectedGP } = useGP();
+
+  const lapsData = useMemo(
+    () => generateRaceLaps(selectedGP.totalLaps, selectedGP.baseLapTimeSeconds),
+    [selectedGP.totalLaps, selectedGP.baseLapTimeSeconds]
+  );
+
+  const yMin = Math.floor(selectedGP.baseLapTimeSeconds - 2);
+  const yMax = Math.ceil(selectedGP.baseLapTimeSeconds + 26);
 
   return (
     <div className="space-y-6">
@@ -57,7 +71,7 @@ export default function LapsProPage() {
           Lap-by-Lap Race Progression & Degradation
         </h1>
         <p className="text-xs text-zinc-400">
-          Lap time consistency, pit out-lap deltas, and tyre drop-off across all 57 laps of the Grand Prix.
+          Lap time consistency, pit out-lap deltas, and tyre drop-off across all {selectedGP.totalLaps} laps of the {selectedGP.name}.
         </p>
       </div>
 
@@ -65,9 +79,11 @@ export default function LapsProPage() {
         <CardHeader>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <CardTitle className="text-xl font-bold text-white">Race Lap Time Trajectory</CardTitle>
+              <CardTitle className="text-xl font-bold text-white">
+                Race Lap Time Trajectory — {selectedGP.circuitName}
+              </CardTitle>
               <CardDescription className="text-xs text-zinc-400">
-                Spikes indicate pit lane transit and out-lap tyre warmup penalties.
+                Spikes indicate pit lane transit and out-lap tyre warmup penalties ({selectedGP.country}).
               </CardDescription>
             </div>
             <div className="flex items-center gap-4 text-xs font-mono">
@@ -93,7 +109,7 @@ export default function LapsProPage() {
                 <YAxis
                   stroke="#64748b"
                   fontSize={11}
-                  domain={[83, 110]}
+                  domain={[yMin, yMax]}
                   tickFormatter={(val) => `${val}s`}
                 />
                 <Tooltip
@@ -104,7 +120,7 @@ export default function LapsProPage() {
                     fontSize: "12px",
                     fontFamily: "monospace",
                   }}
-                  labelFormatter={(lap) => `Grand Prix: Lap ${lap}`}
+                  labelFormatter={(lap) => `${selectedGP.name}: Lap ${lap}`}
                   formatter={(val: any) => [`${val}s`, "Lap Time"]}
                 />
                 <Line
@@ -137,14 +153,14 @@ export default function LapsProPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 pt-4 border-t border-zinc-800 text-xs font-mono">
             <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800">
-              <span className="text-zinc-500 block text-[10px] uppercase">Pace Standard Deviation</span>
-              <span className="text-base font-bold text-white">±0.282s</span>
-              <span className="text-[10px] text-emerald-400 block">High Consistency (L. Norris)</span>
+              <span className="text-zinc-500 block text-[10px] uppercase">Base Pace Index</span>
+              <span className="text-base font-bold text-white">{selectedGP.baseLapTimeSeconds.toFixed(1)}s</span>
+              <span className="text-[10px] text-emerald-400 block">{selectedGP.circuitName}</span>
             </div>
             <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800">
-              <span className="text-zinc-500 block text-[10px] uppercase">Average Pit Loss</span>
-              <span className="text-base font-bold text-white">21.8s</span>
-              <span className="text-[10px] text-zinc-400 block">Pit Lane In/Out Transit</span>
+              <span className="text-zinc-500 block text-[10px] uppercase">Total Race Distance</span>
+              <span className="text-base font-bold text-white">{((selectedGP.lapDistanceMeters * selectedGP.totalLaps) / 1000).toFixed(1)} km</span>
+              <span className="text-[10px] text-zinc-400 block">{selectedGP.totalLaps} laps @ {selectedGP.lapDistanceMeters}m</span>
             </div>
             <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800">
               <span className="text-zinc-500 block text-[10px] uppercase">Fuel Correction Pace</span>

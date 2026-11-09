@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useGP } from "@/context/gp-context";
 import {
   ResponsiveContainer,
   LineChart,
@@ -38,12 +39,17 @@ const AVAILABLE_DRIVERS = [
   { id: "sai", name: "C. Sainz", number: 55, team: "Williams", color: "#64C4FF", speedOffset: -3, throttleAggression: 0.96 },
 ];
 
-function generateTelemetryData(driver1: typeof AVAILABLE_DRIVERS[0], driver2: typeof AVAILABLE_DRIVERS[0]): TelemetryPoint[] {
+function generateTelemetryData(
+  driver1: typeof AVAILABLE_DRIVERS[0],
+  driver2: typeof AVAILABLE_DRIVERS[0],
+  lapDistanceMeters = 5412,
+  topSpeedTrap = 338.4
+): TelemetryPoint[] {
   const points: TelemetryPoint[] = [];
   const totalPoints = 65;
 
   for (let i = 0; i <= totalPoints; i++) {
-    const dist = Math.round((i / totalPoints) * 5412);
+    const dist = Math.round((i / totalPoints) * lapDistanceMeters);
     const phase = (i % 15) / 15;
 
     let baseSpeed: number;
@@ -53,7 +59,7 @@ function generateTelemetryData(driver1: typeof AVAILABLE_DRIVERS[0], driver2: ty
 
     if (phase < 0.25) {
       // Heavy Braking
-      baseSpeed = Math.round(320 - phase * 750);
+      baseSpeed = Math.round((topSpeedTrap * 0.95) - phase * 750);
       baseThrottle = 0;
       baseBrake = 100;
       baseGear = 3;
@@ -71,8 +77,8 @@ function generateTelemetryData(driver1: typeof AVAILABLE_DRIVERS[0], driver2: ty
       baseGear = phase > 0.8 ? 8 : 6;
     }
 
-    const speed1 = Math.min(346, Math.max(70, Math.round(baseSpeed + driver1.speedOffset * (phase > 0.45 ? 2 : 1))));
-    const speed2 = Math.min(346, Math.max(70, Math.round(baseSpeed + driver2.speedOffset * (phase > 0.45 ? 2 : 1) + Math.sin(i * 0.3) * 3)));
+    const speed1 = Math.min(topSpeedTrap + 8, Math.max(70, Math.round(baseSpeed + driver1.speedOffset * (phase > 0.45 ? 2 : 1))));
+    const speed2 = Math.min(topSpeedTrap + 8, Math.max(70, Math.round(baseSpeed + driver2.speedOffset * (phase > 0.45 ? 2 : 1) + Math.sin(i * 0.3) * 3)));
 
     const throttle1 = Math.min(100, Math.max(0, Math.round(baseThrottle * driver1.throttleAggression)));
     const throttle2 = Math.min(100, Math.max(0, Math.round(baseThrottle * driver2.throttleAggression)));
@@ -97,6 +103,7 @@ function generateTelemetryData(driver1: typeof AVAILABLE_DRIVERS[0], driver2: ty
 }
 
 export function TelemetryChart() {
+  const { selectedGP } = useGP();
   const [metric, setMetric] = useState<"speed" | "throttle" | "brake" | "gear">("speed");
   const [driverAId, setDriverAId] = useState("nor");
   const [driverBId, setDriverBId] = useState("ver");
@@ -104,7 +111,12 @@ export function TelemetryChart() {
   const driverA = AVAILABLE_DRIVERS.find((d) => d.id === driverAId) || AVAILABLE_DRIVERS[0];
   const driverB = AVAILABLE_DRIVERS.find((d) => d.id === driverBId) || AVAILABLE_DRIVERS[1];
 
-  const telemetryData = generateTelemetryData(driverA, driverB);
+  const telemetryData = generateTelemetryData(
+    driverA,
+    driverB,
+    selectedGP.lapDistanceMeters,
+    selectedGP.topSpeedTrapKmH
+  );
 
   return (
     <Card className="border-zinc-800 bg-carbon-900/90 shadow-2xl">
@@ -179,8 +191,8 @@ export function TelemetryChart() {
             </div>
           </div>
 
-          <div className="text-[11px] font-mono text-zinc-500">
-            Lap Distance: <span className="text-white font-bold">5,412m</span>
+          <div className="text-[11px] font-mono text-zinc-400">
+            {selectedGP.name}: <span className="text-white font-bold">{selectedGP.lapDistanceMeters.toLocaleString()}m</span>
           </div>
         </div>
       </CardHeader>

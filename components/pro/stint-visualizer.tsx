@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useGP } from "@/context/gp-context";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,10 +34,12 @@ interface DriverStintDisplay {
   }>;
 }
 
-export function StintVisualizer({ totalLaps = 57 }: { totalLaps?: number }) {
+export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: number }) {
+  const { selectedGP } = useGP();
+  const totalLaps = propTotalLaps || selectedGP.totalLaps;
   const [selectedCompound, setSelectedCompound] = useState<"SOFT" | "MEDIUM" | "HARD">("MEDIUM");
-  const strategies = calculateRaceStrategies(totalLaps);
-  const degradationData = simulateLapDegradation(selectedCompound, 35, 84.0);
+  const strategies = calculateRaceStrategies(totalLaps, selectedGP.baseLapTimeSeconds);
+  const degradationData = simulateLapDegradation(selectedCompound, 35, selectedGP.baseLapTimeSeconds);
 
   const sampleDriversStints: DriverStintDisplay[] = [
     {
@@ -45,8 +48,8 @@ export function StintVisualizer({ totalLaps = 57 }: { totalLaps?: number }) {
       constructorName: "McLaren",
       teamColor: "#FF8000",
       stints: [
-        { compound: "MEDIUM", startLap: 1, endLap: 24, pitStopDuration: "2.3s" },
-        { compound: "HARD", startLap: 25, endLap: 57 },
+        { compound: "MEDIUM", startLap: 1, endLap: Math.round(totalLaps * 0.42), pitStopDuration: "2.3s" },
+        { compound: "HARD", startLap: Math.round(totalLaps * 0.42) + 1, endLap: totalLaps },
       ],
     },
     {
@@ -55,8 +58,8 @@ export function StintVisualizer({ totalLaps = 57 }: { totalLaps?: number }) {
       constructorName: "Red Bull",
       teamColor: "#3671C6",
       stints: [
-        { compound: "SOFT", startLap: 1, endLap: 18, pitStopDuration: "2.1s" },
-        { compound: "HARD", startLap: 19, endLap: 57 },
+        { compound: "SOFT", startLap: 1, endLap: Math.round(totalLaps * 0.32), pitStopDuration: "2.1s" },
+        { compound: "HARD", startLap: Math.round(totalLaps * 0.32) + 1, endLap: totalLaps },
       ],
     },
     {
@@ -65,9 +68,9 @@ export function StintVisualizer({ totalLaps = 57 }: { totalLaps?: number }) {
       constructorName: "Ferrari",
       teamColor: "#E80020",
       stints: [
-        { compound: "MEDIUM", startLap: 1, endLap: 22, pitStopDuration: "2.5s" },
-        { compound: "HARD", startLap: 23, endLap: 43, pitStopDuration: "2.4s" },
-        { compound: "SOFT", startLap: 44, endLap: 57 },
+        { compound: "MEDIUM", startLap: 1, endLap: Math.round(totalLaps * 0.38), pitStopDuration: "2.5s" },
+        { compound: "HARD", startLap: Math.round(totalLaps * 0.38) + 1, endLap: Math.round(totalLaps * 0.75), pitStopDuration: "2.4s" },
+        { compound: "SOFT", startLap: Math.round(totalLaps * 0.75) + 1, endLap: totalLaps },
       ],
     },
     {
@@ -76,8 +79,8 @@ export function StintVisualizer({ totalLaps = 57 }: { totalLaps?: number }) {
       constructorName: "Mercedes",
       teamColor: "#27F4D2",
       stints: [
-        { compound: "MEDIUM", startLap: 1, endLap: 25, pitStopDuration: "2.6s" },
-        { compound: "HARD", startLap: 26, endLap: 57 },
+        { compound: "MEDIUM", startLap: 1, endLap: Math.round(totalLaps * 0.44), pitStopDuration: "2.6s" },
+        { compound: "HARD", startLap: Math.round(totalLaps * 0.44) + 1, endLap: totalLaps },
       ],
     },
   ];

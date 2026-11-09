@@ -1,0 +1,138 @@
+export interface GrandPrixCircuit {
+  id: string;
+  name: string;
+  circuitName: string;
+  country: string;
+  round: number;
+  lapDistanceMeters: number;
+  totalLaps: number;
+  baseLapTimeSeconds: number;
+  overtakingDifficulty: "Low" | "Medium" | "High";
+  safetyCarProbability: number;
+  topSpeedTrapKmH: number;
+  drsZones: number;
+  description: string;
+}
+
+export const GRAND_PRIX_LIST: GrandPrixCircuit[] = [
+  {
+    id: "sakhir",
+    name: "Bahrain Grand Prix",
+    circuitName: "Bahrain International Circuit",
+    country: "Bahrain",
+    round: 1,
+    lapDistanceMeters: 5412,
+    totalLaps: 57,
+    baseLapTimeSeconds: 88.5,
+    overtakingDifficulty: "Low",
+    safetyCarProbability: 0.55,
+    topSpeedTrapKmH: 338.4,
+    drsZones: 3,
+    description: "High tyre degradation night race with three heavy braking zones.",
+  },
+  {
+    id: "monaco",
+    name: "Monaco Grand Prix",
+    circuitName: "Circuit de Monaco",
+    country: "Monaco",
+    round: 8,
+    lapDistanceMeters: 3337,
+    totalLaps: 78,
+    baseLapTimeSeconds: 71.5,
+    overtakingDifficulty: "High",
+    safetyCarProbability: 0.85,
+    topSpeedTrapKmH: 295.2,
+    drsZones: 1,
+    description: "Legendary tight street circuit where qualifying track position is paramount.",
+  },
+  {
+    id: "silverstone",
+    name: "British Grand Prix",
+    circuitName: "Silverstone Circuit",
+    country: "United Kingdom",
+    round: 12,
+    lapDistanceMeters: 5891,
+    totalLaps: 52,
+    baseLapTimeSeconds: 86.8,
+    overtakingDifficulty: "Medium",
+    safetyCarProbability: 0.5,
+    topSpeedTrapKmH: 334.8,
+    drsZones: 2,
+    description: "Ultra-high-speed sweepers at Copse, Maggotts, and Becketts testing downforce.",
+  },
+  {
+    id: "spa",
+    name: "Belgian Grand Prix",
+    circuitName: "Circuit de Spa-Francorchamps",
+    country: "Belgium",
+    round: 14,
+    lapDistanceMeters: 7004,
+    totalLaps: 44,
+    baseLapTimeSeconds: 104.5,
+    overtakingDifficulty: "Low",
+    safetyCarProbability: 0.65,
+    topSpeedTrapKmH: 348.5,
+    drsZones: 2,
+    description: "The longest track on the calendar with dramatic elevation changes through Eau Rouge.",
+  },
+  {
+    id: "monza",
+    name: "Italian Grand Prix",
+    circuitName: "Autodromo Nazionale Monza",
+    country: "Italy",
+    round: 16,
+    lapDistanceMeters: 5793,
+    totalLaps: 53,
+    baseLapTimeSeconds: 79.8,
+    overtakingDifficulty: "Low",
+    safetyCarProbability: 0.45,
+    topSpeedTrapKmH: 358.2,
+    drsZones: 2,
+    description: "The Temple of Speed, featuring minimum downforce wings and 350+ km/h slipstreams.",
+  },
+  {
+    id: "suzuka",
+    name: "Japanese Grand Prix",
+    circuitName: "Suzuka International Racing Course",
+    country: "Japan",
+    round: 4,
+    lapDistanceMeters: 5807,
+    totalLaps: 53,
+    baseLapTimeSeconds: 88.2,
+    overtakingDifficulty: "Medium",
+    safetyCarProbability: 0.6,
+    topSpeedTrapKmH: 332.1,
+    drsZones: 1,
+    description: "Technical figure-8 circuit with demanding high-lateral-G Esses in Sector 1.",
+  },
+  {
+    id: "interlagos",
+    name: "São Paulo Grand Prix",
+    circuitName: "Autódromo José Carlos Pace",
+    country: "Brazil",
+    round: 21,
+    lapDistanceMeters: 4309,
+    totalLaps: 71,
+    baseLapTimeSeconds: 70.8,
+    overtakingDifficulty: "Low",
+    safetyCarProbability: 0.75,
+    topSpeedTrapKmH: 342.0,
+    drsZones: 2,
+    description: "Anti-clockwise roller-coaster with unpredictable weather and constant overtakes.",
+  },
+  {
+    id: "las_vegas",
+    name: "Las Vegas Grand Prix",
+    circuitName: "Las Vegas Strip Circuit",
+    country: "United States",
+    round: 22,
+    lapDistanceMeters: 6201,
+    totalLaps: 50,
+    baseLapTimeSeconds: 92.5,
+    overtakingDifficulty: "Low",
+    safetyCarProbability: 0.7,
+    topSpeedTrapKmH: 350.5,
+    drsZones: 2,
+    description: "Chilly nighttime race down the iconic Strip with massive braking into Turn 14.",
+  },
+];
