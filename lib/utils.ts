@@ -107,3 +107,4 @@ export function getTeamColor(constructorId: string | null | undefined): string {
   const id = constructorId.toLowerCase().replace(/[\s-]/g, "_");
   return TEAM_COLORS[id] || "#71717a";
 }
+

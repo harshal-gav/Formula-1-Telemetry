@@ -321,3 +321,4 @@ export function StintVisualizer({ totalLaps = 57 }: { totalLaps?: number }) {
     </div>
   );
 }
+

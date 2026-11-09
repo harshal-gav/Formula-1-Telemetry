@@ -54,3 +54,4 @@ export function RaceCard({ race }: { race: Race }) {
     </Link>
   );
 }
+

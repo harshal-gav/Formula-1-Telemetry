@@ -21,3 +21,4 @@ export function TyreBadge({ compound, laps }: { compound: string; laps?: number 
     </span>
   );
 }
+

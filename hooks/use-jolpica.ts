@@ -58,3 +58,4 @@ export function usePitStops(season: string = "current", round: string = "last") 
     staleTime: 1000 * 60 * 30,
   });
 }
+

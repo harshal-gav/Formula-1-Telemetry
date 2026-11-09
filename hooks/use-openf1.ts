@@ -55,3 +55,4 @@ export function useOpenF1Weather(sessionKey: number, enabled = true) {
     staleTime: 1000 * 60 * 20,
   });
 }
+

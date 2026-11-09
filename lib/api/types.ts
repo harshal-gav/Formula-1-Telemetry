@@ -271,3 +271,4 @@ export interface UserSubscription {
   createdAt?: string;
   updatedAt?: string;
 }
+

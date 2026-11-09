@@ -67,3 +67,4 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+

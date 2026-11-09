@@ -242,3 +242,4 @@ While this application achieves extreme efficiency and zero-server operating cos
 
 4. **Team Radio & Real-Time Doppler Radar**:
    - Uncompressed broadcast radio MP3 feeds and high-resolution Doppler radar maps require dedicated object storage (S3/Cloud Storage) and background transcoders.
+

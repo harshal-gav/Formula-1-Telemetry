@@ -35,3 +35,4 @@ export function getAdminDb(): Firestore {
   adminDb = getFirestore(adminApp);
   return adminDb;
 }
+

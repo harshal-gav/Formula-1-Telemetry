@@ -149,3 +149,4 @@ export const openf1 = {
     return fetchOpenF1<OpenF1Weather[]>(`/weather?session_key=${sessionKey}`, 30);
   },
 };
+

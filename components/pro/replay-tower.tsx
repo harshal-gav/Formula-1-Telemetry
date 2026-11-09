@@ -415,3 +415,4 @@ export function ReplayTower({ totalLaps = 57 }: { totalLaps?: number }) {
     </Card>
   );
 }
+

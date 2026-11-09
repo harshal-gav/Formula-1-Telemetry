@@ -12,3 +12,4 @@ export function ProBadge({ className }: { className?: string }) {
     </Badge>
   );
 }
+
