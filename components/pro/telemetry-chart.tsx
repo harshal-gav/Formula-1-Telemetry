@@ -9,15 +9,14 @@ import {
   YAxis,
   Tooltip,
   CartesianGrid,
-  Legend,
 } from "recharts";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Gauge, Zap, Activity } from "lucide-react";
+import { Activity, Gauge, Zap } from "lucide-react";
 
 interface TelemetryPoint {
-  distance: number; // meters from start line (0 to ~5300m)
+  distance: number;
   speed1: number;
   throttle1: number;
   brake1: number;
@@ -28,57 +27,69 @@ interface TelemetryPoint {
   gear2: number;
 }
 
-// Generate realistic telemetry curves for a representative Grand Prix lap (e.g. Monza / Spa / Bahrain)
-function generateSampleTelemetryData(): TelemetryPoint[] {
+const AVAILABLE_DRIVERS = [
+  { id: "nor", name: "L. Norris", number: 4, team: "McLaren", color: "#FF8000", speedOffset: 2, throttleAggression: 1.02 },
+  { id: "ver", name: "M. Verstappen", number: 1, team: "Red Bull", color: "#3671C6", speedOffset: 3, throttleAggression: 1.05 },
+  { id: "lec", name: "C. Leclerc", number: 16, team: "Ferrari", color: "#E80020", speedOffset: 1, throttleAggression: 1.03 },
+  { id: "rus", name: "G. Russell", number: 63, team: "Mercedes", color: "#27F4D2", speedOffset: -1, throttleAggression: 0.98 },
+  { id: "pia", name: "O. Piastri", number: 81, team: "McLaren", color: "#FF8000", speedOffset: 1.5, throttleAggression: 1.0 },
+  { id: "ham", name: "L. Hamilton", number: 44, team: "Ferrari", color: "#E80020", speedOffset: 0, throttleAggression: 0.99 },
+  { id: "alo", name: "F. Alonso", number: 14, team: "Aston Martin", color: "#229971", speedOffset: -2, throttleAggression: 0.97 },
+  { id: "sai", name: "C. Sainz", number: 55, team: "Williams", color: "#64C4FF", speedOffset: -3, throttleAggression: 0.96 },
+];
+
+function generateTelemetryData(driver1: typeof AVAILABLE_DRIVERS[0], driver2: typeof AVAILABLE_DRIVERS[0]): TelemetryPoint[] {
   const points: TelemetryPoint[] = [];
-  const totalPoints = 60;
+  const totalPoints = 65;
 
   for (let i = 0; i <= totalPoints; i++) {
     const dist = Math.round((i / totalPoints) * 5412);
     const phase = (i % 15) / 15;
 
-    // Simulate braking zone, apex, and full acceleration
-    let speed1: number;
-    let throttle1: number;
-    let brake1: number;
-    let gear1: number;
+    let baseSpeed: number;
+    let baseThrottle: number;
+    let baseBrake: number;
+    let baseGear: number;
 
     if (phase < 0.25) {
       // Heavy Braking
-      speed1 = Math.round(320 - phase * 750);
-      throttle1 = 0;
-      brake1 = 100;
-      gear1 = 3;
+      baseSpeed = Math.round(320 - phase * 750);
+      baseThrottle = 0;
+      baseBrake = 100;
+      baseGear = 3;
     } else if (phase < 0.45) {
       // Corner Apex
-      speed1 = Math.round(110 + (phase - 0.25) * 200);
-      throttle1 = Math.round(35 + (phase - 0.25) * 250);
-      brake1 = 0;
-      gear1 = 4;
+      baseSpeed = Math.round(115 + (phase - 0.25) * 200);
+      baseThrottle = Math.round(35 + (phase - 0.25) * 250);
+      baseBrake = 0;
+      baseGear = 4;
     } else {
-      // Straight Full Throttle
-      speed1 = Math.round(180 + (phase - 0.45) * 260);
-      throttle1 = 100;
-      brake1 = 0;
-      gear1 = phase > 0.8 ? 8 : 6;
+      // Full Throttle Straight
+      baseSpeed = Math.round(185 + (phase - 0.45) * 260);
+      baseThrottle = 100;
+      baseBrake = 0;
+      baseGear = phase > 0.8 ? 8 : 6;
     }
 
-    // Driver 2 with slight braking offset / cornering delta
-    const speed2 = Math.round(speed1 * (1 + (Math.sin(i * 0.4) * 0.04 - 0.015)));
-    const throttle2 = Math.min(100, Math.max(0, Math.round(throttle1 * 0.95 + (Math.cos(i) > 0 ? 5 : 0))));
-    const brake2 = phase < 0.22 ? 100 : 0;
-    const gear2 = gear1;
+    const speed1 = Math.min(346, Math.max(70, Math.round(baseSpeed + driver1.speedOffset * (phase > 0.45 ? 2 : 1))));
+    const speed2 = Math.min(346, Math.max(70, Math.round(baseSpeed + driver2.speedOffset * (phase > 0.45 ? 2 : 1) + Math.sin(i * 0.3) * 3)));
+
+    const throttle1 = Math.min(100, Math.max(0, Math.round(baseThrottle * driver1.throttleAggression)));
+    const throttle2 = Math.min(100, Math.max(0, Math.round(baseThrottle * driver2.throttleAggression)));
+
+    const brake1 = phase < 0.24 ? 100 : 0;
+    const brake2 = phase < (0.24 + (driver2.speedOffset > driver1.speedOffset ? -0.01 : 0.01)) ? 100 : 0;
 
     points.push({
       distance: dist,
-      speed1: Math.min(345, Math.max(70, speed1)),
+      speed1,
       throttle1,
       brake1,
-      gear1,
-      speed2: Math.min(345, Math.max(70, speed2)),
+      gear1: baseGear,
+      speed2,
       throttle2,
       brake2,
-      gear2,
+      gear2: baseGear,
     });
   }
 
@@ -87,10 +98,13 @@ function generateSampleTelemetryData(): TelemetryPoint[] {
 
 export function TelemetryChart() {
   const [metric, setMetric] = useState<"speed" | "throttle" | "brake" | "gear">("speed");
-  const [driverA, setDriverA] = useState({ name: "L. Norris", number: 4, team: "McLaren", color: "#FF8000" });
-  const [driverB, setDriverB] = useState({ name: "M. Verstappen", number: 1, team: "Red Bull", color: "#3671C6" });
+  const [driverAId, setDriverAId] = useState("nor");
+  const [driverBId, setDriverBId] = useState("ver");
 
-  const telemetryData = generateSampleTelemetryData();
+  const driverA = AVAILABLE_DRIVERS.find((d) => d.id === driverAId) || AVAILABLE_DRIVERS[0];
+  const driverB = AVAILABLE_DRIVERS.find((d) => d.id === driverBId) || AVAILABLE_DRIVERS[1];
+
+  const telemetryData = generateTelemetryData(driverA, driverB);
 
   return (
     <Card className="border-zinc-800 bg-carbon-900/90 shadow-2xl">
@@ -111,52 +125,62 @@ export function TelemetryChart() {
 
           {/* Metric Selector Tabs */}
           <div className="flex items-center gap-1.5 p-1 bg-zinc-950/80 rounded-lg border border-zinc-800">
-            <Button
-              variant={metric === "speed" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setMetric("speed")}
-              className="h-7 text-xs font-mono"
-            >
-              Speed (km/h)
-            </Button>
-            <Button
-              variant={metric === "throttle" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setMetric("throttle")}
-              className="h-7 text-xs font-mono"
-            >
-              Throttle (%)
-            </Button>
-            <Button
-              variant={metric === "brake" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setMetric("brake")}
-              className="h-7 text-xs font-mono"
-            >
-              Brake
-            </Button>
-            <Button
-              variant={metric === "gear" ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setMetric("gear")}
-              className="h-7 text-xs font-mono"
-            >
-              Gear
-            </Button>
+            {(["speed", "throttle", "brake", "gear"] as const).map((m) => (
+              <Button
+                key={m}
+                variant={metric === m ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setMetric(m)}
+                className="h-7 text-xs font-mono capitalize"
+              >
+                {m === "speed" ? "Speed (km/h)" : m === "throttle" ? "Throttle (%)" : m}
+              </Button>
+            ))}
           </div>
         </div>
 
-        {/* Driver Comparison Legend */}
-        <div className="flex items-center gap-6 pt-3 text-xs font-mono">
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: driverA.color }} />
-            <span className="font-bold text-white">#{driverA.number} {driverA.name}</span>
-            <span className="text-zinc-500">({driverA.team})</span>
+        {/* Dynamic Dual-Driver Selectors */}
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-4 mt-2 border-t border-zinc-800/60">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
+            {/* Driver A Dropdown */}
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: driverA.color }} />
+              <span className="text-zinc-400">Driver 1:</span>
+              <select
+                value={driverAId}
+                onChange={(e) => setDriverAId(e.target.value)}
+                className="bg-zinc-950 border border-zinc-800 rounded px-2.5 py-1 text-white font-bold text-xs focus:ring-1 focus:ring-racing-red cursor-pointer"
+              >
+                {AVAILABLE_DRIVERS.map((d) => (
+                  <option key={d.id} value={d.id} disabled={d.id === driverBId}>
+                    #{d.number} {d.name} ({d.team})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <span className="text-zinc-600 font-bold">VS</span>
+
+            {/* Driver B Dropdown */}
+            <div className="flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: driverB.color }} />
+              <span className="text-zinc-400">Driver 2:</span>
+              <select
+                value={driverBId}
+                onChange={(e) => setDriverBId(e.target.value)}
+                className="bg-zinc-950 border border-zinc-800 rounded px-2.5 py-1 text-white font-bold text-xs focus:ring-1 focus:ring-racing-red cursor-pointer"
+              >
+                {AVAILABLE_DRIVERS.map((d) => (
+                  <option key={d.id} value={d.id} disabled={d.id === driverAId}>
+                    #{d.number} {d.name} ({d.team})
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full" style={{ backgroundColor: driverB.color }} />
-            <span className="font-bold text-white">#{driverB.number} {driverB.name}</span>
-            <span className="text-zinc-500">({driverB.team})</span>
+
+          <div className="text-[11px] font-mono text-zinc-500">
+            Lap Distance: <span className="text-white font-bold">5,412m</span>
           </div>
         </div>
       </CardHeader>
@@ -177,7 +201,7 @@ export function TelemetryChart() {
                 fontSize={11}
                 domain={
                   metric === "speed"
-                    ? [60, 350]
+                    ? [60, 355]
                     : metric === "throttle" || metric === "brake"
                     ? [0, 100]
                     : [1, 8]
@@ -206,7 +230,7 @@ export function TelemetryChart() {
                 }
                 name={`${driverA.name}`}
                 stroke={driverA.color}
-                strokeWidth={2.2}
+                strokeWidth={2.4}
                 dot={false}
                 activeDot={{ r: 4 }}
               />
@@ -223,7 +247,7 @@ export function TelemetryChart() {
                 }
                 name={`${driverB.name}`}
                 stroke={driverB.color}
-                strokeWidth={2.2}
+                strokeWidth={2.4}
                 strokeDasharray="4 4"
                 dot={false}
                 activeDot={{ r: 4 }}
@@ -237,26 +261,27 @@ export function TelemetryChart() {
           <div className="p-2.5 rounded bg-carbon-950/60 border border-zinc-800">
             <span className="text-zinc-500 block text-[10px] uppercase">Top Speed Trap</span>
             <span className="text-base font-bold text-white">338.4 km/h</span>
-            <span className="text-[10px] text-emerald-400 block">+2.1 km/h vs VER</span>
+            <span className="text-[10px] text-emerald-400 block">
+              {driverA.speedOffset >= driverB.speedOffset ? `+${(driverA.speedOffset - driverB.speedOffset).toFixed(1)} km/h vs ${driverB.name}` : `-${(driverB.speedOffset - driverA.speedOffset).toFixed(1)} km/h vs ${driverB.name}`}
+            </span>
           </div>
           <div className="p-2.5 rounded bg-carbon-950/60 border border-zinc-800">
             <span className="text-zinc-500 block text-[10px] uppercase">Full Throttle %</span>
             <span className="text-base font-bold text-white">74.2%</span>
-            <span className="text-[10px] text-zinc-400 block">Lap Average</span>
+            <span className="text-[10px] text-zinc-400 block">Flying Lap Average</span>
           </div>
           <div className="p-2.5 rounded bg-carbon-950/60 border border-zinc-800">
             <span className="text-zinc-500 block text-[10px] uppercase">Heavy Braking Zones</span>
             <span className="text-base font-bold text-white">4 Zones</span>
-            <span className="text-[10px] text-zinc-400 block">&gt; 4.5G Peak Decel</span>
+            <span className="text-[10px] text-zinc-400 block">&gt; 4.8G Peak Decel</span>
           </div>
           <div className="p-2.5 rounded bg-carbon-950/60 border border-zinc-800">
-            <span className="text-zinc-500 block text-[10px] uppercase">Microsector Advantage</span>
-            <span className="text-base font-bold text-racing-cyan">S2 Apex Exit</span>
-            <span className="text-[10px] text-racing-cyan block">-0.082s delta</span>
+            <span className="text-zinc-500 block text-[10px] uppercase">Apex Speed Advantage</span>
+            <span className="text-base font-bold text-racing-cyan">Turn 4 / Turn 11</span>
+            <span className="text-[10px] text-racing-cyan block">-0.065s delta</span>
           </div>
         </div>
       </CardContent>
     </Card>
   );
 }
-
