@@ -1,0 +1,57 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // List of subscription and sensitive fields that normal users MUST NOT modify
+    function hasSubscriptionFieldChanges() {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasAny([
+          'plan',
+          'status',
+          'subscriptionId',
+          'customerId',
+          'currentPeriodEnd',
+          'priceId',
+          'productId',
+          'createdAt'
+        ]);
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Users can only read their own user record
+      allow read: if isOwner(userId);
+
+      // On initial registration, users can create their user document,
+      // but only with free tier and active status.
+      allow create: if isOwner(userId)
+                    && request.resource.data.plan == 'free'
+                    && request.resource.data.status == 'active'
+                    && !('subscriptionId' in request.resource.data)
+                    && !('customerId' in request.resource.data);
+
+      // On update, users can update profile information (e.g. displayName, preferences),
+      // but CANNOT modify any subscription-related fields. Subscription fields can ONLY
+      // be updated via firebase-admin in the Dodo webhook handler.
+      allow update: if isOwner(userId)
+                    && !hasSubscriptionFieldChanges();
+
+      // Deletion is blocked from client SDK (must be performed via admin SDK or cloud functions)
+      allow delete: if false;
+    }
+
+    // Fallback: Deny access to all other paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
