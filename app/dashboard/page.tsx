@@ -326,7 +326,7 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 sm:gap-3">
           <Link href="/pro/telemetry">
             <Button variant="secondary" size="sm" className="text-xs">
               Telemetry Trace

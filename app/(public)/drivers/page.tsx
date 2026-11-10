@@ -28,7 +28,7 @@ export default function DriversPage() {
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <Badge variant="racing" className="text-xs">DRIVER ROSTER</Badge>
-          <span className="text-xs font-mono text-zinc-500">2026 GRID</span>
+          <span className="text-xs font-mono text-zinc-500">CHAMPIONSHIP GRID</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase flex items-center gap-3">
           <Users className="w-8 h-8 text-racing-red" />

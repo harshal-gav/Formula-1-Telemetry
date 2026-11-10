@@ -42,7 +42,7 @@ export function TabsList({ className, children }: { className?: string; children
   return (
     <div
       className={cn(
-        "inline-flex h-10 items-center justify-center rounded-lg bg-zinc-900/90 p-1 text-zinc-400 border border-zinc-800",
+        "inline-flex max-w-full items-center justify-start sm:justify-center rounded-lg bg-zinc-900/90 p-1 text-zinc-400 border border-zinc-800 overflow-x-auto no-scrollbar shrink-0",
         className
       )}
     >
@@ -70,9 +70,9 @@ export function TabsTrigger({
       type="button"
       onClick={() => ctx.onValueChange(value)}
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+        "inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-xs sm:text-sm font-medium transition-all focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 cursor-pointer shrink-0",
         isSelected
-          ? "bg-zinc-800 text-white shadow-sm"
+          ? "bg-zinc-800 text-white shadow-sm font-bold"
           : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50",
         className
       )}
