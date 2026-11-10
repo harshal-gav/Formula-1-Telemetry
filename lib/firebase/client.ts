@@ -1,4 +1,5 @@
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
+import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -20,20 +21,22 @@ import {
 } from "firebase/firestore";
 import { UserSubscription } from "@/lib/api/types";
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSy_demo_key_placeholder",
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "formula1-analytics-demo.firebaseapp.com",
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "formula1-analytics-demo",
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "formula1-analytics-demo.appspot.com",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "123456789",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:123456789:web:abcdef123456",
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+// Firebase web app configuration for formula-1-telemetry
+export const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyBES91Uaz9jkfVmm1SKCToX-7GnxB8cE-k",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "formula-1-telemetry.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "formula-1-telemetry",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "formula-1-telemetry.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "113671786489",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:113671786489:web:7765e87930a03076afb728",
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-R84QRV61XB",
 };
 
 // Initialize Firebase client safely
 let app: FirebaseApp;
 let auth: Auth;
 let db: Firestore;
+let analytics: Analytics | null = null;
 
 if (!getApps().length) {
   app = initializeApp(firebaseConfig);
@@ -43,6 +46,15 @@ if (!getApps().length) {
 
 auth = getAuth(app);
 db = getFirestore(app);
+
+// Initialize analytics safely in the browser
+if (typeof window !== "undefined") {
+  isSupported().then((supported) => {
+    if (supported) {
+      analytics = getAnalytics(app);
+    }
+  });
+}
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -76,6 +88,7 @@ export {
   app,
   auth,
   db,
+  analytics,
   googleProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
