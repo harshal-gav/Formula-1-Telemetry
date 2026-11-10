@@ -257,7 +257,7 @@ export interface OpenF1Weather {
 // ==========================================
 
 export type SubscriptionPlan = "free" | "pro";
-export type SubscriptionStatus = "active" | "cancelled" | "past_due" | "on_hold" | "trialing";
+export type SubscriptionStatus = "active" | "cancelled" | "past_due" | "on_hold" | "trialing" | "expired";
 
 export interface UserSubscription {
   uid: string;
@@ -267,7 +267,9 @@ export interface UserSubscription {
   status: SubscriptionStatus;
   subscriptionId?: string | null;
   customerId?: string | null;
+  productId?: string | null;
   currentPeriodEnd?: string | null;
+  cancel_at_period_end?: boolean;
   createdAt?: string;
   updatedAt?: string;
 }

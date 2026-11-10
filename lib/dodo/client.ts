@@ -39,6 +39,8 @@ export const dodo = {
     const params = new URLSearchParams({
       email: email,
       metadata_uid: uid,
+      metadata_userId: uid,
+      metadata_email: email,
       redirect_url: returnUrl || defaultReturnUrl,
     });
 

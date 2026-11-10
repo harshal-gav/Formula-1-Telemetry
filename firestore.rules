@@ -20,6 +20,7 @@ service cloud.firestore {
           'subscriptionId',
           'customerId',
           'currentPeriodEnd',
+          'cancel_at_period_end',
           'priceId',
           'productId',
           'createdAt'

@@ -164,7 +164,7 @@ export default function AccountPage() {
                 <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-between text-xs font-mono">
                   <span className="text-zinc-400 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5 text-zinc-500" />
-                    Next Billing / Renewal Date:
+                    {subscription.cancel_at_period_end ? "Access Active Until:" : "Next Billing / Renewal Date:"}
                   </span>
                   <span className="text-amber-400 font-bold">
                     {new Date(subscription.currentPeriodEnd).toLocaleDateString("en-US", {
@@ -173,6 +173,12 @@ export default function AccountPage() {
                       year: "numeric",
                     })}
                   </span>
+                </div>
+              )}
+
+              {subscription?.cancel_at_period_end && (
+                <div className="p-2.5 rounded-lg bg-amber-950/40 border border-amber-500/30 text-xs text-amber-300 font-mono">
+                  Your recurring subscription has been cancelled. Your Pro access remains active until the end of your billing cycle.
                 </div>
               )}
             </CardContent>

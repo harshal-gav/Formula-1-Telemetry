@@ -54,8 +54,19 @@ export function useSubscription() {
     return () => unsubscribe();
   }, [user, authLoading]);
 
-  // Pro status is strictly derived from verified Firestore subscription record
-  const isPro = subscription?.plan === "pro" && subscription?.status === "active";
+  // Pro status is strictly derived from verified Firestore subscription record:
+  // 1. Plan must be "pro"
+  // 2. Status must be "active"
+  // 3. Current period must not have expired (if currentPeriodEnd is defined)
+  const isPeriodValid = subscription?.currentPeriodEnd
+    ? new Date(subscription.currentPeriodEnd) > new Date()
+    : true;
+
+  const isPro = Boolean(
+    subscription?.plan === "pro" &&
+    subscription?.status === "active" &&
+    isPeriodValid
+  );
 
   return {
     subscription,
