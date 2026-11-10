@@ -4,9 +4,9 @@ import { Activity, ShieldCheck, Database, Zap } from "lucide-react";
 export function Footer() {
   return (
     <footer className="border-t border-zinc-800/80 bg-carbon-950 text-zinc-400 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
         {/* Brand Description */}
-        <div className="md:col-span-2 space-y-4">
+        <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-racing-red to-red-800 flex items-center justify-center">
               <Activity className="w-4 h-4 text-white" />
@@ -37,12 +37,12 @@ export function Footer() {
           <ul className="space-y-2 text-xs">
             <li>
               <Link href="/races" className="hover:text-white transition-colors">
-                Season Calendar & Results
+                Season Calendar
               </Link>
             </li>
             <li>
               <Link href="/standings" className="hover:text-white transition-colors">
-                Championship Standings
+                Standings Table
               </Link>
             </li>
             <li>
@@ -52,7 +52,7 @@ export function Footer() {
             </li>
             <li>
               <Link href="/pricing" className="hover:text-white transition-colors">
-                Pro Subscription
+                Pro Membership
               </Link>
             </li>
           </ul>
@@ -67,26 +67,55 @@ export function Footer() {
             <li>
               <Link href="/pro/telemetry" className="hover:text-white transition-colors flex items-center gap-1">
                 <Zap className="w-3 h-3 text-amber-400" />
-                Car Telemetry Comparison
+                Telemetry Trace
               </Link>
             </li>
             <li>
               <Link href="/pro/strategy" className="hover:text-white transition-colors flex items-center gap-1">
                 <Zap className="w-3 h-3 text-amber-400" />
-                Tyre Degradation Modeling
+                Tyre Degradation
               </Link>
             </li>
             <li>
               <Link href="/pro/replay" className="hover:text-white transition-colors flex items-center gap-1">
                 <Zap className="w-3 h-3 text-amber-400" />
-                Session Timing Replay
+                Session Replay
               </Link>
             </li>
             <li>
               <Link href="/pro/predictor" className="hover:text-white transition-colors flex items-center gap-1">
                 <Zap className="w-3 h-3 text-amber-400" />
-                Podium Outcome Predictor
+                Outcome Predictor
               </Link>
+            </li>
+          </ul>
+        </div>
+
+        {/* Legal & Compliance */}
+        <div>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-3 font-mono">
+            Legal & Support
+          </h4>
+          <ul className="space-y-2 text-xs">
+            <li>
+              <Link href="/terms" className="hover:text-white transition-colors">
+                Terms of Service
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/refund" className="hover:text-white transition-colors text-emerald-400/90 font-medium">
+                Refund & Cancellation
+              </Link>
+            </li>
+            <li>
+              <a href="mailto:support@formula1telemetry.com" className="hover:text-white transition-colors font-mono text-[11px] text-zinc-400 block pt-1">
+                support@formula1telemetry.com
+              </a>
             </li>
           </ul>
         </div>
