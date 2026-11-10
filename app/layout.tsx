@@ -4,7 +4,7 @@ import { Providers } from "@/components/providers";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://apexpulse.app";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://formula1telemetry.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),

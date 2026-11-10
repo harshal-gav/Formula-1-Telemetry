@@ -29,7 +29,7 @@ const payloadObject = {
   data: {
     subscription_id: `sub_${Date.now()}`,
     status: eventType === "subscription.active" ? "active" : "cancelled",
-    product_id: "pdt_f1pro_monthly",
+    product_id: process.env.DODO_PRODUCT_ID || "pdt_0Nrc4RnF3tw1VPyaV9mdL",
     price_id: "prc_monthly_999",
     next_billing_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     customer: {
