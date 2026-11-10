@@ -11,7 +11,7 @@ export function Footer() {
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-racing-red to-red-800 flex items-center justify-center">
               <Activity className="w-4 h-4 text-white" />
             </div>
-            <span className="font-extrabold text-base tracking-wider text-white">APEX PULSE</span>
+            <span className="font-extrabold text-base tracking-wider text-white">FORMULA 1 TELEMETRY</span>
           </div>
           <p className="text-xs text-zinc-400 leading-relaxed max-w-md">
             Next-generation telemetry, tyre strategy simulator, and session replay analytics
@@ -138,7 +138,7 @@ export function Footer() {
           purposes under fair use.
         </p>
         <div className="pt-2 flex flex-col sm:flex-row justify-between items-center text-zinc-400">
-          <span>&copy; {new Date().getFullYear()} Apex Pulse Analytics. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} Formula 1 Telemetry. All rights reserved.</span>
           <span>Data provided via public community APIs (Jolpica-F1 & OpenF1).</span>
         </div>
       </div>

@@ -1,4 +1,4 @@
-# Apex Pulse — Formula 1 Telemetry & Analytics Platform
+# Formula 1 Telemetry — Telemetry & Analytics Platform
 
 An unofficial, high-performance Formula 1 monthly-subscription web application built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**.
 

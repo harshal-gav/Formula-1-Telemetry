@@ -44,8 +44,8 @@ export function Navbar() {
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold text-base tracking-wider text-white">APEX</span>
-              <span className="text-racing-red font-mono font-bold text-xs">PULSE</span>
+              <span className="font-extrabold text-base tracking-wider text-white">FORMULA 1</span>
+              <span className="text-racing-red font-mono font-bold text-xs">TELEMETRY</span>
             </div>
             <span className="text-[10px] text-zinc-400 -mt-1 font-mono tracking-widest uppercase">
               Grand Prix Analytics

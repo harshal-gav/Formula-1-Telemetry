@@ -22,7 +22,7 @@ export default function StrategyProPage() {
         </p>
       </div>
 
-      <StintVisualizer totalLaps={57} />
+      <StintVisualizer />
     </div>
   );
 }

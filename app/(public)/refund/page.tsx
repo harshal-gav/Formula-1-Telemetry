@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Refund & Cancellation Policy",
-  description: "Refund and subscription cancellation terms for Formula 1 Telemetry (Apex Pulse).",
+  description: "Refund and subscription cancellation terms for Formula 1 Telemetry.",
 };
 
 export default function RefundPage() {

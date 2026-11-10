@@ -5,9 +5,8 @@ import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ProBadge } from "@/components/layout/pro-badge";
-import { Zap, ShieldCheck, Lock, ArrowRight, Sparkles, CheckCircle2, RefreshCw } from "lucide-react";
+import { Zap, ShieldCheck, Lock, ArrowRight, Sparkles } from "lucide-react";
 import { dodo } from "@/lib/dodo/client";
 
 interface ProGateProps {
@@ -18,45 +17,24 @@ interface ProGateProps {
 
 export function ProGate({
   children,
-  title = "Unlock Pro Analytics",
+  title = "Unlock Pro Telemetry Suite",
   description = "Access high-frequency car telemetry overlays, tyre degradation curves, interactive session replays, and race prediction algorithms.",
 }: ProGateProps) {
   const { user, loading: authLoading } = useAuth();
-  const { isPro, isTempAccess, toggleTempProAccess, loading: subLoading } = useSubscription();
+  const { isPro, loading: subLoading } = useSubscription();
 
   if (authLoading || subLoading) {
     return (
       <div className="w-full h-96 flex flex-col items-center justify-center space-y-4">
         <div className="w-10 h-10 border-2 border-racing-red border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-mono text-zinc-500">Verifying paddock access credentials...</p>
+        <p className="text-xs font-mono text-zinc-500">Verifying paddock credentials...</p>
       </div>
     );
   }
 
-  // If user has active Pro subscription or developer temporary access, render children
+  // If user has active Pro subscription, render children
   if (isPro) {
-    return (
-      <div className="space-y-4">
-        {/* Floating / Top Temporary Access Indicator for Tester */}
-        {isTempAccess && (
-          <div className="flex flex-wrap items-center justify-between gap-2 p-2.5 px-4 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-xs font-mono">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-emerald-300 font-bold">Temporary Pro Access Active</span>
-              <span className="text-zinc-500 hidden sm:inline">• Evaluation Mode</span>
-            </div>
-            <button
-              onClick={toggleTempProAccess}
-              className="text-[11px] text-zinc-400 hover:text-white underline cursor-pointer flex items-center gap-1"
-            >
-              <RefreshCw className="w-3 h-3" />
-              Toggle Free/Locked Paywall Mode
-            </button>
-          </div>
-        )}
-        {children}
-      </div>
-    );
+    return <>{children}</>;
   }
 
   const handleUpgrade = () => {
@@ -91,27 +69,6 @@ export function ProGate({
           <p className="text-sm text-zinc-400 leading-relaxed">{description}</p>
         </div>
 
-        {/* Temporary Access One-Click Button for Evaluators */}
-        <div className="p-3.5 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-xs text-left space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="font-bold text-emerald-400 flex items-center gap-1.5 font-mono">
-              <Sparkles className="w-4 h-4 text-emerald-400" />
-              Developer & Tester Preview
-            </span>
-            <Button
-              onClick={toggleTempProAccess}
-              variant="racing"
-              size="sm"
-              className="h-7 text-xs bg-emerald-600 hover:bg-emerald-500 text-white font-mono"
-            >
-              Enable Temporary Pro Access
-            </Button>
-          </div>
-          <p className="text-[11px] text-zinc-400 leading-relaxed">
-            Click above to instantly unlock telemetry comparison, tyre degradation simulator, and session replay without payment.
-          </p>
-        </div>
-
         {/* Value Highlights */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left py-2">
           <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/60 border border-zinc-800/60 text-xs">
@@ -136,14 +93,14 @@ export function ProGate({
             onClick={handleUpgrade}
             variant="racing"
             size="lg"
-            className="w-full sm:w-auto font-bold tracking-wide shadow-lg shadow-racing-red/30 gap-2"
+            className="w-full sm:w-auto font-bold tracking-wide shadow-lg shadow-racing-red/30 gap-2 cursor-pointer"
           >
             <span>Upgrade to Pro ($9.99/mo)</span>
             <ArrowRight className="w-4 h-4" />
           </Button>
 
           {!user && (
-            <Link href="/login">
+            <Link href="/login?redirect=/pro">
               <Button variant="outline" size="lg" className="w-full sm:w-auto text-xs">
                 Existing subscriber? Sign In
               </Button>

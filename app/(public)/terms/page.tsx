@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
-  description: "Terms of Service and User Agreement for Formula 1 Telemetry (Apex Pulse).",
+  description: "Terms of Service and User Agreement for Formula 1 Telemetry.",
 };
 
 export default function TermsPage() {
@@ -24,7 +24,7 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-white">1. Unofficial Product & Intellectual Property Disclaimer</h2>
           <p>
-            Formula 1 Telemetry (operating as Apex Pulse at formula1telemetry.com) is an independent, unofficial platform developed for statistical research, motorsport telemetry visualization, and educational purposes.
+            Formula 1 Telemetry (operating at formula1telemetry.com) is an independent, unofficial platform developed for statistical research, motorsport telemetry visualization, and educational purposes.
           </p>
           <p className="text-xs bg-zinc-950 p-4 rounded-xl border border-zinc-800 font-mono text-zinc-400">
             This platform is NOT affiliated, associated, authorized, endorsed by, or in any way officially connected with Formula 1, the FIA (Fédération Internationale de l&apos;Automobile), Formula One Licensing B.V., Formula One World Championship Limited, or any of their subsidiaries or affiliates. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX and related marks are registered trademarks of Formula One Licensing B.V.

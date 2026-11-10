@@ -9,31 +9,6 @@ export function useSubscription() {
   const { user, loading: authLoading } = useAuth();
   const [subscription, setSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  
-  // Temporary developer / preview mode state (persisted in localStorage)
-  const [devProOverride, setDevProOverride] = useState<boolean>(true);
-
-  useEffect(() => {
-    // Check if user has toggled test access in localStorage
-    if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("apex_temp_pro_access");
-      // Default to true for instant evaluation unless explicitly turned off
-      if (stored !== null) {
-        setDevProOverride(stored === "true");
-      } else {
-        localStorage.setItem("apex_temp_pro_access", "true");
-        setDevProOverride(true);
-      }
-    }
-  }, []);
-
-  const toggleTempProAccess = () => {
-    const nextState = !devProOverride;
-    setDevProOverride(nextState);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("apex_temp_pro_access", String(nextState));
-    }
-  };
 
   useEffect(() => {
     if (authLoading) return;
@@ -65,7 +40,6 @@ export function useSubscription() {
         setLoading(false);
       },
       (error) => {
-        // Fallback default state
         setSubscription({
           uid: user.uid,
           email: user.email,
@@ -80,22 +54,14 @@ export function useSubscription() {
     return () => unsubscribe();
   }, [user, authLoading]);
 
-  // Real Pro check from Firestore OR Dev Pro Override
-  const isRealPro = subscription?.plan === "pro" && subscription?.status === "active";
-  const isPro = isRealPro || devProOverride;
+  // Pro status is strictly derived from verified Firestore subscription record
+  const isPro = subscription?.plan === "pro" && subscription?.status === "active";
 
   return {
-    subscription: devProOverride && !isRealPro ? {
-      uid: user?.uid || "dev_temp_user",
-      email: user?.email || "evaluator@formula-analytics.com",
-      displayName: user?.displayName || "Pro Tester",
-      plan: "pro",
-      status: "active",
-      currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-    } : subscription,
+    subscription,
     isPro,
-    isTempAccess: devProOverride && !isRealPro,
-    toggleTempProAccess,
+    isTempAccess: false,
+    toggleTempProAccess: () => {},
     loading: authLoading || loading,
   };
 }

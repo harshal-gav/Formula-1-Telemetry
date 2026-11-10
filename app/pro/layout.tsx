@@ -32,7 +32,7 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
       <div className="border-b border-zinc-800 bg-carbon-950/90 backdrop-blur-sm sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-12 overflow-x-auto">
           <div className="flex items-center gap-1.5 shrink-0 pr-4">
-            <span className="font-extrabold text-xs tracking-wider text-white">APEX</span>
+            <span className="font-extrabold text-xs tracking-wider text-white">F1 TELEMETRY</span>
             <ProBadge />
           </div>
 

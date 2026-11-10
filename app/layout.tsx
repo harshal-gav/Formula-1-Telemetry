@@ -3,18 +3,21 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { Analytics } from "@vercel/analytics/react";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://formula1telemetry.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Apex Pulse | Formula 1 Grand Prix Telemetry & Analytics",
-    template: "%s | Apex Pulse",
+    default: "Formula 1 Telemetry | Grand Prix Analytics & Telemetry Comparison",
+    template: "%s | Formula 1 Telemetry",
   },
   description:
     "Unofficial Grand Prix telemetry, tyre degradation curves, pit strategy modeling, session replays, and race predictions powered by Jolpica and OpenF1.",
   keywords: [
+    "formula 1 telemetry",
+    "f1 telemetry",
     "grand prix telemetry",
     "formula 1 telemetry comparison",
     "openf1 telemetry",
@@ -25,22 +28,31 @@ export const metadata: Metadata = {
     "f1 session replay",
     "f1 timing tower",
   ],
-  authors: [{ name: "Apex Pulse Analytics" }],
-  creator: "Apex Pulse",
+  authors: [{ name: "Formula 1 Telemetry Analytics" }],
+  creator: "Formula 1 Telemetry",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-    title: "Apex Pulse | Grand Prix Telemetry & Analytics",
+    title: "Formula 1 Telemetry | Grand Prix Analytics & Telemetry Comparison",
     description:
       "High-resolution car telemetry traces, tyre degradation modeling, session replays, and predictive race outcomes.",
-    siteName: "Apex Pulse",
+    siteName: "Formula 1 Telemetry",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Apex Pulse | Grand Prix Telemetry & Analytics",
+    title: "Formula 1 Telemetry | Grand Prix Analytics & Telemetry Comparison",
     description:
       "High-resolution car telemetry traces, tyre degradation modeling, session replays, and predictive race outcomes.",
+  },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/apple-icon.svg", type: "image/svg+xml" },
+    ],
   },
   robots: {
     index: true,
@@ -68,6 +80,7 @@ export default function RootLayout({
           <main className="flex-1 flex flex-col">{children}</main>
           <Footer />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );

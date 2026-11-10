@@ -126,61 +126,69 @@ export default function RaceRoundPage({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/60">
-                    {results.map((res) => (
-                      <tr key={res.number} className="hover:bg-zinc-800/30 transition-colors">
-                        <td className="py-3 px-4 text-center font-bold text-white">
-                          <span
-                            className={
-                              res.position === "1"
-                                ? "text-amber-400 font-extrabold"
-                                : res.position === "2"
-                                ? "text-zinc-200"
-                                : res.position === "3"
-                                ? "text-amber-700"
-                                : "text-zinc-400"
-                            }
-                          >
-                            {res.positionText || res.position}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4 font-bold text-white">
-                          <div className="flex items-center gap-2">
-                            <span
-                              className="w-1 h-3.5 rounded-full"
-                              style={{ backgroundColor: getTeamColor(res.Constructor.constructorId) }}
-                            />
-                            <span>
-                              {res.Driver.givenName} {res.Driver.familyName}
-                            </span>
-                            <span className="text-zinc-500 text-[10px]">#{res.number}</span>
-                          </div>
-                        </td>
-                        <td className="py-3 px-4 text-zinc-400">{res.Constructor.name}</td>
-                        <td className="py-3 px-4 text-center text-zinc-400">{res.grid}</td>
-                        <td className="py-3 px-4 text-center text-zinc-300">{res.laps}</td>
-                        <td className="py-3 px-4 text-right text-zinc-200 font-bold">
-                          {res.Time?.time || res.status}
-                        </td>
-                        <td className="py-3 px-4 text-right">
-                          {res.FastestLap ? (
+                    {results.length > 0 ? (
+                      results.map((res) => (
+                        <tr key={res.number} className="hover:bg-zinc-800/30 transition-colors">
+                          <td className="py-3 px-4 text-center font-bold text-white">
                             <span
                               className={
-                                res.FastestLap.rank === "1"
-                                  ? "text-purple-400 font-bold underline"
+                                res.position === "1"
+                                  ? "text-amber-400 font-extrabold"
+                                  : res.position === "2"
+                                  ? "text-zinc-200"
+                                  : res.position === "3"
+                                  ? "text-amber-700"
                                   : "text-zinc-400"
                               }
                             >
-                              {res.FastestLap.Time.time}
+                              {res.positionText || res.position}
                             </span>
-                          ) : (
-                            "-"
-                          )}
-                        </td>
-                        <td className="py-3 px-4 text-right font-bold text-amber-400">
-                          {res.points > "0" ? `+${res.points}` : "0"}
+                          </td>
+                          <td className="py-3 px-4 font-bold text-white">
+                            <div className="flex items-center gap-2">
+                              <span
+                                className="w-1 h-3.5 rounded-full"
+                                style={{ backgroundColor: getTeamColor(res.Constructor.constructorId) }}
+                              />
+                              <span>
+                                {res.Driver.givenName} {res.Driver.familyName}
+                              </span>
+                              <span className="text-zinc-500 text-[10px]">#{res.number}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-zinc-400">{res.Constructor.name}</td>
+                          <td className="py-3 px-4 text-center text-zinc-400">{res.grid}</td>
+                          <td className="py-3 px-4 text-center text-zinc-300">{res.laps}</td>
+                          <td className="py-3 px-4 text-right text-zinc-200 font-bold">
+                            {res.Time?.time || res.status}
+                          </td>
+                          <td className="py-3 px-4 text-right">
+                            {res.FastestLap ? (
+                              <span
+                                className={
+                                  res.FastestLap.rank === "1"
+                                    ? "text-purple-400 font-bold underline"
+                                    : "text-zinc-400"
+                                }
+                              >
+                                {res.FastestLap.Time.time}
+                              </span>
+                            ) : (
+                              "-"
+                            )}
+                          </td>
+                          <td className="py-3 px-4 text-right font-bold text-amber-400">
+                            {res.points > "0" ? `+${res.points}` : "0"}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={8} className="py-8 text-center text-zinc-500">
+                          Classification results not published yet for this round.
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -205,22 +213,30 @@ export default function RaceRoundPage({
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-800/60">
-                    {qualResults.map((q) => (
-                      <tr key={q.number} className="hover:bg-zinc-800/30">
-                        <td className="py-3 px-4 text-center font-bold text-white">
-                          P{q.position}
-                        </td>
-                        <td className="py-3 px-4 font-bold text-white">
-                          {q.Driver.givenName} {q.Driver.familyName}
-                        </td>
-                        <td className="py-3 px-4 text-zinc-400">{q.Constructor.name}</td>
-                        <td className="py-3 px-4 text-right text-zinc-300">{q.Q1 || "-"}</td>
-                        <td className="py-3 px-4 text-right text-zinc-300">{q.Q2 || "-"}</td>
-                        <td className="py-3 px-4 text-right text-amber-400 font-bold">
-                          {q.Q3 || "-"}
+                    {qualResults.length > 0 ? (
+                      qualResults.map((q) => (
+                        <tr key={q.number} className="hover:bg-zinc-800/30">
+                          <td className="py-3 px-4 text-center font-bold text-white">
+                            P{q.position}
+                          </td>
+                          <td className="py-3 px-4 font-bold text-white">
+                            {q.Driver.givenName} {q.Driver.familyName}
+                          </td>
+                          <td className="py-3 px-4 text-zinc-400">{q.Constructor.name}</td>
+                          <td className="py-3 px-4 text-right text-zinc-300">{q.Q1 || "-"}</td>
+                          <td className="py-3 px-4 text-right text-zinc-300">{q.Q2 || "-"}</td>
+                          <td className="py-3 px-4 text-right text-amber-400 font-bold">
+                            {q.Q3 || "-"}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6} className="py-8 text-center text-zinc-500">
+                          Qualifying results not published yet for this round.
                         </td>
                       </tr>
-                    ))}
+                    )}
                   </tbody>
                 </table>
               </div>

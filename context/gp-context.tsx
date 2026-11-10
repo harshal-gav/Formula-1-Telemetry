@@ -20,7 +20,7 @@ export function GPProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("apex_selected_gp");
+      const saved = localStorage.getItem("f1_selected_gp") || localStorage.getItem("apex_selected_gp");
       if (saved && GRAND_PRIX_LIST.some((gp) => gp.id === saved)) {
         setSelectedGPIdState(saved);
       }
@@ -30,7 +30,7 @@ export function GPProvider({ children }: { children: ReactNode }) {
   const setSelectedGPId = (id: string) => {
     setSelectedGPIdState(id);
     if (typeof window !== "undefined") {
-      localStorage.setItem("apex_selected_gp", id);
+      localStorage.setItem("f1_selected_gp", id);
     }
   };
 

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "Privacy Policy for Formula 1 Telemetry (Apex Pulse). Learn how we handle your data.",
+  description: "Privacy Policy for Formula 1 Telemetry. Learn how we handle your data.",
 };
 
 export default function PrivacyPage() {
