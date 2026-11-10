@@ -1,6 +1,6 @@
 /**
  * Tyre Strategy & Degradation Simulator
- * Derived from Fast-F1 tyre stint data and F1-StratLab pit window analytics.
+ * Derived from multi-stint telemetry data and pit window analytics.
  */
 
 export interface TyreCompoundProfile {

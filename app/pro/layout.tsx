@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ProGate } from "@/components/pro/pro-gate";
-import { ProBadge } from "@/components/layout/pro-badge";
 import { GPSelector } from "@/components/pro/gp-selector";
 import {
   Activity,
@@ -27,16 +26,11 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="w-full">
-      {/* Pro Sub-Navigation Header */}
-      <div className="border-b border-zinc-800 bg-carbon-950/90 backdrop-blur-sm sticky top-16 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-12 overflow-x-auto">
-          <div className="flex items-center gap-1.5 shrink-0 pr-4">
-            <span className="font-extrabold text-xs tracking-wider text-white">F1 TELEMETRY</span>
-            <ProBadge />
-          </div>
-
-          <div className="flex items-center gap-1">
+    <div className="w-full flex flex-col">
+      {/* Pro Sub-Navigation Header: Clean, non-overlapping horizontal tab bar */}
+      <div className="border-b border-zinc-800/80 bg-carbon-950/95 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="flex items-center gap-1.5 py-2.5 overflow-x-auto no-scrollbar">
             {proNavItems.map((item) => {
               const isActive = item.exact
                 ? pathname === item.href
@@ -47,10 +41,10 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono transition-colors shrink-0 ${
+                  className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all shrink-0 whitespace-nowrap ${
                     isActive
-                      ? "bg-zinc-800 text-white font-bold"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-850"
+                      ? "bg-zinc-800 text-white font-bold border border-zinc-700 shadow-sm"
+                      : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/80 border border-transparent"
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5 opacity-80" />
@@ -58,11 +52,12 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
                 </Link>
               );
             })}
-          </div>
+          </nav>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Main Pro Content Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <ProGate>
           <div className="space-y-6">
             <GPSelector />

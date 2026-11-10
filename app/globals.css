@@ -53,6 +53,15 @@ main {
   background: #3f3f46;
 }
 
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Racing grid backdrop pattern */
 .racing-grid-bg {
   background-size: 32px 32px;

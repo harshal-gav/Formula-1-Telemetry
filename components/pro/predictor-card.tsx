@@ -2,88 +2,61 @@
 
 import { useState, useMemo } from "react";
 import { useGP } from "@/context/gp-context";
+import { PRO_DRIVERS } from "@/lib/drivers";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   predictRaceOutcomes,
   DriverPredictionInput,
   CircuitContext,
   PredictionResult,
 } from "@/lib/prediction/model";
-import { Trophy, Sparkles, AlertCircle, ArrowUpRight, BarChart2 } from "lucide-react";
+import { GrandPrixCircuit } from "@/lib/grand-prix";
+import { Sparkles, AlertCircle, Search } from "lucide-react";
 
-const SAMPLE_GRID_INPUT: DriverPredictionInput[] = [
-  {
-    driverId: "norris",
-    driverName: "Lando Norris",
-    driverNumber: "4",
-    constructorId: "mclaren",
-    constructorName: "McLaren",
-    gridPosition: 1,
-    qualifyingGapToPoleSeconds: 0.0,
-    seasonPoints: 345,
-    driverChampionshipRank: 1,
-  },
-  {
-    driverId: "max_verstappen",
-    driverName: "Max Verstappen",
-    driverNumber: "1",
-    constructorId: "red_bull",
-    constructorName: "Red Bull",
-    gridPosition: 2,
-    qualifyingGapToPoleSeconds: 0.085,
-    seasonPoints: 338,
-    driverChampionshipRank: 2,
-  },
-  {
-    driverId: "leclerc",
-    driverName: "Charles Leclerc",
-    driverNumber: "16",
-    constructorId: "ferrari",
-    constructorName: "Ferrari",
-    gridPosition: 3,
-    qualifyingGapToPoleSeconds: 0.142,
-    seasonPoints: 302,
-    driverChampionshipRank: 3,
-  },
-  {
-    driverId: "russell",
-    driverName: "George Russell",
-    driverNumber: "63",
-    constructorId: "mercedes",
-    constructorName: "Mercedes",
-    gridPosition: 4,
-    qualifyingGapToPoleSeconds: 0.210,
-    seasonPoints: 215,
-    driverChampionshipRank: 4,
-  },
-  {
-    driverId: "piastri",
-    driverName: "Oscar Piastri",
-    driverNumber: "81",
-    constructorId: "mclaren",
-    constructorName: "McLaren",
-    gridPosition: 5,
-    qualifyingGapToPoleSeconds: 0.260,
-    seasonPoints: 235,
-    driverChampionshipRank: 5,
-  },
-  {
-    driverId: "hamilton",
-    driverName: "Lewis Hamilton",
-    driverNumber: "44",
-    constructorId: "ferrari",
-    constructorName: "Ferrari",
-    gridPosition: 6,
-    qualifyingGapToPoleSeconds: 0.320,
-    seasonPoints: 195,
-    driverChampionshipRank: 6,
-  },
-];
+function buildGridInputForCircuit(circuit: GrandPrixCircuit): DriverPredictionInput[] {
+  const isPower = circuit.fullThrottlePercent > 70;
+  const isStreetOrTight = circuit.overtakingDifficulty === "High";
+
+  const driversWithQuali = PRO_DRIVERS.map((driver) => {
+    let delta = (driver.championshipRank - 1) * 0.042 + (driver.speedOffset * -0.06);
+
+    // Track suitability bias
+    if (isPower && (driver.constructorId === "red_bull" || driver.constructorId === "ferrari")) {
+      delta -= 0.06;
+    } else if (isStreetOrTight && driver.constructorId === "mclaren") {
+      delta -= 0.07;
+    }
+
+    // Circuit round variance
+    const roundVariance = ((driver.number * 3 + circuit.round * 7) % 11 - 5) * 0.015;
+    delta += roundVariance;
+
+    return {
+      driver,
+      delta: Math.max(0, delta),
+    };
+  });
+
+  driversWithQuali.sort((a, b) => a.delta - b.delta);
+  const poleDelta = driversWithQuali[0].delta;
+
+  return driversWithQuali.map((item, idx) => ({
+    driverId: item.driver.id,
+    driverName: item.driver.name,
+    driverNumber: String(item.driver.number),
+    constructorId: item.driver.constructorId,
+    constructorName: item.driver.constructorName,
+    gridPosition: idx + 1,
+    qualifyingGapToPoleSeconds: Number((item.delta - poleDelta).toFixed(3)),
+    seasonPoints: item.driver.seasonPoints,
+    driverChampionshipRank: item.driver.championshipRank,
+  }));
+}
 
 export function PredictorCard() {
   const { selectedGP } = useGP();
+  const [driverSearch, setDriverSearch] = useState<string>("");
 
   const circuit: CircuitContext = useMemo(
     () => ({
@@ -92,33 +65,61 @@ export function PredictorCard() {
       overtakingDifficulty: selectedGP.overtakingDifficulty,
       safetyCarProbability: selectedGP.safetyCarProbability,
       totalLaps: selectedGP.totalLaps,
+      fullThrottlePercent: selectedGP.fullThrottlePercent,
+      topSpeedTrapKmH: selectedGP.topSpeedTrapKmH,
+      turns: selectedGP.turns,
     }),
     [selectedGP]
   );
 
-  const predictions: PredictionResult[] = useMemo(
-    () => predictRaceOutcomes(SAMPLE_GRID_INPUT, circuit),
-    [circuit]
+  const gridInput = useMemo(
+    () => buildGridInputForCircuit(selectedGP),
+    [selectedGP]
   );
+
+  const predictions: PredictionResult[] = useMemo(
+    () => predictRaceOutcomes(gridInput, circuit),
+    [gridInput, circuit]
+  );
+
+  const isUpcoming = selectedGP.status === "upcoming";
+
+  const filteredPredictions = useMemo(() => {
+    if (!driverSearch) return predictions;
+    const term = driverSearch.toLowerCase();
+    return predictions.filter(
+      (p) =>
+        p.driverName.toLowerCase().includes(term) ||
+        p.constructorName.toLowerCase().includes(term)
+    );
+  }, [predictions, driverSearch]);
 
   return (
     <Card className="border-zinc-800 bg-carbon-900/95 shadow-2xl">
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <CardTitle className="text-xl font-bold flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-amber-400" />
-                Grand Prix Outcome Predictor (AI Heuristics)
+                {isUpcoming ? "Pre-Race Outcome Predictor (AI Heuristics)" : "Grand Prix Outcome Predictor (AI Heuristics)"}
               </CardTitle>
-              <Badge variant="pro">CLIENT HEURISTICS</Badge>
+              <Badge
+                variant={isUpcoming ? "racing" : "pro"}
+                className="text-[10px] font-mono uppercase"
+              >
+                {isUpcoming ? `PRE-RACE FORECAST • R${selectedGP.round}` : "CLIENT HEURISTICS"}
+              </Badge>
+              <Badge variant="outline" className="text-[10px] font-mono text-zinc-400">
+                ALL 20 DRIVERS
+              </Badge>
             </div>
             <CardDescription className="text-xs text-zinc-400 mt-1">
-              Statistical probability model weighing grid slot, telemetry pace, and circuit overtaking index.
+              Statistical probability model weighing championship form, qualifying pace deltas, and {selectedGP.circuitName}&apos;s overtaking index.
             </CardDescription>
           </div>
 
-          <div className="flex items-center gap-2 bg-zinc-950 p-1.5 rounded-lg border border-zinc-800 text-xs font-mono">
+          <div className="flex flex-wrap items-center gap-2 bg-zinc-950 p-1.5 px-3 rounded-lg border border-zinc-800 text-xs font-mono shrink-0">
             <span className="text-zinc-500">Track:</span>
             <span className="text-white font-bold">{circuit.circuitName}</span>
             <Badge variant="outline" className="text-[10px]">
@@ -126,6 +127,15 @@ export function PredictorCard() {
             </Badge>
           </div>
         </div>
+
+        {isUpcoming && (
+          <div className="mt-3 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono flex items-start gap-2.5">
+            <span className="font-bold text-amber-400 shrink-0">UPCOMING ROUND {selectedGP.round}:</span>
+            <p className="leading-relaxed">
+              The {selectedGP.name} has not started yet. Below is the pre-event statistical simulation modeling projected win percentages and Top-3 podium probabilities based on championship momentum and track overtaking characteristics.
+            </p>
+          </div>
+        )}
       </CardHeader>
 
       <CardContent className="space-y-6">
@@ -173,7 +183,7 @@ export function PredictorCard() {
                   </div>
                   <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-amber-400 to-racing-red rounded-full"
+                      className="h-full bg-gradient-to-r from-amber-400 to-racing-red rounded-full transition-all duration-500"
                       style={{ width: `${pred.winProbability}%` }}
                     />
                   </div>
@@ -186,7 +196,7 @@ export function PredictorCard() {
                   </div>
                   <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-emerald-500 rounded-full"
+                      className="h-full bg-emerald-500 rounded-full transition-all duration-500"
                       style={{ width: `${pred.podiumProbability}%` }}
                     />
                   </div>
@@ -206,38 +216,59 @@ export function PredictorCard() {
           ))}
         </div>
 
-        {/* Detailed Prediction Table for remaining drivers */}
-        <div className="overflow-x-auto rounded-lg border border-zinc-800">
-          <table className="w-full text-left font-mono text-xs">
-            <thead className="bg-zinc-950 text-zinc-400 text-[11px] uppercase tracking-wider border-b border-zinc-800">
-              <tr>
-                <th className="py-2.5 px-3">Predicted</th>
-                <th className="py-2.5 px-3">Driver</th>
-                <th className="py-2.5 px-3">Team</th>
-                <th className="py-2.5 px-3 text-center">Grid Slot</th>
-                <th className="py-2.5 px-3 text-right">Win %</th>
-                <th className="py-2.5 px-3 text-right">Podium %</th>
-                <th className="py-2.5 px-3 text-right">Top 10 %</th>
-                <th className="py-2.5 px-3">Primary Factor</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800/50">
-              {predictions.map((p) => (
-                <tr key={p.driverId} className="hover:bg-zinc-800/30">
-                  <td className="py-2.5 px-3 font-bold text-white">P{p.predictedPosition}</td>
-                  <td className="py-2.5 px-3 text-white font-medium">{p.driverName}</td>
-                  <td className="py-2.5 px-3 text-zinc-400">{p.constructorName}</td>
-                  <td className="py-2.5 px-3 text-center text-zinc-300">P{p.gridPosition}</td>
-                  <td className="py-2.5 px-3 text-right text-amber-400 font-bold">{p.winProbability}%</td>
-                  <td className="py-2.5 px-3 text-right text-emerald-400">{p.podiumProbability}%</td>
-                  <td className="py-2.5 px-3 text-right text-zinc-300">{p.top10Probability}%</td>
-                  <td className="py-2.5 px-3 text-zinc-400 text-[11px] truncate max-w-xs">
-                    {p.keyFactors[0] || "Baseline qualification pace"}
-                  </td>
+        {/* Detailed Prediction Table for ALL 20 drivers with driver search */}
+        <div className="space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span className="text-xs font-mono font-bold text-white">
+              Full Predicted Classification ({filteredPredictions.length} Drivers)
+            </span>
+
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Find driver / team..."
+                value={driverSearch}
+                onChange={(e) => setDriverSearch(e.target.value)}
+                className="pl-8 pr-3 py-1 bg-zinc-950 border border-zinc-800 rounded text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-racing-red w-48"
+              />
+            </div>
+          </div>
+
+          <div className="overflow-x-auto rounded-lg border border-zinc-800">
+            <table className="w-full text-left font-mono text-xs">
+              <thead className="bg-zinc-950 text-zinc-400 text-[11px] uppercase tracking-wider border-b border-zinc-800">
+                <tr>
+                  <th className="py-2.5 px-3">Predicted</th>
+                  <th className="py-2.5 px-3">Driver</th>
+                  <th className="py-2.5 px-3">Team</th>
+                  <th className="py-2.5 px-3 text-center">Grid Slot</th>
+                  <th className="py-2.5 px-3 text-right">Win %</th>
+                  <th className="py-2.5 px-3 text-right">Podium %</th>
+                  <th className="py-2.5 px-3 text-right">Top 10 %</th>
+                  <th className="py-2.5 px-3 text-right">Est. Gap</th>
+                  <th className="py-2.5 px-3">Primary Factor</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-zinc-800/50">
+                {filteredPredictions.map((p) => (
+                  <tr key={p.driverId} className="hover:bg-zinc-800/30 transition-colors">
+                    <td className="py-2.5 px-3 font-bold text-white">P{p.predictedPosition}</td>
+                    <td className="py-2.5 px-3 text-white font-medium">{p.driverName}</td>
+                    <td className="py-2.5 px-3 text-zinc-400">{p.constructorName}</td>
+                    <td className="py-2.5 px-3 text-center text-zinc-300">P{p.gridPosition}</td>
+                    <td className="py-2.5 px-3 text-right text-amber-400 font-bold">{p.winProbability}%</td>
+                    <td className="py-2.5 px-3 text-right text-emerald-400">{p.podiumProbability}%</td>
+                    <td className="py-2.5 px-3 text-right text-zinc-300">{p.top10Probability}%</td>
+                    <td className="py-2.5 px-3 text-right text-zinc-400">{p.predictedGapToWinner}</td>
+                    <td className="py-2.5 px-3 text-zinc-400 text-[11px] truncate max-w-xs">
+                      {p.keyFactors[0] || "Baseline qualification pace"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Model Transparency & Disclaimer Notice */}
@@ -259,4 +290,3 @@ export function PredictorCard() {
     </Card>
   );
 }
-

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useGP } from "@/context/gp-context";
+import { PRO_DRIVERS, ProDriver } from "@/lib/drivers";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -19,9 +20,10 @@ import {
   simulateLapDegradation,
   COMPOUND_PROFILES,
 } from "@/lib/strategy/calculator";
-import { ShieldAlert, Zap, Timer, Disc3 } from "lucide-react";
+import { Disc3, Timer, Filter } from "lucide-react";
 
 interface DriverStintDisplay {
+  driverId: string;
   driverName: string;
   driverNumber: string;
   constructorName: string;
@@ -34,56 +36,93 @@ interface DriverStintDisplay {
   }>;
 }
 
+function generateStintsForGrid(totalLaps: number, overtakingDifficulty: string): DriverStintDisplay[] {
+  const isHighDeg = totalLaps > 60 || overtakingDifficulty === "Low";
+
+  return PRO_DRIVERS.map((driver, idx) => {
+    const pos = idx + 1;
+    // Vary strategies realistically across the grid
+    let stints: DriverStintDisplay["stints"] = [];
+
+    if (pos === 2 || pos === 7 || pos === 12) {
+      // Soft start aggressive 1-stop or 2-stop
+      const s1End = Math.max(12, Math.round(totalLaps * 0.28));
+      stints = [
+        { compound: "SOFT", startLap: 1, endLap: s1End, pitStopDuration: "2.2s" },
+        { compound: "HARD", startLap: s1End + 1, endLap: totalLaps },
+      ];
+    } else if (pos === 3 || (isHighDeg && (pos === 4 || pos === 8 || pos === 14))) {
+      // 2-Stop (Medium -> Hard -> Soft/Medium)
+      const s1End = Math.round(totalLaps * 0.35);
+      const s2End = Math.round(totalLaps * 0.72);
+      stints = [
+        { compound: "MEDIUM", startLap: 1, endLap: s1End, pitStopDuration: "2.4s" },
+        { compound: "HARD", startLap: s1End + 1, endLap: s2End, pitStopDuration: "2.3s" },
+        { compound: pos % 2 === 0 ? "SOFT" : "MEDIUM", startLap: s2End + 1, endLap: totalLaps },
+      ];
+    } else if (pos === 9 || pos === 15 || pos === 18) {
+      // Reverse strategy (Hard -> Medium)
+      const s1End = Math.round(totalLaps * 0.58);
+      stints = [
+        { compound: "HARD", startLap: 1, endLap: s1End, pitStopDuration: "2.5s" },
+        { compound: "MEDIUM", startLap: s1End + 1, endLap: totalLaps },
+      ];
+    } else {
+      // Standard 1-stop (Medium -> Hard)
+      const s1End = Math.round(totalLaps * 0.42);
+      stints = [
+        { compound: "MEDIUM", startLap: 1, endLap: s1End, pitStopDuration: "2.3s" },
+        { compound: "HARD", startLap: s1End + 1, endLap: totalLaps },
+      ];
+    }
+
+    return {
+      driverId: driver.id,
+      driverName: driver.name,
+      driverNumber: String(driver.number),
+      constructorName: driver.constructorName,
+      teamColor: driver.teamColor,
+      stints,
+    };
+  });
+}
+
 export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: number }) {
   const { selectedGP } = useGP();
   const totalLaps = propTotalLaps || selectedGP.totalLaps;
   const [selectedCompound, setSelectedCompound] = useState<"SOFT" | "MEDIUM" | "HARD">("MEDIUM");
-  const strategies = calculateRaceStrategies(totalLaps, selectedGP.baseLapTimeSeconds);
-  const degradationData = simulateLapDegradation(selectedCompound, 35, selectedGP.baseLapTimeSeconds);
+  const [selectedTeamFilter, setSelectedTeamFilter] = useState<string>("ALL");
+  const [showAllDrivers, setShowAllDrivers] = useState<boolean>(false);
 
-  const sampleDriversStints: DriverStintDisplay[] = [
-    {
-      driverName: "Lando Norris",
-      driverNumber: "4",
-      constructorName: "McLaren",
-      teamColor: "#FF8000",
-      stints: [
-        { compound: "MEDIUM", startLap: 1, endLap: Math.round(totalLaps * 0.42), pitStopDuration: "2.3s" },
-        { compound: "HARD", startLap: Math.round(totalLaps * 0.42) + 1, endLap: totalLaps },
-      ],
-    },
-    {
-      driverName: "Max Verstappen",
-      driverNumber: "1",
-      constructorName: "Red Bull",
-      teamColor: "#3671C6",
-      stints: [
-        { compound: "SOFT", startLap: 1, endLap: Math.round(totalLaps * 0.32), pitStopDuration: "2.1s" },
-        { compound: "HARD", startLap: Math.round(totalLaps * 0.32) + 1, endLap: totalLaps },
-      ],
-    },
-    {
-      driverName: "Charles Leclerc",
-      driverNumber: "16",
-      constructorName: "Ferrari",
-      teamColor: "#E80020",
-      stints: [
-        { compound: "MEDIUM", startLap: 1, endLap: Math.round(totalLaps * 0.38), pitStopDuration: "2.5s" },
-        { compound: "HARD", startLap: Math.round(totalLaps * 0.38) + 1, endLap: Math.round(totalLaps * 0.75), pitStopDuration: "2.4s" },
-        { compound: "SOFT", startLap: Math.round(totalLaps * 0.75) + 1, endLap: totalLaps },
-      ],
-    },
-    {
-      driverName: "George Russell",
-      driverNumber: "63",
-      constructorName: "Mercedes",
-      teamColor: "#27F4D2",
-      stints: [
-        { compound: "MEDIUM", startLap: 1, endLap: Math.round(totalLaps * 0.44), pitStopDuration: "2.6s" },
-        { compound: "HARD", startLap: Math.round(totalLaps * 0.44) + 1, endLap: totalLaps },
-      ],
-    },
-  ];
+  const strategies = useMemo(
+    () => calculateRaceStrategies(totalLaps, selectedGP.baseLapTimeSeconds, selectedGP.pitLaneDeltaSeconds),
+    [totalLaps, selectedGP.baseLapTimeSeconds, selectedGP.pitLaneDeltaSeconds]
+  );
+
+  const degradationData = useMemo(
+    () => simulateLapDegradation(selectedCompound, Math.min(45, Math.round(totalLaps * 0.7)), selectedGP.baseLapTimeSeconds),
+    [selectedCompound, totalLaps, selectedGP.baseLapTimeSeconds]
+  );
+
+  const isUpcoming = selectedGP.status === "upcoming";
+
+  const allDriverStints = useMemo(
+    () => generateStintsForGrid(totalLaps, selectedGP.overtakingDifficulty),
+    [totalLaps, selectedGP.overtakingDifficulty]
+  );
+
+  const teams = useMemo(() => {
+    const list = Array.from(new Set(PRO_DRIVERS.map((d) => d.constructorName)));
+    return ["ALL", ...list];
+  }, []);
+
+  const filteredDriverStints = useMemo(() => {
+    let list = allDriverStints;
+    if (selectedTeamFilter !== "ALL") {
+      list = list.filter((d) => d.constructorName === selectedTeamFilter);
+    }
+    return showAllDrivers || selectedTeamFilter !== "ALL" ? list : list.slice(0, 8);
+  }, [allDriverStints, selectedTeamFilter, showAllDrivers]);
 
   const getCompoundBg = (compound: string) => {
     switch (compound) {
@@ -100,20 +139,33 @@ export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: numb
 
   return (
     <div className="space-y-6">
+      {isUpcoming && (
+        <div className="p-3.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono flex items-start gap-2.5">
+          <span className="font-bold text-amber-400 shrink-0">UPCOMING ROUND {selectedGP.round}:</span>
+          <p className="leading-relaxed">
+            The {selectedGP.name} has not started yet. Showing pre-race projected tyre compound allocations, degradation thresholds, and optimal pit windows calculated for {selectedGP.circuitName}.
+          </p>
+        </div>
+      )}
+
       {/* 1. Stint Strategy Timeline */}
       <Card className="border-zinc-800 bg-carbon-900/90 shadow-xl">
         <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <CardTitle className="text-xl font-bold flex items-center gap-2">
                 <Disc3 className="w-5 h-5 text-amber-400" />
-                Race Tyre Stints & Pit Stop Breakdown
+                {isUpcoming ? "Projected Tyre Stints & Pit Stop Breakdown" : "Race Tyre Stints & Pit Stop Breakdown"}
               </CardTitle>
               <CardDescription className="text-xs text-zinc-400">
-                Visual stint distribution and compound allocation over {totalLaps} laps.
+                {isUpcoming
+                  ? `Simulated stint distribution and compound allocation over ${totalLaps} laps for ${selectedGP.circuitName}.`
+                  : `Visual stint distribution and compound allocation over ${totalLaps} laps.`}
               </CardDescription>
             </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+
+            {/* Compound Legend */}
+            <div className="flex items-center gap-3 text-xs font-mono text-zinc-400 shrink-0">
               <span className="flex items-center gap-1">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-600 inline-block" /> Soft
               </span>
@@ -125,10 +177,39 @@ export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: numb
               </span>
             </div>
           </div>
+
+          {/* Team Filter selector */}
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-3 mt-2 border-t border-zinc-800/60">
+            <div className="flex items-center gap-1.5 overflow-x-auto max-w-full pb-1">
+              <Filter className="w-3.5 h-3.5 text-zinc-500 shrink-0 mr-1" />
+              {teams.map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setSelectedTeamFilter(t)}
+                  className={`px-2.5 py-0.5 rounded text-[11px] font-mono shrink-0 cursor-pointer transition-colors ${
+                    selectedTeamFilter === t
+                      ? "bg-zinc-700 text-white font-bold"
+                      : "bg-zinc-950 text-zinc-400 hover:text-white border border-zinc-800"
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+
+            {selectedTeamFilter === "ALL" && (
+              <button
+                onClick={() => setShowAllDrivers(!showAllDrivers)}
+                className="text-[11px] font-mono text-racing-cyan hover:underline shrink-0 cursor-pointer"
+              >
+                {showAllDrivers ? "Show Top 8" : `Show All 20 Drivers (${allDriverStints.length})`}
+              </button>
+            )}
+          </div>
         </CardHeader>
 
-        <CardContent className="space-y-5">
-          {sampleDriversStints.map((driver) => (
+        <CardContent className="space-y-4">
+          {filteredDriverStints.map((driver) => (
             <div key={driver.driverNumber} className="space-y-1.5">
               <div className="flex justify-between items-center text-xs font-mono">
                 <div className="flex items-center gap-2">
@@ -143,7 +224,7 @@ export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: numb
               </div>
 
               {/* Stint Bars */}
-              <div className="w-full h-8 bg-zinc-950 rounded-lg p-1 flex gap-1 relative overflow-hidden border border-zinc-800/80">
+              <div className="w-full h-7 bg-zinc-950 rounded-lg p-0.5 flex gap-1 relative overflow-hidden border border-zinc-800/80">
                 {driver.stints.map((stint, idx) => {
                   const stintLaps = stint.endLap - stint.startLap + 1;
                   const percentage = (stintLaps / totalLaps) * 100;
@@ -173,7 +254,7 @@ export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: numb
           ))}
 
           {/* Lap Scale Axis */}
-          <div className="flex justify-between text-[10px] font-mono text-zinc-500 pt-1 px-1">
+          <div className="flex justify-between text-[10px] font-mono text-zinc-500 pt-2 px-1 border-t border-zinc-800/60">
             <span>Lap 1</span>
             <span>Lap {Math.round(totalLaps * 0.25)}</span>
             <span>Lap {Math.round(totalLaps * 0.5)}</span>
@@ -193,7 +274,7 @@ export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: numb
                 Tyre Degradation & Performance Cliff Model
               </CardTitle>
               <CardDescription className="text-xs text-zinc-400">
-                Pace degradation projection in seconds per lap driven (derived from Fast-F1 telemetry coefficients).
+                Pace degradation projection in seconds per lap driven (derived from multi-stint telemetry regression models).
               </CardDescription>
             </div>
 
@@ -313,6 +394,10 @@ export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: numb
                   <span className="text-amber-400">Laps {strat.pitWindowLaps.join(" - ")}</span>
                 </div>
                 <div className="flex justify-between">
+                  <span className="text-zinc-500">Pit Lane Loss:</span>
+                  <span className="text-zinc-200">+{selectedGP.pitLaneDeltaSeconds}s</span>
+                </div>
+                <div className="flex justify-between">
                   <span className="text-zinc-500">Undercut Potential:</span>
                   <span className="text-zinc-200">{strat.undercutPotential}</span>
                 </div>
@@ -324,4 +409,3 @@ export function StintVisualizer({ totalLaps: propTotalLaps }: { totalLaps?: numb
     </div>
   );
 }
-

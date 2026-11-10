@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useGP } from "@/context/gp-context";
+import { PRO_DRIVERS } from "@/lib/drivers";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -9,14 +10,13 @@ import {
   Play,
   Pause,
   RotateCcw,
-  FastForward,
   CloudRain,
   Thermometer,
   Wind,
   Flag,
   Radio,
+  Search,
 } from "lucide-react";
-import { formatLapTime, formatGap } from "@/lib/utils";
 
 interface ReplayDriverRow {
   position: number;
@@ -33,132 +33,47 @@ interface ReplayDriverRow {
   tyreCompound: "SOFT" | "MEDIUM" | "HARD";
   tyreAge: number;
   pitStops: number;
-  inPit?: boolean;
 }
 
-const INITIAL_GRID: ReplayDriverRow[] = [
-  {
-    position: 1,
-    driverNumber: "4",
-    driverCode: "NOR",
-    driverName: "Lando Norris",
-    constructorName: "McLaren",
-    teamColor: "#FF8000",
-    gapToLeader: "LEADER",
-    interval: "-",
-    lastLapTime: "1:14.210",
-    bestLapTime: "1:13.882",
-    isFastestLap: true,
-    tyreCompound: "MEDIUM",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-  {
-    position: 2,
-    driverNumber: "1",
-    driverCode: "VER",
-    driverName: "Max Verstappen",
-    constructorName: "Red Bull",
-    teamColor: "#3671C6",
-    gapToLeader: "+1.428",
-    interval: "+1.428",
-    lastLapTime: "1:14.390",
-    bestLapTime: "1:14.012",
-    tyreCompound: "MEDIUM",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-  {
-    position: 3,
-    driverNumber: "16",
-    driverCode: "LEC",
-    driverName: "Charles Leclerc",
-    constructorName: "Ferrari",
-    teamColor: "#E80020",
-    gapToLeader: "+4.180",
-    interval: "+2.752",
-    lastLapTime: "1:14.650",
-    bestLapTime: "1:14.150",
-    tyreCompound: "HARD",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-  {
-    position: 4,
-    driverNumber: "63",
-    driverCode: "RUS",
-    driverName: "George Russell",
-    constructorName: "Mercedes",
-    teamColor: "#27F4D2",
-    gapToLeader: "+6.820",
-    interval: "+2.640",
-    lastLapTime: "1:14.712",
-    bestLapTime: "1:14.280",
-    tyreCompound: "MEDIUM",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-  {
-    position: 5,
-    driverNumber: "81",
-    driverCode: "PIA",
-    driverName: "Oscar Piastri",
-    constructorName: "McLaren",
-    teamColor: "#FF8000",
-    gapToLeader: "+8.950",
-    interval: "+2.130",
-    lastLapTime: "1:14.580",
-    bestLapTime: "1:14.120",
-    tyreCompound: "HARD",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-  {
-    position: 6,
-    driverNumber: "55",
-    driverCode: "SAI",
-    driverName: "Carlos Sainz",
-    constructorName: "Williams",
-    teamColor: "#64C4FF",
-    gapToLeader: "+14.220",
-    interval: "+5.270",
-    lastLapTime: "1:15.110",
-    bestLapTime: "1:14.890",
-    tyreCompound: "MEDIUM",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-  {
-    position: 7,
-    driverNumber: "44",
-    driverCode: "HAM",
-    driverName: "Lewis Hamilton",
-    constructorName: "Ferrari",
-    teamColor: "#E80020",
-    gapToLeader: "+16.800",
-    interval: "+2.580",
-    lastLapTime: "1:14.920",
-    bestLapTime: "1:14.610",
-    tyreCompound: "HARD",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-  {
-    position: 8,
-    driverNumber: "14",
-    driverCode: "ALO",
-    driverName: "Fernando Alonso",
-    constructorName: "Aston Martin",
-    teamColor: "#229971",
-    gapToLeader: "+24.500",
-    interval: "+7.700",
-    lastLapTime: "1:15.820",
-    bestLapTime: "1:15.340",
-    tyreCompound: "MEDIUM",
-    tyreAge: 14,
-    pitStops: 0,
-  },
-];
+function formatLapTimeSec(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const remSec = (seconds % 60).toFixed(3);
+  return `${mins}:${remSec.padStart(6, "0")}`;
+}
+
+function buildGridForCircuit(baseLapTime: number): ReplayDriverRow[] {
+  let cumulativeGap = 0;
+
+  return PRO_DRIVERS.map((driver, index) => {
+    const pos = index + 1;
+    const intervalNum = pos === 1 ? 0 : Number((0.8 + Math.random() * 1.6 + (pos > 8 ? 0.7 : 0)).toFixed(3));
+    cumulativeGap += intervalNum;
+
+    const driverPaceOffset = (driver.speedOffset * -0.15);
+    const lastLapSec = baseLapTime + driverPaceOffset + 0.3 + Math.random() * 0.4;
+    const bestLapSec = baseLapTime + driverPaceOffset - 0.2 - Math.random() * 0.2;
+
+    const compound: "SOFT" | "MEDIUM" | "HARD" =
+      pos % 3 === 0 ? "SOFT" : pos % 2 === 0 ? "HARD" : "MEDIUM";
+
+    return {
+      position: pos,
+      driverNumber: String(driver.number),
+      driverCode: driver.code,
+      driverName: driver.name,
+      constructorName: driver.constructorName,
+      teamColor: driver.teamColor,
+      gapToLeader: pos === 1 ? "LEADER" : `+${cumulativeGap.toFixed(3)}`,
+      interval: pos === 1 ? "-" : `+${intervalNum.toFixed(3)}`,
+      lastLapTime: formatLapTimeSec(lastLapSec),
+      bestLapTime: formatLapTimeSec(bestLapSec),
+      isFastestLap: pos === 1,
+      tyreCompound: compound,
+      tyreAge: Math.max(3, 16 - Math.round(pos * 0.5)),
+      pitStops: pos > 14 ? 1 : 0,
+    };
+  });
+}
 
 export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }) {
   const { selectedGP } = useGP();
@@ -166,9 +81,20 @@ export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }
   const [currentLap, setCurrentLap] = useState(14);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState<1 | 2 | 4>(1);
-  const [grid, setGrid] = useState<ReplayDriverRow[]>(INITIAL_GRID);
+  const [driverFilter, setDriverFilter] = useState<string>("");
 
-  // Clamp current lap if user switches to a circuit with fewer laps
+  // Re-generate grid whenever active Grand Prix changes
+  const [grid, setGrid] = useState<ReplayDriverRow[]>(() =>
+    buildGridForCircuit(selectedGP.baseLapTimeSeconds)
+  );
+
+  useEffect(() => {
+    setGrid(buildGridForCircuit(selectedGP.baseLapTimeSeconds));
+    setCurrentLap(Math.min(14, Math.round(selectedGP.totalLaps * 0.25)));
+    setIsPlaying(false);
+  }, [selectedGP.id, selectedGP.baseLapTimeSeconds, selectedGP.totalLaps]);
+
+  // Clamp current lap if user switches circuit
   useEffect(() => {
     if (currentLap > totalLaps) {
       setCurrentLap(totalLaps);
@@ -188,19 +114,20 @@ export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }
 
         const nextLap = prevLap + 1;
 
-        // Simulate subtle gap fluctuations and tyre degradation as laps progress
         setGrid((prevGrid) =>
           prevGrid.map((driver, index) => {
             const age = driver.tyreAge + 1;
-            const variance = (Math.random() - 0.48) * 0.3;
+            const variance = (Math.random() - 0.48) * 0.25;
             let gapSec = index === 0 ? 0 : parseFloat(driver.gapToLeader.replace("+", "")) + variance;
             gapSec = Math.max(0, gapSec);
+
+            const lapSec = selectedGP.baseLapTimeSeconds + (age * 0.05) + (Math.random() * 0.3);
 
             return {
               ...driver,
               tyreAge: age,
               gapToLeader: index === 0 ? "LEADER" : `+${gapSec.toFixed(3)}`,
-              lastLapTime: `1:${(14 + age * 0.04 + Math.random() * 0.2).toFixed(3)}`,
+              lastLapTime: formatLapTimeSec(lapSec),
             };
           })
         );
@@ -210,61 +137,93 @@ export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }
     }, 2000 / playbackSpeed);
 
     return () => clearInterval(interval);
-  }, [isPlaying, playbackSpeed, totalLaps]);
+  }, [isPlaying, playbackSpeed, totalLaps, selectedGP.baseLapTimeSeconds]);
 
   const togglePlay = () => setIsPlaying(!isPlaying);
   const resetReplay = () => {
     setIsPlaying(false);
     setCurrentLap(1);
-    setGrid(INITIAL_GRID);
+    setGrid(buildGridForCircuit(selectedGP.baseLapTimeSeconds));
   };
+
+  const isUpcoming = selectedGP.status === "upcoming";
+
+  const displayedGrid = useMemo(() => {
+    if (!driverFilter) return grid;
+    const term = driverFilter.toLowerCase();
+    return grid.filter(
+      (r) =>
+        r.driverName.toLowerCase().includes(term) ||
+        r.driverCode.toLowerCase().includes(term) ||
+        r.constructorName.toLowerCase().includes(term) ||
+        r.driverNumber === term
+    );
+  }, [grid, driverFilter]);
 
   return (
     <Card className="border-zinc-800 bg-carbon-900/95 shadow-2xl">
       <CardHeader className="border-b border-zinc-800/80 pb-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <div className="flex items-center gap-1 text-red-500 font-mono text-xs font-bold animate-pulse">
                 <Radio className="w-4 h-4" />
-                <span>SESSION REPLAY</span>
+                <span>{isUpcoming ? "PRE-RACE SIMULATION" : "SESSION REPLAY"}</span>
               </div>
-              <Badge variant="outline" className="text-[10px] text-zinc-400">
-                NEAR-LIVE SYNC
+              <Badge
+                variant={isUpcoming ? "racing" : "secondary"}
+                className="text-[10px] font-mono uppercase"
+              >
+                {isUpcoming ? "UPCOMING ROUND MODEL" : "SESSION ARCHIVE"}
+              </Badge>
+              <Badge variant="outline" className="text-[10px] font-mono text-zinc-400">
+                20 CARS ACTIVE
               </Badge>
             </div>
             <CardTitle className="text-xl font-black tracking-tight text-white mt-1">
-              Live Timing & Replay Tower — {selectedGP.name}
+              {isUpcoming ? "Pre-Race Simulation Tower" : "Live Timing & Replay Tower"} — {selectedGP.name}
             </CardTitle>
             <CardDescription className="text-xs text-zinc-400">
-              Interactive session telemetry tower for {selectedGP.circuitName} ({selectedGP.country}). Buffered client-side to respect rate limits.
+              {isUpcoming
+                ? `Projected race pacing simulation for ${selectedGP.circuitName} (${selectedGP.country}). Base pace: ${formatLapTimeSec(selectedGP.baseLapTimeSeconds)}.`
+                : `Interactive session telemetry tower for ${selectedGP.circuitName} (${selectedGP.country}).`}
             </CardDescription>
           </div>
 
-          {/* Session Conditions Header */}
-          <div className="flex items-center gap-4 text-xs font-mono bg-zinc-950/80 px-3 py-2 rounded-lg border border-zinc-800">
-            <span className="flex items-center gap-1 text-zinc-300">
+          {/* Dynamic Circuit-Specific Weather Conditions Header */}
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs font-mono bg-zinc-950/80 px-3 py-2 rounded-lg border border-zinc-800 shrink-0">
+            <span className="flex items-center gap-1 text-zinc-300 shrink-0">
               <Thermometer className="w-3.5 h-3.5 text-amber-400" />
-              Track: 38°C
+              Track: {selectedGP.weather.trackTemp}°C
             </span>
-            <span className="flex items-center gap-1 text-zinc-300">
+            <span className="flex items-center gap-1 text-zinc-300 shrink-0">
               <Wind className="w-3.5 h-3.5 text-cyan-400" />
-              Air: 24°C
+              Air: {selectedGP.weather.airTemp}°C
             </span>
-            <span className="flex items-center gap-1 text-zinc-300">
+            <span className="flex items-center gap-1 text-zinc-300 shrink-0">
               <CloudRain className="w-3.5 h-3.5 text-blue-400" />
-              Rain: 0%
+              Rain: {selectedGP.weather.rainProbability}%
             </span>
-            <span className="flex items-center gap-1 text-emerald-400 font-bold">
+            <span className="flex items-center gap-1 text-emerald-400 font-bold shrink-0">
               <Flag className="w-3.5 h-3.5" />
-              TRACK CLEAR
+              {selectedGP.weather.condition}
             </span>
           </div>
         </div>
 
-        {/* Playback Control Bar */}
+        {/* Notice for Upcoming Grand Prix */}
+        {isUpcoming && (
+          <div className="mt-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs font-mono flex items-start gap-2.5">
+            <span className="font-bold text-amber-400 shrink-0">UPCOMING ROUND {selectedGP.round}:</span>
+            <p className="leading-relaxed">
+              The {selectedGP.name} has not started yet. Official telemetry feeds and live timing go live once cars hit the track for official practice, qualifying, and race sessions. Below is the pre-race pacing simulation based on {selectedGP.circuitName}&apos;s track characteristics and aerodynamic requirements.
+            </p>
+          </div>
+        )}
+
+        {/* Playback Control Bar & Driver Filter */}
         <div className="flex flex-wrap items-center justify-between gap-4 pt-4 mt-2 border-t border-zinc-800/60">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               variant={isPlaying ? "destructive" : "racing"}
               size="sm"
@@ -272,7 +231,7 @@ export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }
               className="h-8 gap-1.5 font-mono text-xs font-bold"
             >
               {isPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-              {isPlaying ? "PAUSE" : "REPLAY"}
+              {isPlaying ? "PAUSE" : isUpcoming ? "RUN SIMULATION" : "REPLAY"}
             </Button>
 
             <Button
@@ -299,6 +258,18 @@ export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }
                   {speed}x
                 </button>
               ))}
+            </div>
+
+            {/* Quick driver search filter */}
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Find driver / team..."
+                value={driverFilter}
+                onChange={(e) => setDriverFilter(e.target.value)}
+                className="pl-8 pr-3 py-1 bg-zinc-950 border border-zinc-800 rounded text-xs font-mono text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-racing-red w-36 sm:w-48"
+              />
             </div>
           </div>
 
@@ -336,7 +307,7 @@ export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800/50">
-              {grid.map((row) => (
+              {displayedGrid.map((row) => (
                 <tr
                   key={row.driverNumber}
                   className="hover:bg-zinc-800/40 transition-colors group"
@@ -425,4 +396,3 @@ export function ReplayTower({ totalLaps: propTotalLaps }: { totalLaps?: number }
     </Card>
   );
 }
-
