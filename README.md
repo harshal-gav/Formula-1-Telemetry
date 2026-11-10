@@ -29,8 +29,9 @@ Data is fetched 100% browser-side directly from public community APIs (**Jolpica
 - **Paddock Dashboard (`/dashboard`)**: Next race countdown, latest podium classification, and top championship contenders.
 
 ### Pro Tier ($9.99/mo, Powered by Dodo Payments)
+- **Grand Prix Selector**: Switch dynamically between 8 iconic circuits (Sakhir, Suzuka, Monaco, Silverstone, Spa, Monza, Interlagos, Las Vegas), scaling track lengths, speed trap records, and overtaking indices.
 - **Fastest Lap Telemetry Trace (`/pro/telemetry`)**: Synchronized car telemetry comparison (Speed, Throttle %, Brake pressure, Gear, and RPM) between any two drivers over a flying lap.
-- **Lap-by-Lap Progression (`/pro/laps`)**: Complete 57-lap pace trajectories, pit stop in-lap/out-lap deltas, and standard deviation consistency.
+- **Lap-by-Lap Progression (`/pro/laps`)**: Complete race pace trajectories, pit stop in-lap/out-lap deltas, and standard deviation consistency.
 - **Tyre Stints & Degradation Simulator (`/pro/strategy`)**: Fast-F1 derived compound degradation curves (Soft, Medium, Hard), performance cliff horizons, and 1-stop vs 2-stop strategy comparisons.
 - **Interactive Session Replay Tower (`/pro/replay`)**: Interactive timing tower with play/pause, scrub slider, sector times, gaps to leader, and fastest lap highlights.
 - **AI Outcome Predictor (`/pro/predictor`)**: Client-side statistical heuristics evaluating qualifying grid position, sector pace, and circuit overtaking indices to compute win and podium (Top-3) probabilities.
