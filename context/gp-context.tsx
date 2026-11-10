@@ -52,3 +52,4 @@ export function GPProvider({ children }: { children: ReactNode }) {
 export function useGP() {
   return useContext(GPContext);
 }
+

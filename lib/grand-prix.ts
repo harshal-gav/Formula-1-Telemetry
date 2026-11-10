@@ -136,3 +136,4 @@ export const GRAND_PRIX_LIST: GrandPrixCircuit[] = [
     description: "Chilly nighttime race down the iconic Strip with massive braking into Turn 14.",
   },
 ];
+
