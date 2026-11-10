@@ -27,10 +27,9 @@ export default function ReplayProPage() {
       <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 flex items-start gap-3 text-xs text-zinc-400 font-mono">
         <ShieldAlert className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
         <div className="space-y-1">
-          <span className="font-semibold text-zinc-200 block">Rate-Safe Streaming Architecture</span>
+          <span className="font-semibold text-zinc-200 block">Optimized Playback Engine</span>
           <p className="leading-relaxed text-[11px]">
-            To comply with OpenF1 rate limits (max 30 req/min) without triggering 429 blocks, session timing feeds
-            are cached client-side in localStorage and replayed via a deterministic playback clock.
+            Session timing feeds are cached client-side in localStorage and synchronized via a deterministic playback clock for smooth, zero-latency scrub performance.
           </p>
         </div>
       </div>

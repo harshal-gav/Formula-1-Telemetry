@@ -11,10 +11,8 @@ import {
   CreditCard,
   ShieldCheck,
   Calendar,
-  ExternalLink,
   Sparkles,
   LogOut,
-  ArrowRight,
 } from "lucide-react";
 import { dodo } from "@/lib/dodo/client";
 import Link from "next/link";
@@ -28,7 +26,7 @@ export default function AccountPage() {
   if (authLoading || subLoading) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-20 text-center text-xs font-mono text-zinc-500">
-        Loading account & billing profile...
+        Loading account profile...
       </div>
     );
   }
@@ -37,17 +35,13 @@ export default function AccountPage() {
     return (
       <div className="max-w-md mx-auto px-4 py-20 text-center space-y-4">
         <h2 className="text-xl font-bold text-white">Sign In Required</h2>
-        <p className="text-xs text-zinc-400">Please sign in to view your account details and manage your subscription.</p>
+        <p className="text-xs text-zinc-400">Please sign in to view your account details.</p>
         <Link href="/login?redirect=/account">
           <Button variant="racing" size="sm">Sign In</Button>
         </Link>
       </div>
     );
   }
-
-  const handleManageBilling = () => {
-    dodo.openCustomerPortal(user.email);
-  };
 
   const handleUpgrade = () => {
     const checkoutUrl = dodo.getCheckoutUrl({
@@ -59,14 +53,14 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 w-full max-w-full overflow-hidden">
       {/* Header */}
       <div className="space-y-1">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-          Account & Billing
+          Account & Subscription
         </h1>
         <p className="text-xs text-zinc-400">
-          Manage your credentials, subscription plan, and Dodo customer portal.
+          Manage your credentials, subscription plan, and account preferences.
         </p>
       </div>
 
@@ -91,7 +85,7 @@ export default function AccountPage() {
               <span className="text-zinc-300 break-all">{user.email}</span>
             </div>
             <div>
-              <span className="text-[10px] text-zinc-500 uppercase block">Firebase UID</span>
+              <span className="text-[10px] text-zinc-500 uppercase block">Account ID</span>
               <span className="text-[10px] text-zinc-500 break-all">{user.uid}</span>
             </div>
           </CardContent>
@@ -178,27 +172,23 @@ export default function AccountPage() {
 
               {subscription?.cancel_at_period_end && (
                 <div className="p-2.5 rounded-lg bg-amber-950/40 border border-amber-500/30 text-xs text-amber-300 font-mono">
-                  Your recurring subscription has been cancelled. Your Pro access remains active until the end of your billing cycle.
+                  Your recurring subscription has been scheduled for cancellation. Your Pro access remains active until the end of your billing cycle.
                 </div>
               )}
             </CardContent>
           </div>
 
-          <CardFooter className="pt-4 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <CardFooter className="pt-4 border-t border-zinc-800 flex items-center justify-between">
             {isPro ? (
-              <>
-                <Button
-                  onClick={handleManageBilling}
-                  variant="outline"
-                  className="w-full sm:w-auto text-xs gap-1.5 font-mono"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  Manage Billing via Dodo Portal
-                </Button>
-                <span className="text-[11px] text-zinc-500 font-mono">
-                  Update payment method or cancel
+              <div className="flex items-center justify-between w-full text-xs font-mono text-zinc-400">
+                <span className="flex items-center gap-1.5 text-emerald-400">
+                  <ShieldCheck className="w-4 h-4" />
+                  Active Pro Membership
                 </span>
-              </>
+                <span className="text-[11px] text-zinc-500 font-mono">
+                  Full Telemetry Suite Unlocked
+                </span>
+              </div>
             ) : (
               <>
                 <Button
@@ -210,7 +200,7 @@ export default function AccountPage() {
                   Upgrade to Pro ($9.99/mo)
                 </Button>
                 <span className="text-[11px] text-zinc-500 font-mono">
-                  Cancel anytime in portal
+                  Instant access to all telemetry
                 </span>
               </>
             )}
@@ -220,4 +210,3 @@ export default function AccountPage() {
     </div>
   );
 }
-

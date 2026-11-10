@@ -246,7 +246,7 @@ export default async function Image() {
           >
             <span>formula1telemetry.com</span>
             <span>•</span>
-            <span style={{ color: "#10B981" }}>Jolpica & OpenF1 Feeds</span>
+            <span style={{ color: "#10B981" }}>Live Telemetry Feeds</span>
           </div>
         </div>
       </div>

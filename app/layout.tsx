@@ -14,13 +14,13 @@ export const metadata: Metadata = {
     template: "%s | Formula 1 Telemetry",
   },
   description:
-    "Unofficial Grand Prix telemetry, tyre degradation curves, pit strategy modeling, session replays, and race predictions powered by Jolpica and OpenF1.",
+    "Grand Prix telemetry, tyre degradation curves, pit strategy modeling, session replays, and race predictions.",
   keywords: [
     "formula 1 telemetry",
     "f1 telemetry",
     "grand prix telemetry",
     "formula 1 telemetry comparison",
-    "openf1 telemetry",
+    "real-time telemetry",
     "pitwall analytics",
     "tyre degradation model",
     "f1 race predictor",
@@ -74,10 +74,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen flex flex-col bg-carbon-950 text-zinc-100 antialiased racing-grid-bg">
+      <body className="min-h-screen flex flex-col bg-carbon-950 text-zinc-100 antialiased racing-grid-bg w-full max-w-full overflow-x-hidden">
         <Providers>
           <Navbar />
-          <main className="flex-1 flex flex-col">{children}</main>
+          <main className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">{children}</main>
           <Footer />
         </Providers>
         <Analytics />

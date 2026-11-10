@@ -3,7 +3,7 @@ import { Activity, ShieldCheck, Database, Zap } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-zinc-800/80 bg-carbon-950 text-zinc-400 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
+    <footer className="border-t border-zinc-800/80 bg-carbon-950 text-zinc-400 py-12 px-4 sm:px-6 lg:px-8 mt-auto w-full max-w-full overflow-hidden">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
         {/* Brand Description */}
         <div className="lg:col-span-2 space-y-4">
@@ -15,16 +15,16 @@ export function Footer() {
           </div>
           <p className="text-xs text-zinc-400 leading-relaxed max-w-md">
             Next-generation telemetry, tyre strategy simulator, and session replay analytics
-            for motorsport enthusiasts. Direct client-side browser telemetry powered by Jolpica and OpenF1.
+            for motorsport enthusiasts. High-precision analytics engineered directly for fans.
           </p>
           <div className="flex items-center gap-4 text-xs text-zinc-400">
             <span className="flex items-center gap-1.5">
               <Database className="w-3.5 h-3.5 text-zinc-400" />
-              Jolpica Ergast & OpenF1
+              Live Telemetry Feeds
             </span>
             <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              Dodo Payments SSL
+              <ShieldCheck className="w-3.5 h-3.5 text-zinc-400" />
+              256-Bit SSL Encrypted
             </span>
           </div>
         </div>
@@ -91,10 +91,10 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Legal & Compliance */}
+        {/* Legal & Policies */}
         <div>
           <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-3 font-mono">
-            Legal & Support
+            Legal & Policies
           </h4>
           <ul className="space-y-2 text-xs">
             <li>
@@ -108,14 +108,9 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/refund" className="hover:text-white transition-colors text-emerald-400/90 font-medium">
+              <Link href="/refund" className="hover:text-white transition-colors">
                 Refund & Cancellation
               </Link>
-            </li>
-            <li>
-              <a href="mailto:support@formula1telemetry.com" className="hover:text-white transition-colors font-mono text-[11px] text-zinc-400 block pt-1">
-                support@formula1telemetry.com
-              </a>
             </li>
           </ul>
         </div>
@@ -127,7 +122,7 @@ export function Footer() {
           DISCLAIMER & LEGAL NOTICE:
         </p>
         <p>
-          This website is an unofficial product and is not associated in any way with Formula 1,
+          This website is not associated in any way with Formula 1,
           the Formula One group of companies, the Fédération Internationale de l'Automobile (FIA),
           or Formula One Licensing B.V.
         </p>
@@ -139,10 +134,9 @@ export function Footer() {
         </p>
         <div className="pt-2 flex flex-col sm:flex-row justify-between items-center text-zinc-400">
           <span>&copy; {new Date().getFullYear()} Formula 1 Telemetry. All rights reserved.</span>
-          <span>Data provided via public community APIs (Jolpica-F1 & OpenF1).</span>
+          <span>High-precision timing & telemetry analytics platform.</span>
         </div>
       </div>
     </footer>
   );
 }
-

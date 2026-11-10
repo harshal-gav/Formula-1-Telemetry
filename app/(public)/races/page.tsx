@@ -22,7 +22,7 @@ export default function RacesPage() {
           Grand Prix Calendar
         </h1>
         <p className="text-xs sm:text-sm text-zinc-400 max-w-xl">
-          Complete official timetable, circuit locations, and race results powered by the Jolpica-F1 API.
+          Complete official timetable, circuit locations, and race results.
         </p>
       </div>
 

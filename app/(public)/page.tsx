@@ -7,16 +7,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ProBadge } from "@/components/layout/pro-badge";
 import {
   Activity,
-  Zap,
-  TrendingUp,
-  Cpu,
-  ShieldCheck,
+  Layers,
+  Radio,
   ArrowRight,
   CheckCircle2,
   Lock,
-  Layers,
-  Radio,
-  BarChart3,
 } from "lucide-react";
 import { TelemetryChart } from "@/components/pro/telemetry-chart";
 import { useDriverStandings } from "@/hooks/use-jolpica";
@@ -26,11 +21,11 @@ export default function LandingPage() {
   const topDrivers = standings?.slice(0, 3) || [];
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full max-w-full overflow-x-hidden">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 px-4 sm:px-6 lg:px-8 border-b border-zinc-800/60">
+      <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 px-4 sm:px-6 lg:px-8 border-b border-zinc-800/60 w-full max-w-full">
         {/* Glow ambient background lights */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-racing-red/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] max-w-full h-[300px] bg-racing-red/15 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute top-10 right-10 w-72 h-72 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="max-w-5xl mx-auto text-center space-y-6 relative">
@@ -48,17 +43,17 @@ export default function LandingPage() {
 
           <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-zinc-400 leading-relaxed">
             Professional lap-by-lap telemetry traces, tyre degradation modeling, session replays,
-            and predictive race outcomes. 100% client-side data streamed directly from Jolpica & OpenF1.
+            and predictive race outcomes. Real-time telemetry and timing data engineered directly for motorsport fans.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/pricing">
+            <Link href="/pricing" className="w-full sm:w-auto">
               <Button variant="racing" size="lg" className="w-full sm:w-auto font-bold tracking-wide gap-2 text-sm">
                 <span>Unlock Pro Monthly ($9.99/mo)</span>
                 <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            <Link href="/dashboard">
+            <Link href="/dashboard" className="w-full sm:w-auto">
               <Button variant="outline" size="lg" className="w-full sm:w-auto text-sm">
                 Explore Free Paddock
               </Button>
@@ -67,7 +62,7 @@ export default function LandingPage() {
 
           {/* Quick Stats Ticker */}
           {topDrivers.length > 0 && (
-            <div className="pt-8 flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-zinc-400">
+            <div className="pt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs font-mono text-zinc-400">
               <span className="text-zinc-500 uppercase tracking-widest text-[11px]">Championship Leaders:</span>
               {topDrivers.map((item, idx) => (
                 <div key={item.Driver.driverId} className="flex items-center gap-1.5">
@@ -84,14 +79,14 @@ export default function LandingPage() {
       </section>
 
       {/* 2. LIVE INTERACTIVE TELEMETRY PREVIEW */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full max-w-full overflow-hidden">
         <div className="text-center space-y-2 mb-8">
           <Badge variant="racing" className="text-xs">PRO FEATURE PREVIEW</Badge>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             High-Resolution Speed & Throttle Traces
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto">
-            Overlay two drivers on any circuit to pinpoint exactly where time is won or lost in braking zones, apex corners, and DRS straights.
+            Overlay two drivers on any circuit to pinpoint exactly where time is won or lost in braking zones, apex corners, and straights.
           </p>
         </div>
 
@@ -99,7 +94,7 @@ export default function LandingPage() {
       </section>
 
       {/* 3. CORE CAPABILITIES (3-COLUMN GRID) */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 bg-carbon-900/40">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 bg-carbon-900/40 w-full max-w-full overflow-hidden">
         <div className="max-w-6xl mx-auto">
           <div className="text-center space-y-2 mb-12">
             <span className="text-xs font-mono uppercase tracking-widest text-racing-red">Engineered for Accuracy</span>
@@ -118,7 +113,7 @@ export default function LandingPage() {
                   Car Telemetry Analysis <ProBadge />
                 </h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  Real car channels: throttle percentage, brake application, RPM, gear selection, and DRS actuation delivered via OpenF1.
+                  Real car channels: throttle percentage, brake application, RPM, gear selection, and DRS actuation.
                 </p>
               </CardContent>
             </Card>
@@ -132,7 +127,7 @@ export default function LandingPage() {
                   Tyre Degradation Modeling <ProBadge />
                 </h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  Fast-F1 inspired compound degradation curves. Compare Soft, Medium, and Hard stints with undercut window simulations.
+                  Compound degradation curves and wear models. Compare Soft, Medium, and Hard stints with undercut window simulations.
                 </p>
               </CardContent>
             </Card>
@@ -146,7 +141,7 @@ export default function LandingPage() {
                   Session Replay Tower <ProBadge />
                 </h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  Scrub through any historical or current session lap-by-lap. Monitor gap deltas, pit intervals, and sector time evolutions.
+                  Scrub through any session lap-by-lap. Monitor gap deltas, pit intervals, and sector time evolutions.
                 </p>
               </CardContent>
             </Card>
@@ -155,15 +150,15 @@ export default function LandingPage() {
       </section>
 
       {/* 4. FREE VS PRO COMPARISON MATRIX */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 max-w-5xl mx-auto w-full">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 max-w-5xl mx-auto w-full max-w-full overflow-hidden">
         <div className="text-center space-y-2 mb-10">
           <Badge variant="outline" className="text-xs">TRANSPARENT TIERS</Badge>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Free vs Pro Subscription</h2>
-          <p className="text-xs text-zinc-400">Simple, predictable monthly pricing powered by Dodo Payments.</p>
+          <p className="text-xs text-zinc-400">Simple, predictable monthly pricing with zero hidden fees.</p>
         </div>
 
-        <div className="overflow-x-auto rounded-xl border border-zinc-800 bg-carbon-900/90 shadow-2xl">
-          <table className="w-full text-left font-mono text-xs">
+        <div className="w-full max-w-full overflow-x-auto rounded-xl border border-zinc-800 bg-carbon-900/90 shadow-2xl">
+          <table className="w-full min-w-[500px] text-left font-mono text-xs">
             <thead className="bg-zinc-950 text-zinc-400 uppercase tracking-wider text-[11px] border-b border-zinc-800">
               <tr>
                 <th className="py-3 px-4">Feature Capability</th>
@@ -208,7 +203,7 @@ export default function LandingPage() {
                 <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-amber-400 inline" /></td>
               </tr>
               <tr>
-                <td className="py-3 px-4">Dodo Self-Service Customer Billing Portal</td>
+                <td className="py-3 px-4">Self-Service Customer Billing & Subscriptions</td>
                 <td className="py-3 px-4 text-center text-zinc-600">-</td>
                 <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-amber-400 inline" /></td>
               </tr>
@@ -218,7 +213,7 @@ export default function LandingPage() {
       </section>
 
       {/* 5. CALL TO ACTION */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 bg-gradient-to-b from-carbon-900 to-carbon-950 text-center">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 bg-gradient-to-b from-carbon-900 to-carbon-950 text-center w-full max-w-full overflow-hidden">
         <div className="max-w-2xl mx-auto space-y-4">
           <h2 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tight">
             Ready to Take The Pitwall?
@@ -238,4 +233,3 @@ export default function LandingPage() {
     </div>
   );
 }
-

@@ -75,7 +75,7 @@ export function ProGate({
             <Zap className="w-4 h-4 text-racing-red shrink-0 mt-0.5" />
             <div>
               <span className="font-semibold text-zinc-200 block">Telemetry Comparison</span>
-              <span className="text-zinc-500">Throttle, brake, speed & gear traces via OpenF1.</span>
+              <span className="text-zinc-500">Throttle, brake, speed & gear traces.</span>
             </div>
           </div>
           <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/60 border border-zinc-800/60 text-xs">
@@ -111,10 +111,10 @@ export function ProGate({
         <div className="flex items-center justify-center gap-4 text-[11px] text-zinc-500 pt-2 font-mono">
           <span className="flex items-center gap-1">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            Powered by Dodo Payments
+            256-Bit SSL Encrypted
           </span>
           <span>•</span>
-          <span>Cancel anytime in Customer Portal</span>
+          <span>Cancel anytime with zero fees</span>
         </div>
       </div>
     </div>

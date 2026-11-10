@@ -20,7 +20,7 @@ export default function ProDashboardHub() {
       description: "Dual-driver speed, throttle %, brake pressure, and gear comparison traces over single flying laps.",
       href: "/pro/telemetry",
       icon: Activity,
-      badge: "OPENF1 REAL-TIME",
+      badge: "REAL-TIME SYNC",
       color: "text-racing-red",
     },
     {
@@ -36,7 +36,7 @@ export default function ProDashboardHub() {
       description: "Compound lifecycle modeling (Soft, Medium, Hard, Wet), degradation cliff curves, and pit windows.",
       href: "/pro/strategy",
       icon: Disc3,
-      badge: "FAST-F1 HEURISTICS",
+      badge: "TYRE LIFECYCLE",
       color: "text-amber-400",
     },
     {

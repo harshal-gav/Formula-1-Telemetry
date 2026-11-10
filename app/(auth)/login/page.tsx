@@ -115,7 +115,7 @@ function LoginForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="driver@formula-analytics.com"
+              placeholder="name@example.com"
               className="w-full px-3 py-2 text-xs rounded-lg bg-zinc-950 border border-zinc-800 text-white placeholder-zinc-600 focus:outline-none focus:ring-1 focus:ring-racing-red font-mono"
             />
           </div>

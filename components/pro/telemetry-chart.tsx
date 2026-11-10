@@ -128,7 +128,7 @@ export function TelemetryChart() {
                 <Activity className="w-5 h-5 text-racing-red" />
                 Fastest Lap Telemetry Trace
               </CardTitle>
-              <Badge variant="racing">OPENF1 SYNC</Badge>
+              <Badge variant="racing">LIVE SYNC</Badge>
             </div>
             <CardDescription className="text-xs text-zinc-400 mt-1">
               Synchronized car telemetry comparison over single flying qualifying lap.
@@ -136,14 +136,14 @@ export function TelemetryChart() {
           </div>
 
           {/* Metric Selector Tabs */}
-          <div className="flex items-center gap-1.5 p-1 bg-zinc-950/80 rounded-lg border border-zinc-800">
+          <div className="flex items-center gap-1.5 p-1 bg-zinc-950/80 rounded-lg border border-zinc-800 overflow-x-auto max-w-full">
             {(["speed", "throttle", "brake", "gear"] as const).map((m) => (
               <Button
                 key={m}
                 variant={metric === m ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setMetric(m)}
-                className="h-7 text-xs font-mono capitalize"
+                className="h-7 text-xs font-mono capitalize shrink-0"
               >
                 {m === "speed" ? "Speed (km/h)" : m === "throttle" ? "Throttle (%)" : m}
               </Button>

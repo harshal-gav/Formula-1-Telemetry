@@ -1,10 +1,10 @@
 # Formula 1 Telemetry — Telemetry & Analytics Platform
 
-An unofficial, high-performance Formula 1 monthly-subscription web application built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**.
+A high-performance Formula 1 monthly-subscription web application built with **Next.js 15 (App Router)**, **TypeScript**, **Tailwind CSS**, and **shadcn/ui**.
 
-Data is fetched 100% browser-side directly from public community APIs (**Jolpica Ergast API** and **OpenF1 REST API**) with intelligent caching (**TanStack Query** + **localStorage**). User authentication and data isolation are managed client-side using **Firebase Auth** and **Firestore** protected by strict security rules. Monthly subscriptions and billing management are powered by **Dodo Payments** with a single server route handler (`/api/dodo/webhook`).
+Data is fetched 100% browser-side with intelligent caching (**TanStack Query** + **localStorage**). User authentication and data isolation are managed client-side using **Firebase Auth** and **Firestore** protected by strict security rules. Monthly subscriptions and billing management are powered with a single server route handler (`/api/dodo/webhook`).
 
-> **LEGAL DISCLAIMER**: This application is an unofficial product and is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Formula 1, the FIA, Formula One Licensing B.V., or any of their subsidiaries or affiliates. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX and related marks are trademarks of Formula One Licensing B.V.
+> **LEGAL DISCLAIMER**: This application is not affiliated, associated, authorized, endorsed by, or in any way officially connected with Formula 1, the FIA, Formula One Licensing B.V., or any of their subsidiaries or affiliates. F1, FORMULA ONE, FORMULA 1, FIA FORMULA ONE WORLD CHAMPIONSHIP, GRAND PRIX and related marks are trademarks of Formula One Licensing B.V.
 
 ---
 
@@ -66,7 +66,7 @@ Data is fetched 100% browser-side directly from public community APIs (**Jolpica
 │   │   └── predictor/page.tsx           # Heuristic race & podium prediction
 │   ├── api/dodo/webhook/route.ts        # THE ONLY SERVER ROUTE: Svix verify + firebase-admin
 │   ├── globals.css
-│   └── layout.tsx                       # Root layout with unofficial footer disclaimer
+│   └── layout.tsx                       # Root layout with footer legal notice
 ├── components/
 │   ├── ui/                              # Button, Card, Badge, Tabs, Skeleton
 │   ├── layout/                          # Navbar, Footer, ProBadge

@@ -56,7 +56,7 @@ async function fetchJolpica<T>(endpoint: string, ttlMinutes = 30): Promise<T> {
     });
 
     if (!res.ok) {
-      throw new Error(`Jolpica API error: ${res.status} ${res.statusText}`);
+      throw new Error(`Timing feed error: ${res.status} ${res.statusText}`);
     }
 
     const data = (await res.json()) as T;

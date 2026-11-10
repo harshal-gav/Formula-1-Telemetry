@@ -66,10 +66,10 @@ async function fetchOpenF1<T>(endpoint: string, ttlMinutes = 60): Promise<T> {
       console.warn("OpenF1 Rate limit reached (429). Falling back to cached data if available.");
       const fallback = getCache<T>(cacheKey);
       if (fallback) return fallback;
-      throw new Error("OpenF1 rate limit exceeded. Please wait a few moments before refreshing.");
+      throw new Error("Telemetry feed rate limit reached. Please wait a few moments before refreshing.");
     }
     if (!res.ok) {
-      throw new Error(`OpenF1 error: ${res.status} ${res.statusText}`);
+      throw new Error(`Telemetry feed error: ${res.status} ${res.statusText}`);
     }
 
     const data = (await res.json()) as T;

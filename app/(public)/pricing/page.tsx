@@ -6,13 +6,13 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProBadge } from "@/components/layout/pro-badge";
-import { Check, ShieldCheck, Zap, ArrowRight, CreditCard, ExternalLink } from "lucide-react";
+import { Check, Zap, ArrowRight } from "lucide-react";
 import { dodo } from "@/lib/dodo/client";
 import Link from "next/link";
 
 export default function PricingPage() {
   const { user } = useAuth();
-  const { isPro, loading: subLoading } = useSubscription();
+  const { isPro } = useSubscription();
 
   const handleSubscribe = () => {
     if (!user) {
@@ -28,7 +28,7 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-16 w-full max-w-full overflow-hidden">
       {/* Header */}
       <div className="text-center space-y-3 max-w-2xl mx-auto">
         <Badge variant="racing" className="text-xs">TRANSPARENT PRICING</Badge>
@@ -40,10 +40,10 @@ export default function PricingPage() {
         </p>
       </div>
 
-      {/* Pricing Cards */}
+      {/* Pricing Cards: Mobile shows only Pro Analytics column; Desktop shows both */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-        {/* FREE TIER */}
-        <Card className="border-zinc-800 bg-carbon-900/80 flex flex-col justify-between">
+        {/* FREE TIER: Hidden on mobile devices, visible on medium screens and up */}
+        <Card className="hidden md:flex border-zinc-800 bg-carbon-900/80 flex-col justify-between">
           <div>
             <CardHeader>
               <div className="flex justify-between items-center">
@@ -91,8 +91,8 @@ export default function PricingPage() {
           </CardFooter>
         </Card>
 
-        {/* PRO TIER */}
-        <Card className="border-racing-red/60 bg-gradient-to-b from-carbon-900 via-carbon-900 to-carbon-950 flex flex-col justify-between relative shadow-2xl shadow-racing-red/10">
+        {/* PRO TIER: Displayed as single column on mobile, side-by-side on desktop */}
+        <Card className="border-racing-red/60 bg-gradient-to-b from-carbon-900 via-carbon-900 to-carbon-950 flex flex-col justify-between relative shadow-2xl shadow-racing-red/10 w-full">
           <div className="absolute -top-3 right-6">
             <ProBadge className="py-1 px-3 text-xs" />
           </div>
@@ -106,7 +106,7 @@ export default function PricingPage() {
                 <Badge variant="racing" className="text-xs font-mono">MOST POPULAR</Badge>
               </div>
               <CardDescription className="text-xs text-zinc-400">
-                Full telemetry telemetry suite, tyre strategies, and race prediction heuristics.
+                Full telemetry suite, tyre strategies, and race prediction heuristics.
               </CardDescription>
               <div className="pt-4">
                 <span className="text-4xl font-black text-white">$9.99</span>
@@ -139,7 +139,7 @@ export default function PricingPage() {
                 </li>
                 <li className="flex items-center gap-2 font-medium">
                   <Check className="w-4 h-4 text-amber-400 shrink-0" />
-                  Dodo Payments Customer Portal Access
+                  Self-Service Subscription Portal Access
                 </li>
               </ul>
             </CardContent>
@@ -151,8 +151,8 @@ export default function PricingPage() {
                 <Button disabled variant="outline" className="w-full text-xs border-emerald-500/50 text-emerald-400">
                   Current Active Plan
                 </Button>
-                <Link href="/account" className="block text-center text-[11px] text-zinc-400 hover:text-white underline">
-                  Manage in Customer Portal
+                <Link href="/refund" className="block text-center text-[11px] text-zinc-400 hover:text-white underline">
+                  Subscription & Cancellation Options
                 </Link>
               </div>
             ) : (
@@ -176,22 +176,22 @@ export default function PricingPage() {
           <div className="p-4 rounded-lg bg-carbon-900 border border-zinc-800 space-y-1">
             <h4 className="font-bold text-zinc-200">How does payment and billing work?</h4>
             <p className="text-zinc-400 leading-relaxed">
-              Payments are processed securely via Dodo Payments. Your subscription renews automatically
+              Payments are processed securely via encrypted checkout. Your subscription renews automatically
               each month. We never store credit card numbers on our servers.
             </p>
           </div>
           <div className="p-4 rounded-lg bg-carbon-900 border border-zinc-800 space-y-1">
             <h4 className="font-bold text-zinc-200">How do I cancel or update payment methods?</h4>
             <p className="text-zinc-400 leading-relaxed">
-              Visit your Account page and click "Manage Billing". This takes you directly to the Dodo
-              Customer Portal where you can cancel, switch cards, or download VAT invoices with one click.
+              You can cancel your subscription at any time directly through the Refund & Cancellation page.
+              Upon cancellation, you will retain active access until the end of your monthly billing cycle with zero penalties.
             </p>
           </div>
           <div className="p-4 rounded-lg bg-carbon-900 border border-zinc-800 space-y-1">
-            <h4 className="font-bold text-zinc-200">How is live data handled without rate limits?</h4>
+            <h4 className="font-bold text-zinc-200">How is live data handled without latency?</h4>
             <p className="text-zinc-400 leading-relaxed">
-              Our application queries OpenF1 and Jolpica directly from your browser. Data is intelligently
-              cached in TanStack Query and localStorage with throttled pacing so you never breach public API rate limits.
+              Our application streams and synchronizes telemetry directly in your browser. Data is intelligently
+              cached with throttled pacing for smooth, instant playback.
             </p>
           </div>
         </div>
@@ -199,4 +199,3 @@ export default function PricingPage() {
     </div>
   );
 }
-

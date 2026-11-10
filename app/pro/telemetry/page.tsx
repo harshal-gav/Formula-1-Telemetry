@@ -18,7 +18,7 @@ export default function TelemetryProPage() {
           Car Telemetry Comparison Trace
         </h1>
         <p className="text-xs text-zinc-400">
-          Synchronized throttle, brake, speed, and gear trace comparison powered by OpenF1 car_data.
+          Synchronized throttle, brake, speed, and gear trace comparison.
         </p>
       </div>
 
