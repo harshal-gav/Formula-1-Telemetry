@@ -17,6 +17,8 @@ import {
   Shield,
   HelpCircle,
 } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { PRO_DRIVERS, ProDriver } from "@/lib/drivers";
 import { getTeamColor } from "@/lib/utils";
 
@@ -199,12 +201,10 @@ export default async function DriverDetailPage({
             {driver.constructorName} • 2026 Championship Driver Profile &amp; Telemetry Trace
           </p>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-950/80 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
-            <p>
-              <strong className="text-white font-semibold">How does {driver.name}&apos;s telemetry compare?</strong> Driving for {driver.constructorName} with car #{driver.number}, {driver.name} exhibits a telemetry pace offset of {driver.speedOffset > 0 ? `+${driver.speedOffset}` : driver.speedOffset} km/h and a throttle aggression factor of {driver.throttleAggression}. Holding P{driver.championshipRank} with {driver.seasonPoints} points, their telemetry is defined by precise corner-entry trail-braking and early throttle exit traction.
-            </p>
-          </div>
+          <QuickAnswer
+            question={`How does ${driver.name}'s telemetry compare?`}
+            answer={`Driving for ${driver.constructorName} with car #${driver.number}, ${driver.name} exhibits a telemetry pace offset of ${driver.speedOffset > 0 ? `+${driver.speedOffset}` : driver.speedOffset} km/h and a throttle aggression factor of ${driver.throttleAggression}. Holding P${driver.championshipRank} with ${driver.seasonPoints} points, their telemetry is defined by precise corner-entry trail-braking and early throttle exit traction.`}
+          />
         </header>
 
         {/* Telemetry Metric KPI Cards */}
@@ -334,23 +334,11 @@ export default async function DriverDetailPage({
         </section>
 
         {/* Pro Telemetry CTA Banner */}
-        <section aria-label="Pro Telemetry Access" className="p-6 rounded-2xl bg-gradient-to-r from-carbon-900 via-carbon-900 to-red-950/40 border border-racing-red/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-base sm:text-lg font-bold text-white flex items-center justify-center sm:justify-start gap-2">
-              <Zap className="w-4 h-4 text-amber-400" />
-              <span>Overlay {driver.name}&apos;s Telemetry Against Any Rival</span>
-            </h3>
-            <p className="text-xs text-zinc-400">
-              Analyze speed curves, throttle percentages, and brake traces side-by-side on any circuit.
-            </p>
-          </div>
-          <Link href="/pricing" className="shrink-0">
-            <Button variant="racing" size="sm" className="font-bold text-xs gap-1.5">
-              <span>Unlock Pro Comparison ($9.99/mo)</span>
-              <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
-            </Button>
-          </Link>
-        </section>
+        <ProMarketingCard
+          title={`Overlay ${driver.name}'s Telemetry Against Any Rival`}
+          subtitle={`Analyze speed curves, throttle percentages, and brake traces side-by-side with ${driver.name} on any circuit. Instant access for $9.99/mo.`}
+          contextTag="DRIVER TELEMETRY ANALYSIS"
+        />
       </div>
     </>
   );

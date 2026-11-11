@@ -15,6 +15,9 @@ import {
   HelpCircle,
   Zap,
 } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { FAQAccordion } from "@/components/ui/faq-accordion";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 
 export const revalidate = 86400;
 
@@ -594,12 +597,10 @@ export default async function GuideDetailPage({
             {guide.title}
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed">
-            <p>
-              <strong className="text-white font-semibold">Direct Answer:</strong> {guide.directAnswer}
-            </p>
-          </div>
+          <QuickAnswer
+            question="Key Technical Answer:"
+            answer={guide.directAnswer}
+          />
 
           {/* E-E-A-T Author & Reviewer Metadata */}
           <div className="flex flex-wrap items-center justify-between gap-4 pt-3 text-xs font-mono text-zinc-400 border-t border-zinc-800/80">
@@ -629,40 +630,20 @@ export default async function GuideDetailPage({
           {guide.contentHtml}
         </div>
 
-        {/* Visible FAQ Section */}
-        <section aria-label="Frequently Asked Questions" className="pt-8 border-t border-zinc-800 space-y-6">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <HelpCircle className="w-5 h-5 text-racing-red" />
-            <span>Frequently Asked Questions</span>
-          </h2>
+        {/* Compact, Crawlable FAQ Accordion */}
+        <FAQAccordion
+          items={guide.faqs}
+          title="Frequently Asked Questions"
+          subtitle="Key technical details and engineering concepts explained."
+          className="pt-6 border-t border-zinc-800"
+        />
 
-          <div className="space-y-4">
-            {guide.faqs.map((faq, idx) => (
-              <div key={idx} className="p-4 rounded-xl border border-zinc-800 bg-carbon-900/60 space-y-1.5">
-                <h3 className="font-bold text-sm text-zinc-200">{faq.question}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Bottom CTA to Telemetry Tool */}
-        <div className="p-6 rounded-2xl bg-carbon-900 border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-base font-bold text-white flex items-center justify-center sm:justify-start gap-2">
-              <Zap className="w-4 h-4 text-amber-400" />
-              <span>Put This Theory Into Practice</span>
-            </h3>
-            <p className="text-xs text-zinc-400">
-              Explore high-resolution dual-car telemetry traces on real Grand Prix circuits.
-            </p>
-          </div>
-          <Link href="/pricing" className="shrink-0">
-            <Button variant="racing" size="sm" className="text-xs font-bold">
-              Unlock Pro Telemetry ($9.99/mo)
-            </Button>
-          </Link>
-        </div>
+        {/* Bottom Pro Marketing Banner */}
+        <ProMarketingCard
+          title="Put This Engineering Theory Into Practice"
+          subtitle="Explore high-resolution dual-car telemetry traces, braking deceleration points, and tyre degradation curves for $9.99/mo."
+          contextTag="HANDS-ON TELEMETRY LAB"
+        />
       </article>
     </>
   );

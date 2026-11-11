@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Users, ChevronRight, User, HelpCircle, Activity, Award } from "lucide-react";
+import { Users, ChevronRight, User, Activity, Award } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { FAQAccordion } from "@/components/ui/faq-accordion";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { PRO_DRIVERS } from "@/lib/drivers";
 import { getTeamColor } from "@/lib/utils";
 
@@ -114,12 +117,10 @@ export default function DriversPage() {
             <span>2026 Formula 1 Championship Drivers</span>
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
-            <p>
-              <strong className="text-white font-semibold">Who are the 2026 Formula 1 drivers?</strong> The 2026 Formula 1 grid features 25 active drivers representing 11 constructor teams, headlined by championship leader Andrea Kimi Antonelli (Mercedes), Max Verstappen (Red Bull Racing), George Russell (Mercedes), and Lewis Hamilton (Ferrari). Each driver profile provides individual telemetry benchmarks, throttle aggression ratings, and season points standings.
-            </p>
-          </div>
+          <QuickAnswer
+            question="Who are the 2026 Formula 1 drivers?"
+            answer="The 2026 Formula 1 grid features 25 active drivers representing 11 constructor teams, headlined by championship leader Andrea Kimi Antonelli (Mercedes), Max Verstappen (Red Bull Racing), George Russell (Mercedes), and Lewis Hamilton (Ferrari). Each driver profile provides individual telemetry benchmarks, throttle aggression ratings, and season points standings."
+          />
 
           <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl">
             Driver profiles, car racing numbers, constructor affiliations, and championship performance metrics for the active World Championship grid.
@@ -191,27 +192,20 @@ export default function DriversPage() {
           })}
         </section>
 
-        {/* Visible FAQ Section */}
-        <section aria-label="Frequently Asked Questions" className="pt-8 border-t border-zinc-800/80 space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-racing-red" />
-              <span>Driver Profiles &amp; Telemetry FAQ</span>
-            </h2>
-            <p className="text-xs text-zinc-400">
-              Technical answers regarding telemetry pace metrics, driver numbers, and teammate comparisons.
-            </p>
-          </div>
+        {/* Pro Marketing Section */}
+        <ProMarketingCard
+          title="Compare Head-to-Head Driver Telemetry Traces"
+          subtitle="Compare any two drivers lap-by-lap across braking points, apex minimum speeds, and throttle response curves for $9.99/mo."
+          contextTag="DRIVER TELEMETRY COMPARISON"
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {DRIVER_FAQS.map((faq, i) => (
-              <div key={i} className="p-4 rounded-xl border border-zinc-800 bg-carbon-900/60 space-y-1.5">
-                <h3 className="text-sm font-bold text-zinc-200">{faq.question}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Compact, Crawlable FAQ Accordion */}
+        <FAQAccordion
+          items={DRIVER_FAQS}
+          title="Driver Profiles & Telemetry FAQ"
+          subtitle="Technical answers regarding telemetry pace metrics, driver numbers, and teammate comparisons."
+          className="pt-6 border-t border-zinc-800/80"
+        />
       </div>
     </>
   );

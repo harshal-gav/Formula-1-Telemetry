@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { ProBanner } from "@/components/layout/pro-banner";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Analytics } from "@vercel/analytics/react";
@@ -121,6 +122,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.className} min-h-screen flex flex-col bg-carbon-950 text-zinc-100 antialiased racing-grid-bg w-full max-w-full overflow-x-hidden`}>
         <Providers>
+          <ProBanner />
           <Navbar />
           <main className="flex-1 flex flex-col w-full max-w-full overflow-x-hidden">{children}</main>
           <Footer />

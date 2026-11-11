@@ -18,6 +18,8 @@ import {
   Shield,
   Layers,
 } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { GRAND_PRIX_LIST, GrandPrixCircuit } from "@/lib/grand-prix";
 import { PRO_DRIVERS } from "@/lib/drivers";
 
@@ -182,12 +184,10 @@ export default async function RaceDetailPage({
             {gp.name} Telemetry &amp; Race Analysis
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-950/80 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
-            <p>
-              <strong className="text-white font-semibold">What are the telemetry characteristics of the {gp.name}?</strong> Held at the {gp.circuitName}, this {gp.lapDistanceMeters.toLocaleString()}m circuit demands {gp.fullThrottlePercent}% full-throttle commitment per lap across {gp.turns} corners and {gp.drsZones} DRS zones. Cars reach speed trap peaks of {gp.topSpeedTrapKmH} km/h with {gp.heavyBrakingZones} heavy deceleration zones exceeding 4.8G.
-            </p>
-          </div>
+          <QuickAnswer
+            question={`What are the telemetry characteristics of the ${gp.name}?`}
+            answer={`Held at the ${gp.circuitName}, this ${gp.lapDistanceMeters.toLocaleString()}m circuit demands ${gp.fullThrottlePercent}% full-throttle commitment per lap across ${gp.turns} corners and ${gp.drsZones} DRS zones. Cars reach speed trap peaks of ${gp.topSpeedTrapKmH} km/h with ${gp.heavyBrakingZones} heavy deceleration zones exceeding 4.8G.`}
+          />
 
           <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-zinc-400 pt-2 border-t border-zinc-800/80">
             <div className="flex items-center gap-1.5">
@@ -215,7 +215,7 @@ export default async function RaceDetailPage({
               </h2>
               <Badge variant="secondary" className="text-[10px] font-mono">OFFICIAL TIMING</Badge>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="p-4 rounded-xl bg-carbon-950/70 border border-amber-500/30">
                 <span className="text-[10px] font-mono text-amber-400 font-bold block uppercase">P1 Winner</span>
                 <span className="text-base font-bold text-white block">{gp.result.winner}</span>
@@ -230,11 +230,6 @@ export default async function RaceDetailPage({
                 <span className="text-[10px] font-mono text-amber-600 font-bold block uppercase">P3 Podium</span>
                 <span className="text-base font-bold text-white block">{gp.result.p3}</span>
                 <span className="text-xs text-zinc-500 block">Official Classification</span>
-              </div>
-              <div className="p-4 rounded-xl bg-carbon-950/70 border border-purple-500/30">
-                <span className="text-[10px] font-mono text-purple-400 font-bold block uppercase">Fastest Lap</span>
-                <span className="text-base font-bold text-white block">{gp.result.fastestLap}</span>
-                <span className="text-xs text-zinc-500 block">+1 Championship Bonus Point</span>
               </div>
             </div>
           </section>
@@ -369,24 +364,12 @@ export default async function RaceDetailPage({
           </div>
         </section>
 
-        {/* Pro Telemetry CTA Banner */}
-        <section aria-label="Pro Telemetry Access" className="p-6 rounded-2xl bg-gradient-to-r from-carbon-900 via-carbon-900 to-red-950/40 border border-racing-red/40 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-base sm:text-lg font-bold text-white flex items-center justify-center sm:justify-start gap-2">
-              <Zap className="w-4 h-4 text-amber-400" />
-              <span>Unlock Dual-Driver Telemetry Overlay for {gp.name}</span>
-            </h3>
-            <p className="text-xs text-zinc-400">
-              Compare braking points, speed traces, throttle curves, and tyre wear lap-by-lap on this circuit.
-            </p>
-          </div>
-          <Link href="/pricing" className="shrink-0">
-            <Button variant="racing" size="sm" className="font-bold text-xs gap-1.5">
-              <span>Access Pro Suite ($9.99/mo)</span>
-              <ArrowLeft className="w-3.5 h-3.5 rotate-180" />
-            </Button>
-          </Link>
-        </section>
+        {/* Pro Telemetry CTA Banner with Seamless Direct Payment Flow */}
+        <ProMarketingCard
+          title={`Unlock Dual-Driver Telemetry Overlay for ${gp.name}`}
+          subtitle={`Compare braking points, speed traces, throttle curves, and tyre wear lap-by-lap on ${gp.circuitName}. Instant access with one click.`}
+          contextTag="PRO GRAND PRIX TELEMETRY"
+        />
       </div>
     </>
   );

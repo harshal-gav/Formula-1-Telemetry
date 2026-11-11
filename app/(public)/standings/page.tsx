@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Trophy, Users, Shield, HelpCircle, Calendar, ArrowRight } from "lucide-react";
+import { Trophy, Users, Shield, Calendar, ArrowRight } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { FAQAccordion } from "@/components/ui/faq-accordion";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { PRO_DRIVERS } from "@/lib/drivers";
 import { getTeamColor } from "@/lib/utils";
 
@@ -158,12 +161,10 @@ export default function StandingsPage() {
             <span>2026 Formula 1 Championship Standings</span>
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
-            <p>
-              <strong className="text-white font-semibold">What are the 2026 Formula 1 standings?</strong> In the 2026 Formula 1 World Championship, Andrea Kimi Antonelli leads the Drivers&apos; Championship with 390 points and 9 victories for Mercedes, followed by Red Bull Racing&apos;s Max Verstappen (279 pts, 3 wins) and Mercedes&apos; George Russell (262 pts, 3 wins). Mercedes leads the World Constructors&apos; Championship with 652 points ahead of Ferrari (510 pts).
-            </p>
-          </div>
+          <QuickAnswer
+            question="What are the 2026 Formula 1 standings?"
+            answer="In the 2026 Formula 1 World Championship, Andrea Kimi Antonelli leads the Drivers' Championship with 390 points and 9 victories for Mercedes, followed by Red Bull Racing's Max Verstappen (279 pts, 3 wins) and Mercedes' George Russell (262 pts, 3 wins). Mercedes leads the World Constructors' Championship with 652 points ahead of Ferrari (510 pts)."
+          />
 
           <p className="text-xs sm:text-sm text-zinc-400 max-w-xl">
             Point standings, title battle differentials, and race victory totals for both the Driver&apos;s World Championship and Constructor&apos;s World Championship.
@@ -320,27 +321,20 @@ export default function StandingsPage() {
           </Card>
         </section>
 
-        {/* Visible FAQ Section */}
-        <section aria-label="Frequently Asked Questions" className="pt-8 border-t border-zinc-800/80 space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-racing-red" />
-              <span>Championship Standings FAQ</span>
-            </h2>
-            <p className="text-xs text-zinc-400">
-              Technical answers regarding scoring systems, sprint points, and championship deciders.
-            </p>
-          </div>
+        {/* Pro Marketing Card */}
+        <ProMarketingCard
+          title="Analyze Championship Pace Deltas with Pro"
+          subtitle="Compare team telemetry curves, aerodynamic efficiency ratings, and tyre degradation metrics across the entire 2026 grid."
+          contextTag="CHAMPIONSHIP ANALYTICS"
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {STANDINGS_FAQS.map((faq, i) => (
-              <div key={i} className="p-4 rounded-xl border border-zinc-800 bg-carbon-900/60 space-y-1.5">
-                <h3 className="text-sm font-bold text-zinc-200">{faq.question}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Compact, Crawlable FAQ Accordion */}
+        <FAQAccordion
+          items={STANDINGS_FAQS}
+          title="Championship Standings FAQ"
+          subtitle="Technical answers regarding scoring systems, sprint points, and championship deciders."
+          className="pt-6 border-t border-zinc-800/80"
+        />
       </div>
     </>
   );

@@ -4,8 +4,10 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProBadge } from "@/components/layout/pro-badge";
-import { Check, Zap, HelpCircle } from "lucide-react";
+import { Check, Zap } from "lucide-react";
 import { SubscribeButton } from "@/components/pro/subscribe-button";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { FAQAccordion } from "@/components/ui/faq-accordion";
 
 export const revalidate = 86400; // Static revalidation daily
 
@@ -154,22 +156,20 @@ export default function PricingPage() {
             Choose Your Paddock Plan
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed text-left">
-            <p>
-              <strong className="text-white font-semibold">How much does Formula 1 telemetry cost?</strong> Formula 1 Telemetry offers a 100% free Paddock tier with full race schedules and standings tables, alongside a comprehensive Pro plan at $9.99/month. Pro unlocks dual-car telemetry overlays, tyre degradation stint curves, interactive session replays, and predictive race algorithms with no lock-in contracts.
-            </p>
-          </div>
+          <QuickAnswer
+            question="How much does Formula 1 telemetry cost?"
+            answer="Formula 1 Telemetry offers a 100% free Paddock tier with full race schedules and standings tables, alongside a comprehensive Pro plan at $9.99/month. Pro unlocks dual-car telemetry overlays, tyre degradation stint curves, interactive session replays, and predictive race algorithms with no lock-in contracts."
+          />
 
-          <p className="text-sm sm:text-base text-zinc-400">
+          <p className="text-xs sm:text-sm text-zinc-400">
             From basic season schedules to deep car telemetry traces, pick the plan that suits your racing curiosity.
           </p>
         </header>
 
-        {/* Pricing Cards */}
+        {/* Pricing Cards: On Mobile, only Pro Analytics is displayed! */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-          {/* FREE TIER */}
-          <Card className="border-zinc-800 bg-carbon-900/80 flex flex-col justify-between">
+          {/* FREE TIER - Hidden on mobile so users see Pro directly */}
+          <Card className="hidden md:flex border-zinc-800 bg-carbon-900/80 flex-col justify-between">
             <div>
               <CardHeader>
                 <div className="flex justify-between items-center">
@@ -281,25 +281,13 @@ export default function PricingPage() {
           </Card>
         </div>
 
-        {/* Visible FAQ Accordion Section */}
-        <section aria-label="Frequently Asked Questions" className="max-w-3xl mx-auto pt-10 space-y-6">
-          <div className="text-center space-y-1">
-            <h2 className="text-xl font-bold text-white flex items-center justify-center gap-2">
-              <HelpCircle className="w-5 h-5 text-racing-red" />
-              <span>Subscription &amp; Billing FAQ</span>
-            </h2>
-            <p className="text-xs text-zinc-400">Everything you need to know about payment security, plans, and cancellation.</p>
-          </div>
-
-          <div className="space-y-4">
-            {PRICING_FAQS.map((faq, idx) => (
-              <div key={idx} className="p-4 rounded-xl border border-zinc-800 bg-carbon-900/80 space-y-1.5">
-                <h3 className="font-bold text-sm text-zinc-200">{faq.question}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Compact, Crawlable FAQ Accordion */}
+        <FAQAccordion
+          items={PRICING_FAQS}
+          title="Subscription & Billing FAQ"
+          subtitle="Everything you need to know about encrypted payments, billing cycles, and self-service cancellation."
+          className="pt-6"
+        />
       </div>
     </>
   );

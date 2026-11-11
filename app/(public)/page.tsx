@@ -16,6 +16,9 @@ import {
   MapPin,
   TrendingUp,
 } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { FAQAccordion } from "@/components/ui/faq-accordion";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { LazyTelemetryPreview } from "@/components/racing/lazy-telemetry-preview";
 import { PRO_DRIVERS } from "@/lib/drivers";
 import { GRAND_PRIX_LIST } from "@/lib/grand-prix";
@@ -144,11 +147,12 @@ export default function LandingPage() {
               </span>
             </h1>
 
-            {/* AEO Direct Answer Target Box (40-60 words) */}
-            <div className="max-w-3xl mx-auto p-4 sm:p-5 rounded-xl bg-carbon-900/90 border border-zinc-700/80 text-left shadow-2xl">
-              <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
-                <strong className="text-white font-semibold">What is Formula 1 telemetry?</strong> Formula 1 telemetry is real-time digital sensor data transmitted from an F1 car&apos;s Electronic Control Unit (ECU) across 300+ onboard sensors. It records throttle application, brake pressure, velocity, engine RPM, steering angle, and tyre surface temperatures to analyze lap time deltas and driving lines.
-              </p>
+            {/* AEO Direct Answer Target Box */}
+            <div className="max-w-3xl mx-auto text-left">
+              <QuickAnswer
+                question="What is Formula 1 telemetry?"
+                answer="Formula 1 telemetry is real-time digital sensor data transmitted from an F1 car's Electronic Control Unit (ECU) across 300+ onboard sensors. It records throttle application, brake pressure, velocity, engine RPM, steering angle, and tyre surface temperatures to analyze lap time deltas and driving lines."
+              />
             </div>
 
             <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-zinc-400 leading-relaxed">
@@ -369,37 +373,22 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 6. AEO VISIBLE FAQ SECTION (MATCHING FAQPAGESCHEMA) */}
+        {/* 6. AEO VISIBLE FAQ ACCORDION (COMPACT & CRAWLABLE) */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 max-w-4xl mx-auto w-full max-w-full overflow-hidden">
-          <div className="text-center space-y-2 mb-10">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-400">
-              <HelpCircle className="w-3.5 h-3.5 text-racing-red" />
-              <span>FREQUENTLY ASKED QUESTIONS</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Formula 1 Telemetry &amp; Analytics FAQ
-            </h2>
-            <p className="text-xs sm:text-sm text-zinc-400">
-              Clear answers to the most common questions about Grand Prix car telemetry and our analytics platform.
-            </p>
-          </div>
+          <FAQAccordion
+            items={FAQS}
+            title="Formula 1 Telemetry & Analytics FAQ"
+            subtitle="Clear answers to the most common questions about Grand Prix car telemetry and our analytics platform."
+          />
+        </section>
 
-          <div className="space-y-4">
-            {FAQS.map((faq, idx) => (
-              <div
-                key={idx}
-                className="p-5 rounded-xl border border-zinc-800 bg-carbon-900/90 space-y-2"
-              >
-                <h3 className="text-base font-bold text-white flex items-start gap-2">
-                  <span className="text-racing-red font-mono text-sm shrink-0">Q{idx + 1}.</span>
-                  <span>{faq.question}</span>
-                </h3>
-                <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed pl-6">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
-          </div>
+        {/* Pro Marketing Section */}
+        <section className="py-8 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto w-full max-w-full">
+          <ProMarketingCard
+            title="Accelerate Your F1 Analysis with Pro"
+            subtitle="Get unlimited high-frequency speed overlays, tyre degradation curve models, and timing tower replays for $9.99/mo."
+            contextTag="FULL PRO MEMBERSHIP"
+          />
         </section>
 
         {/* 7. CALL TO ACTION */}

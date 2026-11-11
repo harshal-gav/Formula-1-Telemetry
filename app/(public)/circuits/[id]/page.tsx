@@ -17,6 +17,8 @@ import {
   Shield,
   HelpCircle,
 } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { GRAND_PRIX_LIST, GrandPrixCircuit } from "@/lib/grand-prix";
 
 export const revalidate = 86400; // Static revalidation daily
@@ -165,12 +167,10 @@ export default async function CircuitDetailPage({
             {c.circuitName}
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-950/80 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
-            <p>
-              <strong className="text-white font-semibold">What are the technical specs of {c.circuitName}?</strong> Located in {c.country}, {c.circuitName} spans {c.lapDistanceMeters.toLocaleString()} meters with {c.turns} turns and {c.drsZones} DRS zones. The track features a terminal speed trap of {c.topSpeedTrapKmH} km/h, {c.heavyBrakingZones} heavy braking zones, and a lap record of {c.lapRecord.time} held by {c.lapRecord.driver}.
-            </p>
-          </div>
+          <QuickAnswer
+            question={`What are the technical specs of ${c.circuitName}?`}
+            answer={`Located in ${c.country}, ${c.circuitName} spans ${c.lapDistanceMeters.toLocaleString()} meters with ${c.turns} turns and ${c.drsZones} DRS zones. The track features a terminal speed trap of ${c.topSpeedTrapKmH} km/h, ${c.heavyBrakingZones} heavy braking zones, and a lap record of ${c.lapRecord.time} held by ${c.lapRecord.driver}.`}
+          />
 
           <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-zinc-400 pt-2 border-t border-zinc-800/80">
             <div className="flex items-center gap-1.5">
@@ -321,6 +321,13 @@ export default async function CircuitDetailPage({
             </table>
           </div>
         </section>
+
+        {/* Pro Circuit Telemetry Marketing Card */}
+        <ProMarketingCard
+          title={`Unlock Full Telemetry Traces for ${c.circuitName}`}
+          subtitle={`Compare braking points, speed traces, throttle curves, and tyre wear lap-by-lap on this circuit with Pro for $9.99/mo.`}
+          contextTag="CIRCUIT TELEMETRY ACCESS"
+        />
 
         {/* Cross-Link Card to Race and Telemetry */}
         <section aria-label="Related Grand Prix Telemetry" className="p-6 rounded-2xl bg-gradient-to-r from-carbon-900 via-carbon-900 to-red-950/40 border border-racing-red/40 flex flex-col sm:flex-row items-center justify-between gap-4">

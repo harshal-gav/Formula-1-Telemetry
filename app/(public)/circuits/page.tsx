@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, ChevronRight, Activity, Timer, HelpCircle, ArrowRight } from "lucide-react";
+import { MapPin, ChevronRight, Activity, Timer, ArrowRight } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { FAQAccordion } from "@/components/ui/faq-accordion";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { GRAND_PRIX_LIST } from "@/lib/grand-prix";
 
 export const revalidate = 86400; // Static revalidation daily
@@ -113,12 +116,10 @@ export default function CircuitsDirectoryPage() {
             <span>Formula 1 Circuits &amp; Track Telemetry</span>
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
-            <p>
-              <strong className="text-white font-semibold">What are the 2026 Formula 1 circuits?</strong> The 2026 championship is hosted across 23 world-renowned racing tracks, ranging from high-speed power temples like Monza (354.2 km/h) and Silverstone to technical street circuits like Monaco and Singapore. Each circuit profile includes official lap records, corner counts, DRS corridors, and tyre degradation ratings.
-            </p>
-          </div>
+          <QuickAnswer
+            question="What are the 2026 Formula 1 circuits?"
+            answer="The 2026 championship is hosted across 23 world-renowned racing tracks, ranging from high-speed power temples like Monza (354.2 km/h) and Silverstone to technical street circuits like Monaco and Singapore. Each circuit profile includes official lap records, corner counts, DRS corridors, and tyre degradation ratings."
+          />
 
           <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl">
             Technical telemetry profiles, circuit geometries, heavy braking zones, and official all-time lap records across all 23 Grand Prix tracks.
@@ -186,27 +187,20 @@ export default function CircuitsDirectoryPage() {
           ))}
         </section>
 
-        {/* Visible FAQ Section */}
-        <section aria-label="Frequently Asked Questions" className="pt-8 border-t border-zinc-800/80 space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-racing-red" />
-              <span>Circuit Architecture &amp; Telemetry FAQ</span>
-            </h2>
-            <p className="text-xs text-zinc-400">
-              Technical answers regarding circuit telemetry, top speed traps, and track records.
-            </p>
-          </div>
+        {/* Pro Marketing Card */}
+        <ProMarketingCard
+          title="Analyze High-Frequency Circuit Telemetry Traces"
+          subtitle="Pro subscribers can inspect speed traps, braking deceleration points, and full throttle sectors for all 23 circuits for $9.99/mo."
+          contextTag="CIRCUIT TELEMETRY BENCHMARKS"
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {CIRCUITS_FAQS.map((faq, i) => (
-              <div key={i} className="p-4 rounded-xl border border-zinc-800 bg-carbon-900/60 space-y-1.5">
-                <h3 className="text-sm font-bold text-zinc-200">{faq.question}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Compact, Crawlable FAQ Accordion */}
+        <FAQAccordion
+          items={CIRCUITS_FAQS}
+          title="Circuit Architecture & Telemetry FAQ"
+          subtitle="Technical answers regarding circuit telemetry, top speed traps, and track records."
+          className="pt-6 border-t border-zinc-800/80"
+        />
       </div>
     </>
   );

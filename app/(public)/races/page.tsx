@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Calendar, MapPin, ChevronRight, Flag, HelpCircle, Activity, Gauge } from "lucide-react";
+import { Calendar, MapPin, ChevronRight, Flag, Activity, Gauge } from "lucide-react";
+import { QuickAnswer } from "@/components/ui/quick-answer";
+import { FAQAccordion } from "@/components/ui/faq-accordion";
+import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
 import { GRAND_PRIX_LIST } from "@/lib/grand-prix";
 
 export const revalidate = 3600; // ISR hourly
@@ -113,12 +116,10 @@ export default function RacesPage() {
             <span>2026 Formula 1 Grand Prix Calendar</span>
           </h1>
 
-          {/* AEO Direct Answer Target Box (40-60 words) */}
-          <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
-            <p>
-              <strong className="text-white font-semibold">What is the 2026 Formula 1 schedule?</strong> The 2026 Formula 1 championship consists of 23 Grand Prix rounds starting with the Australian Grand Prix at Albert Park in March and concluding in Abu Dhabi in December. Each round features complete lap timing data, fastest lap telemetry benchmarks, tyre compound degradation curves, and finishing classifications.
-            </p>
-          </div>
+          <QuickAnswer
+            question="What is the 2026 Formula 1 schedule?"
+            answer="The 2026 Formula 1 championship consists of 23 Grand Prix rounds starting with the Australian Grand Prix at Albert Park in March and concluding in Abu Dhabi in December. Each round features complete lap timing data, fastest lap telemetry benchmarks, tyre compound degradation curves, and finishing classifications."
+          />
 
           <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl">
             Complete official timetable, circuit telemetry benchmarks, speed trap velocities, and race outcomes for the 2026 World Championship.
@@ -195,27 +196,20 @@ export default function RacesPage() {
           })}
         </section>
 
-        {/* Visible FAQ Section */}
-        <section aria-label="Frequently Asked Questions" className="pt-8 border-t border-zinc-800/80 space-y-6">
-          <div className="space-y-1">
-            <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              <HelpCircle className="w-5 h-5 text-racing-red" />
-              <span>Grand Prix Calendar &amp; Timing FAQ</span>
-            </h2>
-            <p className="text-xs text-zinc-400">
-              Technical answers regarding season dates, session timing, and circuit telemetry telemetry benchmarks.
-            </p>
-          </div>
+        {/* Pro Marketing Banner for Race Calendar */}
+        <ProMarketingCard
+          title="Analyze Flying Lap Telemetry for Every Race"
+          subtitle="Pro members get full throttle and braking telemetry traces, tyre degradation curves, and session replays across all 23 Grand Prix circuits."
+          contextTag="RACE TELEMETRY PASS"
+        />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {RACES_FAQS.map((faq, i) => (
-              <div key={i} className="p-4 rounded-xl border border-zinc-800 bg-carbon-900/60 space-y-1.5">
-                <h3 className="text-sm font-bold text-zinc-200">{faq.question}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Compact, Crawlable FAQ Accordion */}
+        <FAQAccordion
+          items={RACES_FAQS}
+          title="Grand Prix Calendar & Timing FAQ"
+          subtitle="Technical answers regarding season dates, session timing, and circuit telemetry benchmarks."
+          className="pt-6 border-t border-zinc-800/80"
+        />
       </div>
     </>
   );
