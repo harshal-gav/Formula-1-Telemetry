@@ -1,41 +1,30 @@
 import { MetadataRoute } from "next";
 
-function getBaseUrl(): string {
-  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
-  if (envUrl && !envUrl.includes("localhost")) {
-    return envUrl.replace(/\/$/, "");
-  }
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
-  return "https://formula1telemetry.com";
-}
+const CANONICAL_BASE_URL = "https://www.formula1telemetry.com";
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = getBaseUrl();
-
   return {
     rules: [
       {
         userAgent: "*",
-        allow: [
-          "/",
-          "/races",
-          "/drivers",
-          "/standings",
-          "/pricing",
-          "/pro",
-          "/dashboard",
-          "/terms",
-          "/privacy",
-          "/refund",
-        ],
+        allow: "/",
         disallow: ["/api/", "/account", "/login", "/signup"],
       },
+      {
+        userAgent: [
+          "GPTBot",
+          "OAI-SearchBot",
+          "ChatGPT-User",
+          "PerplexityBot",
+          "ClaudeBot",
+          "Claude-SearchBot",
+          "Google-Extended",
+          "Applebot-Extended",
+        ],
+        allow: "/",
+        disallow: ["/api/"],
+      },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${CANONICAL_BASE_URL}/sitemap.xml`,
   };
 }
