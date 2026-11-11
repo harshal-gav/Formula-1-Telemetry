@@ -18,6 +18,8 @@ import {
   User as UserIcon,
   LogOut,
   CreditCard,
+  MapPin,
+  BookOpen,
 } from "lucide-react";
 
 export function Navbar() {
@@ -30,6 +32,8 @@ export function Navbar() {
     { href: "/races", label: "Races", icon: Calendar },
     { href: "/drivers", label: "Drivers", icon: Users },
     { href: "/standings", label: "Standings", icon: Trophy },
+    { href: "/circuits", label: "Circuits", icon: MapPin },
+    { href: "/guides", label: "Guides", icon: BookOpen },
     { href: "/pro", label: "Pro Analytics", icon: Zap, isPro: true },
     { href: "/pricing", label: "Pricing" },
   ];
@@ -54,7 +58,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1" aria-label="Main Navigation">
           {navLinks.map((link) => {
             const isActive = pathname.startsWith(link.href) && (link.href !== "/" || pathname === "/");
             const Icon = link.icon;
@@ -64,7 +68,7 @@ export function Navbar() {
                 href={link.href}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
                   isActive
-                    ? "bg-zinc-800/90 text-white"
+                    ? "bg-zinc-800/90 text-white font-semibold"
                     : "text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/40"
                 }`}
               >
@@ -77,41 +81,40 @@ export function Navbar() {
         </nav>
 
         {/* Auth CTA & Profile */}
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           {authLoading ? (
             <div className="w-24 h-8 bg-zinc-800 rounded animate-pulse" />
           ) : user ? (
             <div className="flex items-center gap-3">
               {isPro ? (
-                <div className="hidden lg:flex items-center gap-1 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full font-mono">
+                <div className="flex items-center gap-1 text-xs text-amber-300 bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 rounded-full font-mono">
                   <Zap className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                   <span>PRO SUBSCRIBER</span>
                 </div>
               ) : (
                 <Link href="/pricing">
-                  <Button variant="racing" size="sm" className="h-8 text-xs font-semibold">
-                    Upgrade to Pro
+                  <Button variant="racing" size="sm" className="h-8 text-xs font-semibold gap-1.5">
+                    <Zap className="w-3.5 h-3.5" />
+                    <span>Go Pro ($9.99/mo)</span>
                   </Button>
                 </Link>
               )}
 
               <Link href="/account">
-                <Button variant="outline" size="sm" className="h-8 gap-1.5 text-xs">
+                <Button variant="ghost" size="sm" className="h-8 text-xs gap-1.5 text-zinc-300">
                   <UserIcon className="w-3.5 h-3.5" />
-                  <span className="max-w-[100px] truncate">
-                    {user.displayName || user.email?.split("@")[0] || "Account"}
-                  </span>
+                  <span className="max-w-[100px] truncate">{user.email?.split("@")[0]}</span>
                 </Button>
               </Link>
 
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => logout()}
-                title="Sign out"
+                onClick={logout}
                 className="h-8 w-8 text-zinc-400 hover:text-red-400"
+                aria-label="Sign out"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5" />
               </Button>
             </div>
           ) : (
@@ -130,13 +133,14 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Mobile menu button */}
-        <div className="flex md:hidden items-center gap-2">
+        {/* Mobile menu button with explicit accessible name */}
+        <div className="flex lg:hidden items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-zinc-400"
+            aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
@@ -145,7 +149,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-zinc-800 bg-carbon-900 px-4 pt-2 pb-6 space-y-3">
+        <div className="lg:hidden border-b border-zinc-800 bg-carbon-900 px-4 pt-2 pb-6 space-y-3">
           <div className="space-y-1">
             {navLinks.map((link) => (
               <Link
@@ -163,38 +167,38 @@ export function Navbar() {
             ))}
           </div>
 
-          <div className="pt-4 border-t border-zinc-800 flex flex-col gap-2">
+          <div className="pt-3 border-t border-zinc-800 space-y-2">
             {user ? (
-              <>
+              <div className="space-y-2">
                 <Link
                   href="/account"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-md text-sm text-zinc-300 hover:bg-zinc-800"
+                  className="flex items-center gap-2 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800 rounded-md"
                 >
                   <CreditCard className="w-4 h-4" />
-                  Account & Billing
+                  <span>Account & Subscription</span>
                 </Link>
-                <Button
-                  variant="outline"
+                <button
                   onClick={() => {
                     logout();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full text-xs text-red-400"
+                  className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-zinc-800 rounded-md"
                 >
-                  Sign Out
-                </Button>
-              </>
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
             ) : (
-              <div className="grid grid-cols-2 gap-2">
+              <div className="flex flex-col gap-2">
                 <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full text-xs">
                     Sign In
                   </Button>
                 </Link>
                 <Link href="/signup" onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="racing" className="w-full text-xs">
-                    Get Started
+                  <Button variant="racing" className="w-full text-xs font-semibold">
+                    Get Started Free
                   </Button>
                 </Link>
               </div>
@@ -205,4 +209,3 @@ export function Navbar() {
     </header>
   );
 }
-

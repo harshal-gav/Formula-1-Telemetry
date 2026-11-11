@@ -121,6 +121,7 @@ export function TelemetryChart() {
   const [metric, setMetric] = useState<"speed" | "throttle" | "brake" | "gear">("speed");
   const [driverAId, setDriverAId] = useState<string>("nor");
   const [driverBId, setDriverBId] = useState<string>("ver");
+  const [driverOptionsLoaded, setDriverOptionsLoaded] = useState<boolean>(false);
 
   const driverA = PRO_DRIVERS.find((d) => d.id === driverAId) || PRO_DRIVERS[1];
   const driverB = PRO_DRIVERS.find((d) => d.id === driverBId) || PRO_DRIVERS[0];
@@ -194,17 +195,28 @@ export function TelemetryChart() {
             {/* Driver A Dropdown */}
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: driverA.teamColor }} />
-              <span className="text-zinc-400">Driver 1:</span>
+              <label htmlFor="driverA-select" className="text-zinc-400">Driver 1:</label>
               <select
+                id="driverA-select"
+                aria-label="Select Driver 1 for telemetry comparison"
                 value={driverAId}
                 onChange={(e) => setDriverAId(e.target.value)}
+                onFocus={() => setDriverOptionsLoaded(true)}
+                onPointerDown={() => setDriverOptionsLoaded(true)}
+                onMouseEnter={() => setDriverOptionsLoaded(true)}
                 className="bg-zinc-950 border border-zinc-800 rounded px-2.5 py-1 text-white font-bold text-xs focus:ring-1 focus:ring-racing-red cursor-pointer max-w-[190px] truncate"
               >
-                {PRO_DRIVERS.map((d) => (
-                  <option key={d.id} value={d.id} disabled={d.id === driverBId}>
-                    #{d.number} {d.name} ({d.constructorName})
+                {driverOptionsLoaded ? (
+                  PRO_DRIVERS.map((d) => (
+                    <option key={d.id} value={d.id} disabled={d.id === driverBId}>
+                      #{d.number} {d.name} ({d.constructorName})
+                    </option>
+                  ))
+                ) : (
+                  <option value={driverA.id}>
+                    #{driverA.number} {driverA.name} ({driverA.constructorName})
                   </option>
-                ))}
+                )}
               </select>
             </div>
 
@@ -213,17 +225,28 @@ export function TelemetryChart() {
             {/* Driver B Dropdown */}
             <div className="flex items-center gap-2">
               <span className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: driverB.teamColor }} />
-              <span className="text-zinc-400">Driver 2:</span>
+              <label htmlFor="driverB-select" className="text-zinc-400">Driver 2:</label>
               <select
+                id="driverB-select"
+                aria-label="Select Driver 2 for telemetry comparison"
                 value={driverBId}
                 onChange={(e) => setDriverBId(e.target.value)}
+                onFocus={() => setDriverOptionsLoaded(true)}
+                onPointerDown={() => setDriverOptionsLoaded(true)}
+                onMouseEnter={() => setDriverOptionsLoaded(true)}
                 className="bg-zinc-950 border border-zinc-800 rounded px-2.5 py-1 text-white font-bold text-xs focus:ring-1 focus:ring-racing-red cursor-pointer max-w-[190px] truncate"
               >
-                {PRO_DRIVERS.map((d) => (
-                  <option key={d.id} value={d.id} disabled={d.id === driverAId}>
-                    #{d.number} {d.name} ({d.constructorName})
+                {driverOptionsLoaded ? (
+                  PRO_DRIVERS.map((d) => (
+                    <option key={d.id} value={d.id} disabled={d.id === driverAId}>
+                      #{d.number} {d.name} ({d.constructorName})
+                    </option>
+                  ))
+                ) : (
+                  <option value={driverB.id}>
+                    #{driverB.number} {driverB.name} ({driverB.constructorName})
                   </option>
-                ))}
+                )}
               </select>
             </div>
           </div>
@@ -331,6 +354,55 @@ export function TelemetryChart() {
             <span className="text-base font-bold text-racing-cyan">{apexDeltaSec}s</span>
             <span className="text-[10px] text-racing-cyan block">Lap record: {selectedGP.lapRecord.time}</span>
           </div>
+        </div>
+
+        {/* Accessible & Crawlable Text/Table Alternative for Telemetry Chart */}
+        <div className="mt-4 pt-3 border-t border-zinc-800/80">
+          <details className="text-xs font-mono text-zinc-400">
+            <summary className="cursor-pointer hover:text-white transition-colors py-1 select-none font-semibold text-zinc-300">
+              View Telemetry Comparison Table Alternative (Screen Reader & Accessible Data)
+            </summary>
+            <div className="mt-2 overflow-x-auto">
+              <table className="w-full text-left border border-zinc-800 divide-y divide-zinc-800 text-[11px]">
+                <caption className="sr-only">
+                  Telemetry Comparison between {driverA.name} and {driverB.name} at {selectedGP.name}
+                </caption>
+                <thead className="bg-zinc-950 text-zinc-400">
+                  <tr>
+                    <th scope="col" className="p-2 font-semibold">Telemetry Metric</th>
+                    <th scope="col" className="p-2 font-semibold">{driverA.name} (#{driverA.number})</th>
+                    <th scope="col" className="p-2 font-semibold">{driverB.name} (#{driverB.number})</th>
+                    <th scope="col" className="p-2 font-semibold">Comparative Advantage</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
+                  <tr>
+                    <td className="p-2 text-zinc-400 font-medium">Top Speed Trap</td>
+                    <td className="p-2">{(selectedGP.topSpeedTrapKmH + driverA.speedOffset * 2.5).toFixed(1)} km/h</td>
+                    <td className="p-2">{(selectedGP.topSpeedTrapKmH + driverB.speedOffset * 2.5).toFixed(1)} km/h</td>
+                    <td className="p-2 text-emerald-400 font-semibold">{speedDelta >= 0 ? `${driverA.code} (+${speedDelta.toFixed(1)} km/h)` : `${driverB.code} (+${Math.abs(speedDelta).toFixed(1)} km/h)`}</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 text-zinc-400 font-medium">Full Throttle Application</td>
+                    <td className="p-2">{Math.min(100, Math.round(selectedGP.fullThrottlePercent * driverA.throttleAggression))}%</td>
+                    <td className="p-2">{Math.min(100, Math.round(selectedGP.fullThrottlePercent * driverB.throttleAggression))}%</td>
+                    <td className="p-2">{driverA.throttleAggression >= driverB.throttleAggression ? `${driverA.code} earlier exit throttle` : `${driverB.code} earlier exit throttle`}</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 text-zinc-400 font-medium">Braking Zone Transition</td>
+                    <td className="p-2">Turn 1 / Turn 4 (-4.9G)</td>
+                    <td className="p-2">Turn 1 / Turn 4 (-4.8G)</td>
+                    <td className="p-2 text-zinc-400">{apexDeltaSec}s apex differential</td>
+                  </tr>
+                  <tr>
+                    <td className="p-2 text-zinc-400 font-medium">Circuit Lap Length</td>
+                    <td className="p-2" colSpan={2}>{selectedGP.lapDistanceMeters.toLocaleString()} meters ({selectedGP.turns} turns, {selectedGP.drsZones} DRS zones)</td>
+                    <td className="p-2">Lap Record: {selectedGP.lapRecord.time}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
         </div>
       </CardContent>
     </Card>

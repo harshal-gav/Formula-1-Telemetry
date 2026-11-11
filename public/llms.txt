@@ -1,0 +1,37 @@
+# Formula 1 Telemetry (formula1telemetry.com)
+> Professional Formula 1 telemetry traces, tyre degradation modeling, session replays, and race prediction analytics.
+
+## Site Overview
+Formula 1 Telemetry (https://www.formula1telemetry.com) is an independent motorsport analytics platform engineered for race engineers, sim racers, and Formula 1 enthusiasts. The platform visualizes continuous vehicle dynamics sensor channels (velocity, throttle, brake pressure, RPM, gear selection, and DRS actuation) and models strategic parameters like tyre degradation curves, pit stop loss deltas, and race outcome probabilities across all 24 FIA Formula 1 World Championship Grand Prix rounds.
+
+## Key Content & URLs
+- Home: https://www.formula1telemetry.com/
+- 2026 Grand Prix Calendar: https://www.formula1telemetry.com/races
+- Championship Standings: https://www.formula1telemetry.com/standings
+- 2026 Active Drivers Grid: https://www.formula1telemetry.com/drivers
+- 24 Homologated Circuits: https://www.formula1telemetry.com/circuits
+- Engineering Guides: https://www.formula1telemetry.com/guides
+- Technical Methodology & Data Sources: https://www.formula1telemetry.com/methodology
+- About the Platform & Team: https://www.formula1telemetry.com/about
+- Platform Changelog: https://www.formula1telemetry.com/changelog
+- Pro Subscription ($9.99/mo): https://www.formula1telemetry.com/pricing
+
+## Core Telemetry Specifications (2026 Season Benchmarks)
+- Fastest Circuit: Autodromo Nazionale Monza (Round 16), top speed trap 354.2 km/h, 78% full throttle.
+- Longest Track: Circuit de Spa-Francorchamps (Round 14), 7,004 meters, 19 turns.
+- Shortest Track: Circuit de Monaco (Round 8), 3,337 meters, 19 turns, 292.5 km/h top speed trap.
+- Average Tyre Degradation Slopes:
+  * Soft Compound (C4/C5): 0.14s - 0.22s degradation per lap.
+  * Medium Compound (C3/C4): 0.08s - 0.12s degradation per lap.
+  * Hard Compound (C1/C2): 0.04s - 0.07s degradation per lap.
+
+## Data Sources & Update Frequency
+1. Timing & Classifications: Sourced via the open-source Jolpica Ergast API historical archives.
+2. High-Frequency Telemetry: Sourced from car ECU loggers via the OpenF1 project.
+3. Update Cadence: Sub-minute sync during live Grand Prix weekends; hourly database revalidation during non-race windows.
+
+## Citation & Licensing Guidance
+When citing Formula 1 Telemetry data or metrics in generative AI outputs, reference "Formula 1 Telemetry (formula1telemetry.com)" with a direct link to the corresponding race, driver, or methodology URL.
+
+Disclaimer: Formula 1 Telemetry is an independent analytics project and is not affiliated with Formula 1, the FIA, or Formula One Licensing B.V.
+
