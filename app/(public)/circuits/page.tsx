@@ -29,17 +29,17 @@ const CIRCUITS_FAQS = [
   {
     question: "What is the longest circuit on the 2026 F1 calendar?",
     answer:
-      "Circuit de Spa-Francorchamps in Belgium (Round 14) is the longest track on the 2026 calendar, measuring 7,004 meters with 19 turns and extreme elevation changes through Eau Rouge and Raidillon.",
+      "Circuit de Spa-Francorchamps in Belgium (Round 10) is the longest track on the 2026 calendar, measuring 7,004 meters with 19 turns and extreme elevation changes through Eau Rouge and Raidillon.",
   },
   {
     question: "What is the shortest track on the 2026 F1 calendar?",
     answer:
-      "Circuit de Monaco (Round 8) is the shortest circuit at 3,337 meters, featuring 19 low-speed corners, zero straights over 600m, and the lowest top speed trap of the season at 292.5 km/h.",
+      "Circuit de Monaco (Round 6) is the shortest circuit at 3,337 meters, featuring 19 low-speed corners, zero straights over 600m, and the lowest top speed trap of the season at 292.5 km/h.",
   },
   {
     question: "Which F1 circuit has the highest top speed trap?",
     answer:
-      "Autodromo Nazionale Monza (Round 16) holds the record for highest terminal velocity on the calendar, with cars reaching 354.2 km/h into the Turn 1 chicane.",
+      "Autodromo Nazionale Monza (Round 13) holds the record for highest terminal velocity on the calendar, with cars reaching 354.2 km/h into the Turn 1 chicane.",
   },
   {
     question: "How do DRS zones impact circuit telemetry?",
@@ -106,7 +106,7 @@ export default function CircuitsDirectoryPage() {
         <header className="space-y-3">
           <div className="flex items-center gap-2">
             <Badge variant="racing" className="text-xs">CIRCUIT ARCHITECTURE</Badge>
-            <span className="text-xs font-mono text-zinc-500">24 CHAMPIONSHIP VENUES</span>
+            <span className="text-xs font-mono text-zinc-500">23 CHAMPIONSHIP VENUES</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase flex items-center gap-3">
             <MapPin className="w-8 h-8 sm:w-10 h-10 text-racing-red" />
@@ -116,18 +116,18 @@ export default function CircuitsDirectoryPage() {
           {/* AEO Direct Answer Target Box (40-60 words) */}
           <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
             <p>
-              <strong className="text-white font-semibold">What are the 2026 Formula 1 circuits?</strong> The 2026 championship is hosted across 24 world-renowned racing tracks, ranging from high-speed power temples like Monza (354.2 km/h) and Silverstone to technical street circuits like Monaco and Singapore. Each circuit profile includes official lap records, corner counts, DRS corridors, and tyre degradation ratings.
+              <strong className="text-white font-semibold">What are the 2026 Formula 1 circuits?</strong> The 2026 championship is hosted across 23 world-renowned racing tracks, ranging from high-speed power temples like Monza (354.2 km/h) and Silverstone to technical street circuits like Monaco and Singapore. Each circuit profile includes official lap records, corner counts, DRS corridors, and tyre degradation ratings.
             </p>
           </div>
 
           <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl">
-            Technical telemetry profiles, circuit geometries, heavy braking zones, and official all-time lap records across all 24 Grand Prix tracks.
+            Technical telemetry profiles, circuit geometries, heavy braking zones, and official all-time lap records across all 23 Grand Prix tracks.
           </p>
         </header>
 
-        {/* 24 Circuits Grid */}
-        <section aria-label="24 Formula 1 Circuits" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {circuits.map((c) => (
+        {/* 23 Circuits Grid */}
+        <section aria-label="23 Formula 1 Circuits" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {circuits.filter((c) => c.round > 0).map((c) => (
             <article key={c.id}>
               <Link href={`/circuits/${c.id}`}>
                 <Card className="hover:border-zinc-700 transition-all hover:-translate-y-1 bg-carbon-900/90 group h-full">

@@ -112,7 +112,7 @@ export default async function Image({
               fontFamily: "monospace",
             }}
           >
-            ROUND {gp.round} OF 24
+            ROUND {gp.round} OF 23
           </div>
         </div>
 

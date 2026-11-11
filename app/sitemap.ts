@@ -37,8 +37,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${CANONICAL_BASE_URL}/refund`, lastModified: policyDate, changeFrequency: "monthly", priority: 0.4 },
   ];
 
-  // 24 Programmatic Grand Prix race pages
-  const raceRoutes: MetadataRoute.Sitemap = GRAND_PRIX_LIST.map((gp) => ({
+  // 23 Programmatic Grand Prix race pages
+  const raceRoutes: MetadataRoute.Sitemap = GRAND_PRIX_LIST.filter((gp) => gp.round > 0).map((gp) => ({
     url: `${CANONICAL_BASE_URL}/races/${gp.round}`,
     lastModified: lastSyncDate,
     changeFrequency: gp.status === "completed" ? "monthly" : "weekly",

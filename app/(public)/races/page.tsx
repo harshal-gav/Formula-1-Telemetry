@@ -12,7 +12,7 @@ const CANONICAL_URL = "https://www.formula1telemetry.com/races";
 export const metadata: Metadata = {
   title: "2026 F1 Race Calendar & Results | Formula 1 Telemetry",
   description:
-    "Explore the complete 2026 Formula 1 race schedule, Grand Prix dates, circuit specifications, telemetry overviews, and round results for all 24 rounds.",
+    "Explore the complete 2026 Formula 1 race schedule, Grand Prix dates, circuit specifications, telemetry overviews, and round results for all 23 rounds.",
   alternates: {
     canonical: CANONICAL_URL,
   },
@@ -29,7 +29,7 @@ const RACES_FAQS = [
   {
     question: "How many races are on the 2026 Formula 1 calendar?",
     answer:
-      "The 2026 Formula 1 World Championship schedule features 24 official Grand Prix rounds spanning across Europe, the Americas, Asia, Australia, and the Middle East.",
+      "The 2026 Formula 1 World Championship schedule features 23 official Grand Prix rounds spanning across Europe, the Americas, Asia, Australia, and the Middle East.",
   },
   {
     question: "How quickly are F1 telemetry and race results published?",
@@ -44,7 +44,7 @@ const RACES_FAQS = [
   {
     question: "What is the fastest track on the 2026 F1 calendar?",
     answer:
-      "Monza (Autodromo Nazionale Monza, Round 16) is the fastest circuit on the 2026 calendar, featuring an average lap speed exceeding 260 km/h and top speed traps reaching 354.2 km/h at the Variante del Rettifilo.",
+      "Monza (Autodromo Nazionale Monza, Round 13) is the fastest circuit on the 2026 calendar, featuring an average lap speed exceeding 260 km/h and top speed traps reaching 354.2 km/h at the Variante del Rettifilo.",
   },
 ];
 
@@ -106,7 +106,7 @@ export default function RacesPage() {
         <header className="space-y-3">
           <div className="flex items-center gap-2">
             <Badge variant="racing" className="text-xs">SEASON SCHEDULE</Badge>
-            <span className="text-xs font-mono text-zinc-500">24 OFFICIAL ROUNDS</span>
+            <span className="text-xs font-mono text-zinc-500">23 OFFICIAL ROUNDS</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase flex items-center gap-3">
             <Calendar className="w-8 h-8 sm:w-10 h-10 text-racing-red" />
@@ -116,7 +116,7 @@ export default function RacesPage() {
           {/* AEO Direct Answer Target Box (40-60 words) */}
           <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
             <p>
-              <strong className="text-white font-semibold">What is the 2026 Formula 1 schedule?</strong> The 2026 Formula 1 championship consists of 24 Grand Prix rounds starting with the Bahrain Grand Prix in March and concluding in Abu Dhabi in December. Each round features complete lap timing data, fastest lap telemetry benchmarks, tyre compound degradation curves, and finishing classifications.
+              <strong className="text-white font-semibold">What is the 2026 Formula 1 schedule?</strong> The 2026 Formula 1 championship consists of 23 Grand Prix rounds starting with the Australian Grand Prix at Albert Park in March and concluding in Abu Dhabi in December. Each round features complete lap timing data, fastest lap telemetry benchmarks, tyre compound degradation curves, and finishing classifications.
             </p>
           </div>
 
@@ -125,9 +125,9 @@ export default function RacesPage() {
           </p>
         </header>
 
-        {/* Grid of 24 Races (Server-rendered HTML for search bots) */}
+        {/* Grid of 23 Races (Server-rendered HTML for search bots) */}
         <section aria-label="Grand Prix Rounds" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {races.map((race) => {
+          {races.filter((r) => r.round > 0).map((race) => {
             const isCompleted = race.status === "completed";
 
             return (
@@ -157,6 +157,12 @@ export default function RacesPage() {
                           <span>•</span>
                           <span>{race.country}</span>
                         </div>
+                        {race.result && (
+                          <div className="mt-2 text-xs font-mono text-amber-400 font-semibold flex items-center gap-1">
+                            <Flag className="w-3 h-3 text-racing-red" />
+                            <span>Winner: {race.result.winner}</span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="space-y-2 pt-3 border-t border-zinc-800/80 text-xs font-mono text-zinc-400">

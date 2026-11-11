@@ -7,66 +7,63 @@ Formula 1 Telemetry provides open-access timing schedules and championship class
 
 ## 2026 Formula 1 World Championship Reference Data
 
-### Championship Leaders (Post-Round 24)
-1. Max Verstappen (Red Bull Racing #1, Netherlands): 437 Points, P1 World Drivers' Championship. Pace offset: +2.8 km/h, Throttle Aggression: 1.05x.
-2. Lando Norris (McLaren #4, United Kingdom): 374 Points, P2 World Drivers' Championship. Pace offset: +2.6 km/h, Throttle Aggression: 1.03x.
-3. Charles Leclerc (Ferrari #16, Monaco): 356 Points, P3 World Drivers' Championship. Pace offset: +2.2 km/h, Throttle Aggression: 1.04x.
-4. Oscar Piastri (McLaren #81, Australia): 292 Points, P4 World Drivers' Championship. Pace offset: +1.8 km/h.
-5. Carlos Sainz (Williams #55, Spain): 290 Points, P5 World Drivers' Championship. Pace offset: +1.4 km/h.
-6. George Russell (Mercedes #63, United Kingdom): 245 Points, P6 World Drivers' Championship. Pace offset: +1.6 km/h.
-7. Lewis Hamilton (Ferrari #44, United Kingdom): 223 Points, P7 World Drivers' Championship. Pace offset: +1.9 km/h.
+### Championship Leaders (Official Post-Round 20 - Brazilian GP)
+1. Andrea Kimi Antonelli (Mercedes #12, Italy): 390 Points (9 Wins), P1 World Drivers' Championship. Pace offset: +2.8 km/h, Throttle Aggression: 1.05x.
+2. Max Verstappen (Red Bull Racing #1, Netherlands): 279 Points (3 Wins), P2 World Drivers' Championship. Pace offset: +2.6 km/h, Throttle Aggression: 1.05x.
+3. George Russell (Mercedes #63, United Kingdom): 262 Points (3 Wins), P3 World Drivers' Championship. Pace offset: +2.4 km/h, Throttle Aggression: 1.02x.
+4. Lewis Hamilton (Ferrari #44, United Kingdom): 261 Points (1 Win), P4 World Drivers' Championship. Pace offset: +2.3 km/h, Throttle Aggression: 1.03x.
+5. Charles Leclerc (Ferrari #16, Monaco): 249 Points (1 Win), P5 World Drivers' Championship. Pace offset: +2.2 km/h, Throttle Aggression: 1.04x.
+6. Lando Norris (McLaren #4, United Kingdom): 246 Points (3 Wins), P6 World Drivers' Championship. Pace offset: +2.1 km/h, Throttle Aggression: 1.03x.
+7. Oscar Piastri (McLaren #81, Australia): 152 Points, P7 World Drivers' Championship. Pace offset: +1.5 km/h.
+8. Isack Hadjar (Red Bull Racing #6, France): 122 Points, P8 World Drivers' Championship. Pace offset: +1.1 km/h.
+9. Liam Lawson (RB F1 Team #30, New Zealand): 89 Points, P9 World Drivers' Championship. Pace offset: +0.8 km/h.
+10. Pierre Gasly (Alpine #10, France): 42 Points, P10 World Drivers' Championship. Pace offset: +0.4 km/h.
 
 ### World Constructors' Championship Reference Data
-1. McLaren Formula 1 Team: 666 Points (6 Wins)
-2. Scuderia Ferrari: 652 Points (5 Wins)
-3. Oracle Red Bull Racing: 589 Points (9 Wins)
-4. Mercedes-AMG PETRONAS Formula One Team: 468 Points (4 Wins)
-5. Aston Martin Aramco Formula One Team: 94 Points
-6. BWT Alpine F1 Team: 65 Points
-7. MoneyGram Haas F1 Team: 58 Points
-8. Visa Cash App RB Formula One Team: 46 Points
-9. Williams Racing: 17 Points
-10. Stake F1 Team Kick Sauber: 4 Points
+1. Mercedes-AMG PETRONAS Formula One Team: 652 Points (12 Wins)
+2. Scuderia Ferrari: 510 Points (2 Wins)
+3. Oracle Red Bull Racing: 415 Points (3 Wins)
+4. McLaren Formula 1 Team: 398 Points (3 Wins)
+5. Visa Cash App RB Formula One Team: 114 Points
+6. BWT Alpine F1 Team: 69 Points
+7. MoneyGram Haas F1 Team: 31 Points
+8. Audi Formula One Team: 28 Points
+9. Williams Racing: 12 Points
+10. Aston Martin Aramco Formula One Team: 7 Points
+11. Cadillac Formula One Team: 0 Points
 
-## Circuit Telemetry Benchmarks: 24 Grand Prix Tracks
-1. Bahrain International Circuit (Sakhir): 5,412m length, 15 turns, 3 DRS zones, 338.4 km/h top speed trap, 64% full throttle, 23.5s pit delta.
-2. Jeddah Corniche Circuit (Saudi Arabia): 6,174m length, 27 turns, 3 DRS zones, 342.1 km/h top speed trap, 79% full throttle, 20.2s pit delta.
-3. Albert Park Circuit (Melbourne): 5,278m length, 14 turns, 4 DRS zones, 334.8 km/h top speed trap, 74% full throttle, 21.0s pit delta.
-4. Suzuka International Racing Course (Japan): 5,807m length, 18 turns, 1 DRS zone, 331.2 km/h top speed trap, 67% full throttle, 22.8s pit delta.
-5. Shanghai International Circuit (China): 5,451m length, 16 turns, 2 DRS zones, 340.5 km/h top speed trap, 58% full throttle, 23.0s pit delta.
-6. Miami International Autodrome (USA): 5,412m length, 19 turns, 3 DRS zones, 344.2 km/h top speed trap, 58% full throttle, 21.5s pit delta.
-7. Autodromo Enzo e Dino Ferrari (Imola): 4,909m length, 19 turns, 1 DRS zone, 330.6 km/h top speed trap, 71% full throttle, 24.8s pit delta.
-8. Circuit de Monaco (Monte Carlo): 3,337m length, 19 turns, 1 DRS zone, 292.5 km/h top speed trap, 34% full throttle, 24.0s pit delta.
-9. Circuit Gilles Villeneuve (Montreal): 4,361m length, 14 turns, 3 DRS zones, 346.0 km/h top speed trap, 60% full throttle, 19.5s pit delta.
-10. Circuit de Barcelona-Catalunya (Spain): 4,657m length, 14 turns, 2 DRS zones, 337.5 km/h top speed trap, 66% full throttle, 22.5s pit delta.
-11. Red Bull Ring (Spielberg): 4,318m length, 10 turns, 3 DRS zones, 335.2 km/h top speed trap, 77% full throttle, 20.5s pit delta.
-12. Silverstone Circuit (Great Britain): 5,891m length, 18 turns, 2 DRS zones, 340.2 km/h top speed trap, 76% full throttle, 22.0s pit delta.
-13. Hungaroring (Budapest): 4,381m length, 14 turns, 2 DRS zones, 318.5 km/h top speed trap, 55% full throttle, 21.2s pit delta.
-14. Circuit de Spa-Francorchamps (Belgium): 7,004m length, 19 turns, 2 DRS zones, 348.6 km/h top speed trap, 70% full throttle, 23.2s pit delta.
-15. Circuit Zandvoort (Netherlands): 4,259m length, 14 turns, 2 DRS zones, 328.0 km/h top speed trap, 62% full throttle, 21.8s pit delta.
-16. Autodromo Nazionale Monza (Italy): 5,793m length, 11 turns, 2 DRS zones, 354.2 km/h top speed trap, 78% full throttle, 24.5s pit delta.
-17. Baku City Circuit (Azerbaijan): 6,003m length, 20 turns, 2 DRS zones, 352.0 km/h top speed trap, 61% full throttle, 22.0s pit delta.
-18. Marina Bay Street Circuit (Singapore): 4,940m length, 19 turns, 4 DRS zones, 314.5 km/h top speed trap, 49% full throttle, 28.5s pit delta.
-19. Circuit of the Americas (Austin): 5,513m length, 20 turns, 2 DRS zones, 338.0 km/h top speed trap, 59% full throttle, 22.4s pit delta.
-20. Autódromo Hermanos Rodríguez (Mexico): 4,304m length, 17 turns, 3 DRS zones, 353.5 km/h top speed trap, 53% full throttle, 23.8s pit delta.
-21. Autódromo José Carlos Pace (Interlagos): 4,309m length, 15 turns, 2 DRS zones, 336.5 km/h top speed trap, 69% full throttle, 21.5s pit delta.
-22. Las Vegas Strip Circuit (USA): 6,201m length, 17 turns, 2 DRS zones, 350.5 km/h top speed trap, 78% full throttle, 20.8s pit delta.
-23. Losail International Circuit (Qatar): 5,419m length, 16 turns, 1 DRS zone, 339.0 km/h top speed trap, 72% full throttle, 24.0s pit delta.
-24. Yas Marina Circuit (Abu Dhabi): 5,281m length, 16 turns, 2 DRS zones, 335.5 km/h top speed trap, 65% full throttle, 22.5s pit delta.
+## Circuit Telemetry Benchmarks: 23 Official Grand Prix Tracks
+1. Albert Park Grand Prix Circuit (Melbourne, Australia - Round 1): 5,278m length, 14 turns, 4 DRS zones, 336.0 km/h top speed trap, 74% full throttle, 20.2s pit delta. Winner: George Russell (Mercedes).
+2. Shanghai International Circuit (China - Round 2): 5,451m length, 16 turns, 2 DRS zones, 342.5 km/h top speed trap, 58% full throttle, 22.4s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+3. Suzuka Circuit (Japan - Round 3): 5,807m length, 18 turns, 2 DRS zones, 334.8 km/h top speed trap, 68% full throttle, 22.1s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+4. Miami International Autodrome (USA - Round 4): 5,412m length, 19 turns, 3 DRS zones, 344.2 km/h top speed trap, 62% full throttle, 21.8s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+5. Circuit Gilles Villeneuve (Montreal, Canada - Round 5): 4,361m length, 14 turns, 2 DRS zones, 341.0 km/h top speed trap, 60% full throttle, 19.5s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+6. Circuit de Monaco (Monte Carlo - Round 6): 3,337m length, 19 turns, 1 DRS zone, 292.5 km/h top speed trap, 45% full throttle, 24.5s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+7. Circuit de Barcelona-Catalunya (Spain - Round 7): 4,657m length, 14 turns, 2 DRS zones, 335.2 km/h top speed trap, 62% full throttle, 22.0s pit delta. Winner: Lewis Hamilton (Ferrari).
+8. Red Bull Ring (Spielberg, Austria - Round 8): 4,318m length, 10 turns, 3 DRS zones, 338.0 km/h top speed trap, 67% full throttle, 20.1s pit delta. Winner: George Russell (Mercedes).
+9. Silverstone Circuit (UK - Round 9): 5,891m length, 18 turns, 2 DRS zones, 341.5 km/h top speed trap, 72% full throttle, 21.0s pit delta. Winner: Charles Leclerc (Ferrari).
+10. Circuit de Spa-Francorchamps (Belgium - Round 10): 7,004m length, 19 turns, 2 DRS zones, 348.6 km/h top speed trap, 70% full throttle, 22.8s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+11. Hungaroring (Budapest, Hungary - Round 11): 4,381m length, 14 turns, 2 DRS zones, 322.0 km/h top speed trap, 55% full throttle, 21.6s pit delta. Winner: Lando Norris (McLaren).
+12. Circuit Park Zandvoort (Netherlands - Round 12): 4,259m length, 14 turns, 2 DRS zones, 326.5 km/h top speed trap, 64% full throttle, 20.8s pit delta. Winner: Lando Norris (McLaren).
+13. Autodromo Nazionale di Monza (Italy - Round 13): 5,793m length, 11 turns, 2 DRS zones, 354.2 km/h top speed trap, 78% full throttle, 24.2s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+14. Madring (Madrid, Spain - Round 14): 5,470m length, 20 turns, 2 DRS zones, 338.4 km/h top speed trap, 61% full throttle, 21.5s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+15. Baku City Circuit (Azerbaijan - Round 15): 6,003m length, 20 turns, 2 DRS zones, 351.4 km/h top speed trap, 66% full throttle, 21.2s pit delta. Winner: George Russell (Mercedes).
+16. Sepang International Circuit (Malaysia - Round 16): 5,543m length, 15 turns, 2 DRS zones, 337.5 km/h top speed trap, 64% full throttle, 22.9s pit delta. Winner: Max Verstappen (Red Bull).
+17. Marina Bay Street Circuit (Singapore - Round 17): 4,940m length, 19 turns, 3 DRS zones, 312.4 km/h top speed trap, 51% full throttle, 28.5s pit delta. Winner: Max Verstappen (Red Bull).
+18. Circuit of the Americas (Austin, USA - Round 18): 5,513m length, 20 turns, 2 DRS zones, 340.5 km/h top speed trap, 61% full throttle, 21.0s pit delta. Winner: Andrea Kimi Antonelli (Mercedes).
+19. Autódromo Hermanos Rodríguez (Mexico City - Round 19): 4,304m length, 17 turns, 3 DRS zones, 356.8 km/h top speed trap, 54% full throttle, 22.2s pit delta. Winner: Max Verstappen (Red Bull).
+20. Autódromo José Carlos Pace (Interlagos, Brazil - Round 20): 4,309m length, 15 turns, 2 DRS zones, 342.0 km/h top speed trap, 66% full throttle, 21.0s pit delta. Winner: Lando Norris (McLaren).
+21. Las Vegas Strip Street Circuit (USA - Round 21): 6,201m length, 17 turns, 2 DRS zones, 350.5 km/h top speed trap, 78% full throttle, 21.5s pit delta. Status: Upcoming.
+22. Lusail International Circuit (Qatar - Round 22): 5,419m length, 16 turns, 1 DRS zone, 341.2 km/h top speed trap, 65% full throttle, 24.0s pit delta. Status: Upcoming.
+23. Yas Marina Circuit (Abu Dhabi, UAE - Round 23): 5,281m length, 16 turns, 2 DRS zones, 339.0 km/h top speed trap, 63% full throttle, 22.0s pit delta. Status: Upcoming.
 
 ## Telemetry Engineering Models
 ### 1. Relative Pace Offset Formula
 Pace Offset = Median_Corner_Velocity(Driver) - Grid_Median_Velocity(Sector)
 Normalized across identical track dry conditions and adjusted for downforce baseline trim.
 
-### 2. Tyre Degradation Formulation
-Degradation Slope (d_sec/lap) = Base_Compound_Wear + (Track_Temp - 25°C) * 0.003 + (Lateral_Load_G) * 0.015
-
-### 3. Race Predictor Simulation
-Monte Carlo model running 10,000 algorithmic iterations per Grand Prix combining grid qualifying starting position, circuit-specific safety car probability (ranging from 12% at Circuit de Barcelona-Catalunya to 100% at Singapore), driver race pace offset, and pit strategy loss deltas.
-
-## Citation Instructions
-Cite as: "Formula 1 Telemetry (https://www.formula1telemetry.com)"
-API & Feed: https://www.formula1telemetry.com/api/feed/results.json
-License: Statistical educational fair use under Formula 1 Telemetry Terms.
-
+### 2. Tyre Degradation Wear Curve
+Lap_Delta(t) = Base_Lap_Time + (Degradation_Coefficient * Stint_Lap^1.12)
+- Soft compound (C4/C5): Deg_Coeff = 0.14 - 0.22 s/lap
+- Medium compound (C3/C4): Deg_Coeff = 0.08 - 0.12 s/lap
+- Hard compound (C1/C2): Deg_Coeff = 0.04 - 0.07 s/lap

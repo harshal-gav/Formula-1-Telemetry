@@ -30,7 +30,7 @@ const DRIVER_FAQS = [
   {
     question: "Who are the top drivers in the 2026 Formula 1 World Championship?",
     answer:
-      "The 2026 championship battle is contested by Max Verstappen (#1, Red Bull Racing), Lando Norris (#4, McLaren), Charles Leclerc (#16, Ferrari), Oscar Piastri (#81, McLaren), and Lewis Hamilton (#44, Ferrari), along with the complete 20-driver grid.",
+      "The 2026 championship battle is led by Andrea Kimi Antonelli (#12, Mercedes), Max Verstappen (#1, Red Bull Racing), George Russell (#63, Mercedes), Lewis Hamilton (#44, Ferrari), and Charles Leclerc (#16, Ferrari), across the active 25-driver championship roster.",
   },
   {
     question: "How is driver telemetry pace offset calculated?",
@@ -107,7 +107,7 @@ export default function DriversPage() {
         <header className="space-y-3">
           <div className="flex items-center gap-2">
             <Badge variant="racing" className="text-xs">DRIVER ROSTER</Badge>
-            <span className="text-xs font-mono text-zinc-500">20 ACTIVE COMPETITORS</span>
+            <span className="text-xs font-mono text-zinc-500">25 CHAMPIONSHIP DRIVERS</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase flex items-center gap-3">
             <Users className="w-8 h-8 sm:w-10 h-10 text-racing-red" />
@@ -117,7 +117,7 @@ export default function DriversPage() {
           {/* AEO Direct Answer Target Box (40-60 words) */}
           <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
             <p>
-              <strong className="text-white font-semibold">Who are the 2026 Formula 1 drivers?</strong> The 2026 Formula 1 grid features 20 elite drivers representing 10 constructor teams, headlined by Max Verstappen (Red Bull Racing), Lando Norris (McLaren), and Charles Leclerc (Ferrari). Each driver profile provides individual telemetry benchmarks, throttle aggression ratings, and season points standings.
+              <strong className="text-white font-semibold">Who are the 2026 Formula 1 drivers?</strong> The 2026 Formula 1 grid features 25 active drivers representing 11 constructor teams, headlined by championship leader Andrea Kimi Antonelli (Mercedes), Max Verstappen (Red Bull Racing), George Russell (Mercedes), and Lewis Hamilton (Ferrari). Each driver profile provides individual telemetry benchmarks, throttle aggression ratings, and season points standings.
             </p>
           </div>
 

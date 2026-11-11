@@ -24,7 +24,7 @@ import { PRO_DRIVERS } from "@/lib/drivers";
 export const revalidate = 3600; // ISR hourly
 
 export function generateStaticParams() {
-  return GRAND_PRIX_LIST.map((gp) => ({ round: gp.round.toString() }));
+  return GRAND_PRIX_LIST.filter((gp) => gp.round > 0).map((gp) => ({ round: gp.round.toString() }));
 }
 
 const CANONICAL_BASE = "https://www.formula1telemetry.com/races";
@@ -93,7 +93,7 @@ export default async function RaceDetailPage({
     "@id": `${canonicalUrl}/#event`,
     name: `2026 ${gp.name}`,
     description: gp.description,
-    startDate: "2026-03-01T15:00:00Z",
+    startDate: `${gp.date}T14:00:00Z`,
     location: {
       "@type": "Place",
       name: gp.circuitName,
@@ -171,11 +171,11 @@ export default async function RaceDetailPage({
         {/* Hero Header */}
         <header className="p-6 sm:p-8 rounded-2xl bg-carbon-900 border border-zinc-800 shadow-2xl relative overflow-hidden space-y-4">
           <div className="flex flex-wrap items-center gap-2.5">
-            <Badge variant="racing" className="text-xs font-mono">ROUND {gp.round} OF 24</Badge>
+            <Badge variant="racing" className="text-xs font-mono">ROUND {gp.round} OF 23</Badge>
             <Badge variant={isCompleted ? "secondary" : "racing"} className="text-xs">
-              {isCompleted ? "OFFICIAL COMPLETED EVENT" : "UPCOMING BENCHMARK"}
+              {isCompleted ? "OFFICIAL COMPLETED EVENT" : "UPCOMING EVENT"}
             </Badge>
-            <span className="text-xs font-mono text-zinc-400">{gp.country}</span>
+            <span className="text-xs font-mono text-zinc-400">{gp.country} ({gp.date})</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-black text-white uppercase tracking-tight">
@@ -204,6 +204,41 @@ export default async function RaceDetailPage({
             </div>
           </div>
         </header>
+
+        {/* Official Race Result Card if Completed */}
+        {gp.result && (
+          <section aria-label="Official Race Classification" className="p-6 rounded-2xl bg-carbon-900 border border-zinc-800 shadow-xl space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <Flag className="w-4 h-4 text-racing-red" />
+                <span>Official Race Classification &amp; Podium Finishes</span>
+              </h2>
+              <Badge variant="secondary" className="text-[10px] font-mono">OFFICIAL TIMING</Badge>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+              <div className="p-4 rounded-xl bg-carbon-950/70 border border-amber-500/30">
+                <span className="text-[10px] font-mono text-amber-400 font-bold block uppercase">P1 Winner</span>
+                <span className="text-base font-bold text-white block">{gp.result.winner}</span>
+                <span className="text-xs text-zinc-400 block">{gp.result.team} • {gp.result.winningTime}</span>
+              </div>
+              <div className="p-4 rounded-xl bg-carbon-950/70 border border-zinc-700">
+                <span className="text-[10px] font-mono text-zinc-400 font-bold block uppercase">P2 Podium</span>
+                <span className="text-base font-bold text-white block">{gp.result.p2}</span>
+                <span className="text-xs text-zinc-500 block">Official Classification</span>
+              </div>
+              <div className="p-4 rounded-xl bg-carbon-950/70 border border-amber-700/30">
+                <span className="text-[10px] font-mono text-amber-600 font-bold block uppercase">P3 Podium</span>
+                <span className="text-base font-bold text-white block">{gp.result.p3}</span>
+                <span className="text-xs text-zinc-500 block">Official Classification</span>
+              </div>
+              <div className="p-4 rounded-xl bg-carbon-950/70 border border-purple-500/30">
+                <span className="text-[10px] font-mono text-purple-400 font-bold block uppercase">Fastest Lap</span>
+                <span className="text-base font-bold text-white block">{gp.result.fastestLap}</span>
+                <span className="text-xs text-zinc-500 block">+1 Championship Bonus Point</span>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Circuit Telemetry Metric Cards */}
         <section aria-label="Key Telemetry Metrics" className="grid grid-cols-2 sm:grid-cols-4 gap-4">

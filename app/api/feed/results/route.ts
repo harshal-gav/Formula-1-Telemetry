@@ -23,12 +23,17 @@ export async function GET() {
         profileUrl: `https://www.formula1telemetry.com/drivers/${d.id}`,
       })),
     },
-    races: GRAND_PRIX_LIST.map((gp) => ({
+    races: GRAND_PRIX_LIST.filter((gp) => gp.round > 0).map((gp) => ({
       round: gp.round,
       name: gp.name,
       circuit: gp.circuitName,
       country: gp.country,
+      date: gp.date,
       status: gp.status,
+      winner: gp.result?.winner || null,
+      winningTeam: gp.result?.team || null,
+      winningTime: gp.result?.winningTime || null,
+      fastestLap: gp.result?.fastestLap || null,
       lapDistanceMeters: gp.lapDistanceMeters,
       totalLaps: gp.totalLaps,
       topSpeedTrapKmH: gp.topSpeedTrapKmH,

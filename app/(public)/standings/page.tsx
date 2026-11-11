@@ -27,23 +27,24 @@ export const metadata: Metadata = {
 };
 
 const CONSTRUCTORS_LIST = [
-  { position: "1", id: "mclaren", name: "McLaren", points: "666", wins: "6", color: "#FF8000" },
-  { position: "2", id: "ferrari", name: "Ferrari", points: "652", wins: "5", color: "#E80020" },
-  { position: "3", id: "red_bull", name: "Red Bull Racing", points: "589", wins: "9", color: "#3671C6" },
-  { position: "4", id: "mercedes", name: "Mercedes", points: "468", wins: "4", color: "#27F4D2" },
-  { position: "5", id: "aston_martin", name: "Aston Martin", points: "94", wins: "0", color: "#229971" },
-  { position: "6", id: "alpine", name: "Alpine", points: "65", wins: "0", color: "#0093CC" },
-  { position: "7", id: "haas", name: "Haas F1 Team", points: "58", wins: "0", color: "#B6BABD" },
-  { position: "8", id: "rb", name: "RB", points: "46", wins: "0", color: "#6692FF" },
-  { position: "9", id: "williams", name: "Williams", points: "17", wins: "0", color: "#64C4FF" },
-  { position: "10", id: "sauber", name: "Kick Sauber", points: "4", wins: "0", color: "#52E252" },
+  { position: "1", id: "mercedes", name: "Mercedes", points: "652", wins: "12", color: "#27F4D2" },
+  { position: "2", id: "ferrari", name: "Ferrari", points: "510", wins: "2", color: "#E80020" },
+  { position: "3", id: "red_bull", name: "Red Bull Racing", points: "415", wins: "3", color: "#3671C6" },
+  { position: "4", id: "mclaren", name: "McLaren", points: "398", wins: "3", color: "#FF8000" },
+  { position: "5", id: "rb", name: "RB F1 Team", points: "114", wins: "0", color: "#6692FF" },
+  { position: "6", id: "alpine", name: "Alpine", points: "69", wins: "0", color: "#FF87BC" },
+  { position: "7", id: "haas", name: "Haas F1 Team", points: "31", wins: "0", color: "#B6BABD" },
+  { position: "8", id: "audi", name: "Audi", points: "28", wins: "0", color: "#E21B23" },
+  { position: "9", id: "williams", name: "Williams", points: "12", wins: "0", color: "#64C4FF" },
+  { position: "10", id: "aston_martin", name: "Aston Martin", points: "7", wins: "0", color: "#229971" },
+  { position: "11", id: "cadillac", name: "Cadillac F1 Team", points: "0", wins: "0", color: "#D4AF37" },
 ];
 
 const STANDINGS_FAQS = [
   {
     question: "Who leads the 2026 Formula 1 World Championship?",
     answer:
-      "Max Verstappen leads the Drivers' Championship with 437 points driving for Red Bull Racing, followed by McLaren's Lando Norris (374 points) and Ferrari's Charles Leclerc (356 points).",
+      "Andrea Kimi Antonelli leads the Drivers' Championship with 390 points and 9 victories driving for Mercedes, followed by Red Bull Racing's Max Verstappen (279 points) and Mercedes' George Russell (262 points).",
   },
   {
     question: "How are points awarded in Formula 1?",
@@ -53,7 +54,7 @@ const STANDINGS_FAQS = [
   {
     question: "Which team leads the 2026 Constructors' Championship?",
     answer:
-      "McLaren holds P1 in the World Constructors' Championship with 666 points, closely pursued by Scuderia Ferrari with 652 points and Red Bull Racing with 589 points.",
+      "Mercedes holds P1 in the World Constructors' Championship with 652 points and 12 victories, followed by Scuderia Ferrari (510 points) and Red Bull Racing (415 points).",
   },
   {
     question: "How often is this standings table updated?",
@@ -160,7 +161,7 @@ export default function StandingsPage() {
           {/* AEO Direct Answer Target Box (40-60 words) */}
           <div className="p-4 rounded-xl bg-carbon-900 border border-zinc-800 text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-3xl">
             <p>
-              <strong className="text-white font-semibold">What are the 2026 Formula 1 standings?</strong> In the 2026 Formula 1 World Championship, Max Verstappen leads the Drivers&apos; Championship with 437 points for Red Bull Racing, ahead of McLaren&apos;s Lando Norris (374 pts) and Ferrari&apos;s Charles Leclerc (356 pts). McLaren leads the Constructors&apos; Championship with 666 points.
+              <strong className="text-white font-semibold">What are the 2026 Formula 1 standings?</strong> In the 2026 Formula 1 World Championship, Andrea Kimi Antonelli leads the Drivers&apos; Championship with 390 points and 9 victories for Mercedes, followed by Red Bull Racing&apos;s Max Verstappen (279 pts, 3 wins) and Mercedes&apos; George Russell (262 pts, 3 wins). Mercedes leads the World Constructors&apos; Championship with 652 points ahead of Ferrari (510 pts).
             </p>
           </div>
 

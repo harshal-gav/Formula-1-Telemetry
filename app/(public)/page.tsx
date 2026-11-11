@@ -43,7 +43,7 @@ const FAQS = [
   {
     question: "Is Formula 1 Telemetry free?",
     answer:
-      "Formula 1 Telemetry provides a generous Free Paddock tier that includes the complete 24-round season calendar, official driver standings, constructor standings, race results, and circuit guides. The Pro plan ($9.99/mo) unlocks high-resolution telemetry trace comparisons, tyre degradation models, session replays, and predictive race algorithms.",
+      "Formula 1 Telemetry provides a generous Free Paddock tier that includes the complete 23-round season calendar, official driver standings, constructor standings, race results, and circuit guides. The Pro plan ($9.99/mo) unlocks high-resolution telemetry trace comparisons, tyre degradation models, session replays, and predictive race algorithms.",
   },
   {
     question: "Where does the data come from and how often is it updated?",
@@ -61,9 +61,9 @@ const FAQS = [
       "Timing data measures elapsed time at fixed circuit checkpoints (sectors 1, 2, and 3 plus speed traps). Telemetry provides continuous, high-frequency (10Hz-300Hz) internal sensor readings recording physical driver inputs and car dynamics continuously throughout the entire lap.",
   },
   {
-    question: "Can I access telemetry data for all 24 Grand Prix circuits?",
+    question: "Can I access telemetry data for all 23 Grand Prix circuits?",
     answer:
-      "Yes. Pro subscribers can analyze telemetry traces, tyre degradation curves, and session replays across all 24 World Championship circuits, from the high-speed banks of Monza and Silverstone to street circuits like Monaco and Singapore.",
+      "Yes. Pro subscribers can analyze telemetry traces, tyre degradation curves, and session replays across all 23 World Championship circuits, from the high-speed banks of Monza and Silverstone to street circuits like Monaco and Singapore.",
   },
 ];
 
@@ -88,7 +88,7 @@ export default function LandingPage() {
         name: "Free Paddock Tier",
         price: "0",
         priceCurrency: "USD",
-        description: "Official 24-round calendar, driver & constructor standings, and race classifications.",
+        description: "Official 23-round calendar, driver & constructor standings, and race classifications.",
       },
       {
         "@type": "Offer",
