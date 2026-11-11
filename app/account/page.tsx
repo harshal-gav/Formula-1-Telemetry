@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -13,6 +14,7 @@ import {
   Calendar,
   Sparkles,
   LogOut,
+  Loader2,
 } from "lucide-react";
 import { dodo } from "@/lib/dodo/client";
 import Link from "next/link";
@@ -22,6 +24,7 @@ export default function AccountPage() {
   const router = useRouter();
   const { user, loading: authLoading, logout } = useAuth();
   const { subscription, isPro, loading: subLoading } = useSubscription();
+  const [isUpgrading, setIsUpgrading] = useState(false);
 
   if (authLoading || subLoading) {
     return (
@@ -43,13 +46,20 @@ export default function AccountPage() {
     );
   }
 
-  const handleUpgrade = () => {
-    const checkoutUrl = dodo.getCheckoutUrl({
-      uid: user.uid,
-      email: user.email || "",
-      returnUrl: `${window.location.origin}/account?payment=success`,
-    });
-    window.location.href = checkoutUrl;
+  const handleUpgrade = async () => {
+    if (!user) return;
+    try {
+      setIsUpgrading(true);
+      await dodo.redirectToCheckout({
+        uid: user.uid,
+        email: user.email || "",
+        name: user.displayName || "",
+        returnUrl: `${window.location.origin}/account?payment=success`,
+      });
+    } catch (err) {
+      console.error("Failed to redirect to checkout:", err);
+      setIsUpgrading(false);
+    }
   };
 
   return (
@@ -193,11 +203,21 @@ export default function AccountPage() {
               <>
                 <Button
                   onClick={handleUpgrade}
+                  disabled={isUpgrading}
                   variant="racing"
                   className="w-full sm:w-auto text-xs font-bold gap-1.5"
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Upgrade to Pro ($9.99/mo)
+                  {isUpgrading ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
+                      <span>Opening Direct Payment...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>Upgrade to Pro ($9.99/mo)</span>
+                    </>
+                  )}
                 </Button>
                 <span className="text-[11px] text-zinc-500 font-mono">
                   Instant access to all telemetry

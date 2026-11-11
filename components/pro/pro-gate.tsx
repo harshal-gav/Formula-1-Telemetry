@@ -1,13 +1,13 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import Link from "next/link";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProBadge } from "@/components/layout/pro-badge";
-import { Zap, ShieldCheck, Lock, ArrowRight, Sparkles, Activity, Layers, BarChart2 } from "lucide-react";
+import { Zap, ShieldCheck, Lock, ArrowRight, Sparkles, Activity, Layers, BarChart2, Loader2 } from "lucide-react";
 import { dodo } from "@/lib/dodo/client";
 
 interface ProGateProps {
@@ -27,23 +27,30 @@ export function ProGate({
 }: ProGateProps) {
   const { user, loading: authLoading } = useAuth();
   const { isPro, loading: subLoading } = useSubscription();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // If user has confirmed active Pro subscription, render live Pro tool
   if (!authLoading && !subLoading && isPro) {
     return <>{children}</>;
   }
 
-  const handleUpgrade = () => {
+  const handleUpgrade = async () => {
     if (!user) {
       window.location.href = "/login?redirect=/pro";
       return;
     }
-    const checkoutUrl = dodo.getCheckoutUrl({
-      uid: user.uid,
-      email: user.email || "",
-      returnUrl: `${window.location.origin}/account?payment=success`,
-    });
-    window.location.href = checkoutUrl;
+    try {
+      setIsSubmitting(true);
+      await dodo.redirectToCheckout({
+        uid: user.uid,
+        email: user.email || "",
+        name: user.displayName || "",
+        returnUrl: `${window.location.origin}/account?payment=success`,
+      });
+    } catch (err) {
+      console.error("Failed to redirect to checkout:", err);
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,12 +96,22 @@ export function ProGate({
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Button
               onClick={handleUpgrade}
+              disabled={isSubmitting}
               variant="racing"
               size="lg"
               className="w-full sm:w-auto font-bold tracking-wide shadow-lg shadow-racing-red/30 gap-2 cursor-pointer text-xs"
             >
-              <span>Upgrade to Pro ($9.99/mo)</span>
-              <ArrowRight className="w-4 h-4" />
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  <span>Opening Direct Payment...</span>
+                </>
+              ) : (
+                <>
+                  <span>Upgrade to Pro ($9.99/mo)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </>
+              )}
             </Button>
 
             {!user && (

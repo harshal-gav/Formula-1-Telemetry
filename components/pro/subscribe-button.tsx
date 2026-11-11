@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useSubscription } from "@/hooks/use-subscription";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { dodo } from "@/lib/dodo/client";
 import Link from "next/link";
 
@@ -18,18 +19,26 @@ export function SubscribeButton({
 }) {
   const { user } = useAuth();
   const { isPro } = useSubscription();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     if (!user) {
       window.location.href = "/login?redirect=/pricing";
       return;
     }
-    const checkoutUrl = dodo.getCheckoutUrl({
-      uid: user.uid,
-      email: user.email || "",
-      returnUrl: `${window.location.origin}/account?payment=success`,
-    });
-    window.location.href = checkoutUrl;
+
+    try {
+      setIsSubmitting(true);
+      await dodo.redirectToCheckout({
+        uid: user.uid,
+        email: user.email || "",
+        name: user.displayName || "",
+        returnUrl: `${window.location.origin}/account?payment=success`,
+      });
+    } catch (err) {
+      console.error("Failed to redirect to checkout:", err);
+      setIsSubmitting(false);
+    }
   };
 
   if (isPro) {
@@ -48,13 +57,22 @@ export function SubscribeButton({
   return (
     <Button
       onClick={handleSubscribe}
+      disabled={isSubmitting}
       variant="racing"
       size={size}
       className={`w-full font-bold gap-2 shadow-lg shadow-racing-red/30 cursor-pointer ${className}`}
     >
-      <span>{text}</span>
-      <ArrowRight className="w-4 h-4" />
+      {isSubmitting ? (
+        <>
+          <Loader2 className="w-4 h-4 animate-spin text-white" />
+          <span>Opening Direct Payment...</span>
+        </>
+      ) : (
+        <>
+          <span>{text}</span>
+          <ArrowRight className="w-4 h-4" />
+        </>
+      )}
     </Button>
   );
 }
-
