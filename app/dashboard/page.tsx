@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { ProBadge } from "@/components/layout/pro-badge";
 import { RaceCard } from "@/components/racing/race-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ProGate } from "@/components/pro/pro-gate";
 import {
   Calendar,
   Trophy,
@@ -40,30 +41,25 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-      {/* Top Welcome Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Paddock Overview
-            </h1>
-            {isPro ? <ProBadge /> : <Badge variant="secondary" className="font-mono text-xs">FREE PASS</Badge>}
+      <ProGate
+        title="Unlock Pro Paddock Dashboard"
+        description="Access real-time season telemetry, race schedules, live telemetry feeds, and championship leaderboards."
+      >
+        {/* Top Welcome Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Paddock Overview
+              </h1>
+              <ProBadge />
+            </div>
+            <p className="text-xs text-zinc-400 mt-1">
+              Welcome back, <span className="text-zinc-200 font-semibold">{user?.displayName || user?.email || "Racer"}</span>.
+              Live season pulse and standings.
+            </p>
           </div>
-          <p className="text-xs text-zinc-400 mt-1">
-            Welcome back, <span className="text-zinc-200 font-semibold">{user?.displayName || user?.email || "Racer"}</span>.
-            Live season pulse and standings.
-          </p>
         </div>
-
-        {!isPro && (
-          <Link href="/pricing">
-            <Button variant="racing" size="sm" className="font-semibold text-xs gap-1.5 shadow-md shadow-racing-red/20">
-              <Sparkles className="w-3.5 h-3.5" />
-              Upgrade to Pro ($9.99/mo)
-            </Button>
-          </Link>
-        )}
-      </div>
 
       {/* Main Grid: Upcoming Grand Prix & Latest Podium */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -344,6 +340,7 @@ export default function DashboardPage() {
           </Link>
         </div>
       </div>
+      </ProGate>
     </div>
   );
 }

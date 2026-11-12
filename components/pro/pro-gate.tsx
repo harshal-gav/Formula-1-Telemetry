@@ -16,6 +16,7 @@ interface ProGateProps {
   description?: string;
   previewTitle?: string;
   previewSummary?: string;
+  showPreview?: boolean;
 }
 
 export function ProGate({
@@ -24,6 +25,7 @@ export function ProGate({
   description = "Access high-frequency car telemetry overlays, tyre degradation curves, interactive session replays, and race prediction algorithms.",
   previewTitle = "Sample Telemetry Trace Benchmark: Bahrain Grand Prix Turn 1-4",
   previewSummary = "Official 2026 telemetry preview demonstrating telemetry trace overlay between Red Bull Racing and McLaren. Brake telemetry indicates deceleration from 324 km/h to 82 km/h over 112 meters (-4.9G peak), while throttle trace demonstrates full power-down application on exit at 345 meters.",
+  showPreview = false,
 }: ProGateProps) {
   const { user, loading: authLoading } = useAuth();
   const { isPro, loading: subLoading } = useSubscription();
@@ -134,18 +136,19 @@ export function ProGate({
         </div>
       </div>
 
-      {/* 2. CRAWLABLE FREE PREVIEW: Ensures gated pages are never empty to search bots or AI engines */}
-      <section aria-label="Free Telemetry Preview" className="space-y-4 rounded-2xl border border-zinc-800/80 bg-carbon-900/60 p-6 md:p-8">
-        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
-          <div className="space-y-1">
-            <Badge variant="outline" className="text-xs font-mono">FREE TELEMETRY SAMPLE</Badge>
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
-              <Activity className="w-4 h-4 text-racing-cyan" />
-              <span>{previewTitle}</span>
-            </h3>
+      {/* 2. CRAWLABLE PREVIEW (if enabled) */}
+      {showPreview && (
+        <section aria-label="Pro Telemetry Preview" className="space-y-4 rounded-2xl border border-zinc-800/80 bg-carbon-900/60 p-6 md:p-8">
+          <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
+            <div className="space-y-1">
+              <Badge variant="outline" className="text-xs font-mono">PRO TELEMETRY BENCHMARK</Badge>
+              <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <Activity className="w-4 h-4 text-racing-cyan" />
+                <span>{previewTitle}</span>
+              </h3>
+            </div>
+            <span className="text-xs font-mono text-zinc-500">ENGINEERING BENCHMARK</span>
           </div>
-          <span className="text-xs font-mono text-zinc-500">CRAWLABLE BENCHMARK</span>
-        </div>
 
         <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
           {previewSummary}
@@ -245,6 +248,7 @@ export function ProGate({
           </table>
         </div>
       </section>
+      )}
     </div>
   );
 }

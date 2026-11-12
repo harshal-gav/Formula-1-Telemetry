@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
+import { ProGate } from "@/components/pro/pro-gate";
 import { GRAND_PRIX_LIST, GrandPrixCircuit } from "@/lib/grand-prix";
 import { PRO_DRIVERS } from "@/lib/drivers";
 
@@ -205,6 +206,11 @@ export default async function RaceDetailPage({
           </div>
         </header>
 
+        {/* Pro Gated Section: Classification, Telemetry Specs, Benchmarks */}
+        <ProGate
+          title={`Unlock ${gp.name} Live Telemetry & Full Analysis`}
+          description={`Access high-resolution telemetry traces, live race telemetry, speed traps, tyre degradation modeling, and classifications for ${gp.name}.`}
+        >
         {/* Official Race Result Card if Completed */}
         {gp.result && (
           <section aria-label="Official Race Classification" className="p-6 rounded-2xl bg-carbon-900 border border-zinc-800 shadow-xl space-y-4">
@@ -363,6 +369,7 @@ export default async function RaceDetailPage({
             </table>
           </div>
         </section>
+        </ProGate>
 
         {/* Pro Telemetry CTA Banner with Seamless Direct Payment Flow */}
         <ProMarketingCard

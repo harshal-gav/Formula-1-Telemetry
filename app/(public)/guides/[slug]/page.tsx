@@ -18,6 +18,7 @@ import {
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
+import { ProGate } from "@/components/pro/pro-gate";
 
 export const revalidate = 86400;
 
@@ -625,10 +626,15 @@ export default async function GuideDetailPage({
           </div>
         </header>
 
-        {/* Main Body Content */}
-        <div className="space-y-8">
-          {guide.contentHtml}
-        </div>
+        {/* Main Body Content - Pro Gated */}
+        <ProGate
+          title={`Unlock Complete Guide: ${guide.title}`}
+          description="Access in-depth technical analysis, telemetry traces, mathematical formulas, and race engineering tutorials."
+        >
+          <div className="space-y-8">
+            {guide.contentHtml}
+          </div>
+        </ProGate>
 
         {/* Compact, Crawlable FAQ Accordion */}
         <FAQAccordion

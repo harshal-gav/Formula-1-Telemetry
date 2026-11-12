@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
+import { ProGate } from "@/components/pro/pro-gate";
 import { PRO_DRIVERS, ProDriver } from "@/lib/drivers";
 import { getTeamColor } from "@/lib/utils";
 
@@ -207,6 +208,11 @@ export default async function DriverDetailPage({
           />
         </header>
 
+        {/* Pro Gated Driver Telemetry & Performance */}
+        <ProGate
+          title={`Unlock ${driver.name} Telemetry & Analytics`}
+          description={`Access ${driver.name}'s speed curves, throttle percentages, brake pressure traces, and telemetry benchmarks across all Grand Prix circuits.`}
+        >
         {/* Telemetry Metric KPI Cards */}
         <section aria-label="Driver Performance KPI Metrics" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <Card className="border-zinc-800 bg-carbon-900/90">
@@ -332,6 +338,7 @@ export default async function DriverDetailPage({
             </table>
           </div>
         </section>
+        </ProGate>
 
         {/* Pro Telemetry CTA Banner */}
         <ProMarketingCard

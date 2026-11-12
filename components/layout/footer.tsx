@@ -101,6 +101,12 @@ export function Footer() {
           </h4>
           <ul className="space-y-2 text-xs">
             <li>
+              <Link href="/pro/live" className="hover:text-white transition-colors flex items-center gap-1 font-bold text-racing-red">
+                <span className="w-1.5 h-1.5 rounded-full bg-racing-red animate-pulse" />
+                Live Race Telemetry
+              </Link>
+            </li>
+            <li>
               <Link href="/pro/telemetry" className="hover:text-white transition-colors flex items-center gap-1">
                 <Zap className="w-3 h-3 text-amber-400" />
                 Speed & Throttle Traces

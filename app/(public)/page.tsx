@@ -15,6 +15,7 @@ import {
   BarChart3,
   MapPin,
   TrendingUp,
+  Zap,
 } from "lucide-react";
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
@@ -46,7 +47,7 @@ const FAQS = [
   {
     question: "Is Formula 1 Telemetry free?",
     answer:
-      "Formula 1 Telemetry provides a generous Free Paddock tier that includes the complete 23-round season calendar, official driver standings, constructor standings, race results, and circuit guides. The Pro plan ($9.99/mo) unlocks high-resolution telemetry trace comparisons, tyre degradation models, session replays, and predictive race algorithms.",
+      "Formula 1 Telemetry is an all-access, professional analytics platform. Every feature—including live race telemetry streaming across all 20 drivers, flying lap speed and throttle traces, tyre degradation modeling, session replays, and race outcomes—requires an active Pro membership ($9.99/mo). Nothing is available for free.",
   },
   {
     question: "Where does the data come from and how often is it updated?",
@@ -88,18 +89,11 @@ export default function LandingPage() {
     offers: [
       {
         "@type": "Offer",
-        name: "Free Paddock Tier",
-        price: "0",
-        priceCurrency: "USD",
-        description: "Official 23-round calendar, driver & constructor standings, and race classifications.",
-      },
-      {
-        "@type": "Offer",
-        name: "Pro Monthly Plan",
+        name: "Pro Monthly All-Access Plan",
         price: "9.99",
         priceCurrency: "USD",
         billingDuration: "P1M",
-        description: "Full dual-driver telemetry comparisons, tyre degradation simulator, session replays, and predictive race outcomes.",
+        description: "Full live race telemetry, dual-driver telemetry comparisons, tyre degradation simulator, session replays, and predictive race outcomes.",
       },
     ],
   };
@@ -162,14 +156,16 @@ export default function LandingPage() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
               <Link href="/pricing" className="w-full sm:w-auto">
-                <Button variant="racing" size="lg" className="w-full sm:w-auto font-bold tracking-wide gap-2 text-sm">
-                  <span>Unlock Pro Monthly ($9.99/mo)</span>
+                <Button variant="racing" size="lg" className="w-full sm:w-auto font-bold tracking-wide gap-2 text-sm shadow-xl shadow-racing-red/25">
+                  <Zap className="w-4 h-4 fill-white" />
+                  <span>Unlock Pro All-Access ($9.99/mo)</span>
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
-              <Link href="/races" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto text-sm">
-                  Explore Free Paddock Calendar
+              <Link href="/pro/live" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto text-sm gap-2 border-red-500/40 text-white hover:bg-zinc-900">
+                  <span className="w-2 h-2 rounded-full bg-racing-red animate-pulse" />
+                  <span>Launch Live Race Telemetry</span>
                 </Button>
               </Link>
             </div>
@@ -309,64 +305,80 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* 5. FREE VS PRO COMPARISON MATRIX */}
+        {/* 5. COMPLETE PRO TELEMETRY SUITE BREAKDOWN */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/60 max-w-5xl mx-auto w-full max-w-full overflow-hidden">
           <div className="text-center space-y-2 mb-10">
-            <Badge variant="outline" className="text-xs">TRANSPARENT TIERS</Badge>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Free vs Pro Subscription</h2>
-            <p className="text-xs text-zinc-400">Simple, predictable monthly pricing with zero hidden fees.</p>
+            <Badge variant="racing" className="text-xs">PRO ALL-ACCESS</Badge>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Full Pro Telemetry Suite Breakdown</h2>
+            <p className="text-xs text-zinc-400">All features, sensor channels, and race engineering tools are exclusively included in Pro ($9.99/mo).</p>
           </div>
 
           <div className="w-full max-w-full overflow-x-auto rounded-xl border border-zinc-800 bg-carbon-900/90 shadow-2xl">
             <table className="w-full min-w-[500px] text-left font-mono text-xs">
-              <caption className="sr-only">Free Paddock vs Pro Monthly Subscription Comparison Matrix</caption>
+              <caption className="sr-only">Pro Telemetry Suite Breakdown Matrix</caption>
               <thead className="bg-zinc-950 text-zinc-400 uppercase tracking-wider text-[11px] border-b border-zinc-800">
                 <tr>
                   <th scope="col" className="py-3 px-4">Feature Capability</th>
-                  <th scope="col" className="py-3 px-4 text-center">Free Paddock ($0)</th>
-                  <th scope="col" className="py-3 px-4 text-center text-amber-400 font-bold">Pro Monthly ($9.99/mo)</th>
+                  <th scope="col" className="py-3 px-4">Telemetry Channel Details</th>
+                  <th scope="col" className="py-3 px-4 text-center text-amber-400 font-bold">Pro Access ($9.99/mo)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/60 text-zinc-300">
                 <tr>
-                  <td className="py-3 px-4">Official Season Calendar &amp; Schedule</td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
-                </tr>
-                <tr>
-                  <td className="py-3 px-4">Race Classifications &amp; Grid Order</td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
+                  <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+                    <Radio className="w-4 h-4 text-racing-red" />
+                    <span>Live Race Telemetry Feed</span>
+                  </td>
+                  <td className="py-3 px-4 text-zinc-400">10Hz real-time streaming sensor feeds across all 20 drivers</td>
                   <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4">Driver &amp; Constructor Standings</td>
+                  <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+                    <Activity className="w-4 h-4 text-racing-cyan" />
+                    <span>Synchronized Flying Lap Traces</span>
+                  </td>
+                  <td className="py-3 px-4 text-zinc-400">High-frequency speed, throttle %, brake pressure, and gear comparison overlays</td>
                   <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+                    <Layers className="w-4 h-4 text-amber-400" />
+                    <span>Tyre Stint Degradation Simulator</span>
+                  </td>
+                  <td className="py-3 px-4 text-zinc-400">Compound wear curves (Soft, Medium, Hard, Wet) and pit stop window optimizer</td>
                   <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4">Fastest Lap Telemetry Overlays (Speed, Throttle, Brake)</td>
-                  <td className="py-3 px-4 text-center text-zinc-600"><Lock className="w-3.5 h-3.5 inline" /></td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-amber-400 inline" /></td>
+                  <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+                    <TrendingUp className="w-4 h-4 text-purple-400" />
+                    <span>Session Replay Timing Tower</span>
+                  </td>
+                  <td className="py-3 px-4 text-zinc-400">Interactive lap-by-lap playback, gap deltas, and live pit interval tracker</td>
+                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4">Interactive Tyre Stint Visualizer &amp; Degradation Curves</td>
-                  <td className="py-3 px-4 text-center text-zinc-600"><Lock className="w-3.5 h-3.5 inline" /></td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-amber-400 inline" /></td>
+                  <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-emerald-400" />
+                    <span>Monte Carlo Race Predictor</span>
+                  </td>
+                  <td className="py-3 px-4 text-zinc-400">Predictive algorithms calculating win probabilities and podium likelihoods</td>
+                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4">Interactive Session Replay Timing Tower</td>
-                  <td className="py-3 px-4 text-center text-zinc-600"><Lock className="w-3.5 h-3.5 inline" /></td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-amber-400 inline" /></td>
+                  <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+                    <BarChart3 className="w-4 h-4 text-blue-400" />
+                    <span>All 23 Grand Prix &amp; Circuit Telemetry</span>
+                  </td>
+                  <td className="py-3 px-4 text-zinc-400">Complete race calendars, circuit specifications, and heavy braking zones</td>
+                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
                 </tr>
                 <tr>
-                  <td className="py-3 px-4">Predictive Podium &amp; Race Outcome Engine</td>
-                  <td className="py-3 px-4 text-center text-zinc-600"><Lock className="w-3.5 h-3.5 inline" /></td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-amber-400 inline" /></td>
-                </tr>
-                <tr>
-                  <td className="py-3 px-4">Self-Service Customer Billing &amp; Subscriptions</td>
-                  <td className="py-3 px-4 text-center text-zinc-600">-</td>
-                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-amber-400 inline" /></td>
+                  <td className="py-3 px-4 font-bold text-white flex items-center gap-1.5">
+                    <Lock className="w-4 h-4 text-zinc-400" />
+                    <span>Driver &amp; Constructor Standings</span>
+                  </td>
+                  <td className="py-3 px-4 text-zinc-400">Championship leaderboards, title differentials, and pace offsets</td>
+                  <td className="py-3 px-4 text-center"><CheckCircle2 className="w-4 h-4 text-emerald-400 inline" /></td>
                 </tr>
               </tbody>
             </table>

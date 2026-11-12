@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProBadge } from "@/components/layout/pro-badge";
-import { Check, Zap } from "lucide-react";
+import { Check, Zap, Radio, Activity, ShieldCheck, Flame, Layers, Sparkles, Sliders } from "lucide-react";
 import { SubscribeButton } from "@/components/pro/subscribe-button";
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
@@ -14,16 +14,16 @@ export const revalidate = 86400; // Static revalidation daily
 const CANONICAL_URL = "https://www.formula1telemetry.com/pricing";
 
 export const metadata: Metadata = {
-  title: "F1 Telemetry Pro Pricing | Plans from $9.99/mo",
+  title: "F1 Telemetry Pro Pricing | All-Access Paddock Pass $9.99/mo",
   description:
-    "Compare Formula 1 Telemetry subscription plans. Free paddock tier with race schedules and standings, plus $9.99/mo Pro with full telemetry traces.",
+    "Formula 1 Telemetry is an all-access professional platform. Unlock live race telemetry, speed overlays, tyre degradation modeling, and driver analytics for $9.99/mo.",
   alternates: {
     canonical: CANONICAL_URL,
   },
   openGraph: {
-    title: "F1 Telemetry Pro Pricing | Plans from $9.99/mo",
+    title: "F1 Telemetry Pro Pricing | All-Access Paddock Pass $9.99/mo",
     description:
-      "Affordable monthly Formula 1 telemetry subscription. Access high-resolution speed traces, tyre degradation modeling, and session replays.",
+      "All-inclusive monthly Formula 1 telemetry subscription. Access live race telemetry streaming across all 20 drivers, speed traces, and strategy models.",
     url: CANONICAL_URL,
     type: "website",
   },
@@ -36,9 +36,14 @@ const PRICING_FAQS = [
       "Formula 1 Telemetry Pro costs $9.99 per month with no annual commitment or long-term contract. Subscribers can cancel at any time directly through their self-service account portal.",
   },
   {
-    question: "What is included in the Free Paddock tier?",
+    question: "Is there a free tier on Formula 1 Telemetry?",
     answer:
-      "The Free Paddock tier ($0 forever) includes the complete 24-round World Championship race calendar, official Grand Prix classifications, starting grids, and full driver and constructor championship standings.",
+      "No. Formula 1 Telemetry is a 100% all-access professional platform. All features, live race telemetry feeds, driver sensor traces, replay towers, and analytics are exclusively available to Pro members.",
+  },
+  {
+    question: "What is included with the Pro Membership?",
+    answer:
+      "Pro unlocks live race telemetry streaming across all 20 drivers (speed, throttle, brake, RPM, gear, DRS, ERS, tyre thermals), flying lap telemetry trace overlays, tyre degradation simulator, session replays, Monte Carlo race predictors, and full season race calendars.",
   },
   {
     question: "How does payment and billing work?",
@@ -64,22 +69,12 @@ export default function PricingPage() {
     "@id": `${CANONICAL_URL}/#product`,
     name: "Formula 1 Telemetry Pro Membership",
     description:
-      "High-resolution Formula 1 car telemetry traces, tyre degradation modeling, session replays, and predictive race outcomes.",
+      "All-access professional Formula 1 car telemetry traces, live race telemetry feeds, tyre degradation modeling, and session replays.",
     brand: {
       "@type": "Brand",
       name: "Formula 1 Telemetry",
     },
     offers: [
-      {
-        "@type": "Offer",
-        name: "Free Paddock Pass",
-        price: "0",
-        priceCurrency: "USD",
-        priceValidUntil: "2027-12-31",
-        availability: "https://schema.org/InStock",
-        url: CANONICAL_URL,
-        description: "Official 24-round calendar, driver & constructor standings, and race classifications.",
-      },
       {
         "@type": "Offer",
         name: "Pro Monthly Subscription",
@@ -89,7 +84,7 @@ export default function PricingPage() {
         availability: "https://schema.org/InStock",
         url: CANONICAL_URL,
         billingDuration: "P1M",
-        description: "Full dual-driver telemetry comparisons, tyre degradation simulator, session replays, and predictive race outcomes.",
+        description: "Full live race telemetry, dual-driver telemetry comparisons, tyre degradation simulator, session replays, and predictive race outcomes.",
       },
     ],
   };
@@ -141,7 +136,7 @@ export default function PricingPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 w-full max-w-full overflow-hidden">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 w-full max-w-full overflow-hidden">
         {/* Breadcrumb nav */}
         <nav aria-label="Breadcrumb" className="text-xs font-mono text-zinc-500 flex items-center gap-2">
           <Link href="/" className="hover:text-zinc-300 transition-colors">Home</Link>
@@ -151,132 +146,118 @@ export default function PricingPage() {
 
         {/* Header */}
         <header className="text-center space-y-3 max-w-2xl mx-auto">
-          <Badge variant="racing" className="text-xs">TRANSPARENT PRICING</Badge>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600/10 border border-red-500/30 text-xs font-mono text-racing-red font-bold">
+            <Zap className="w-3.5 h-3.5 fill-racing-red" />
+            <span>ALL-ACCESS PRO PLATFORM</span>
+          </div>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            Choose Your Paddock Plan
+            Formula 1 Telemetry Pro
           </h1>
 
           <QuickAnswer
             question="How much does Formula 1 telemetry cost?"
-            answer="Formula 1 Telemetry offers a 100% free Paddock tier with full race schedules and standings tables, alongside a comprehensive Pro plan at $9.99/month. Pro unlocks dual-car telemetry overlays, tyre degradation stint curves, interactive session replays, and predictive race algorithms with no lock-in contracts."
+            answer="Formula 1 Telemetry is an all-access Pro platform at $9.99/month. There is no free tier; all features including live race telemetry feeds across all 20 drivers, speed and throttle curve overlays, tyre degradation modeling, and session replays are strictly unlocked for active Pro subscribers."
           />
 
           <p className="text-xs sm:text-sm text-zinc-400">
-            From basic season schedules to deep car telemetry traces, pick the plan that suits your racing curiosity.
+            Professional Grand Prix engineering telemetry, real-time car ECU sensor streaming, and race analysis suite. Cancel anytime with zero fees.
           </p>
         </header>
 
-        {/* Pricing Cards: On Mobile, only Pro Analytics is displayed! */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-          {/* FREE TIER - Hidden on mobile so users see Pro directly */}
-          <Card className="hidden md:flex border-zinc-800 bg-carbon-900/80 flex-col justify-between">
-            <div>
-              <CardHeader>
+        {/* PRO ALL-ACCESS CARD */}
+        <div className="max-w-2xl mx-auto w-full">
+          <Card className="border-racing-red/60 bg-gradient-to-b from-carbon-900 via-carbon-900 to-carbon-950 flex flex-col justify-between relative shadow-2xl shadow-racing-red/10 w-full overflow-hidden">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-racing-red/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative">
+              <CardHeader className="border-b border-zinc-800/80 pb-6">
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-xl font-bold text-white">Free Paddock</CardTitle>
-                  <Badge variant="outline" className="text-xs font-mono">FOREVER FREE</Badge>
+                  <div className="flex items-center gap-2">
+                    <CardTitle className="text-2xl font-extrabold text-white flex items-center gap-2">
+                      <span>Pro All-Access Membership</span>
+                      <ProBadge />
+                    </CardTitle>
+                  </div>
+                  <Badge variant="racing" className="text-xs font-mono">ALL FEATURES INCLUDED</Badge>
                 </div>
-                <CardDescription className="text-xs text-zinc-400">
-                  Core calendar, race classifications, and championship tables.
+                <CardDescription className="text-xs text-zinc-400 pt-1">
+                  Full pit wall telemetry suite, 20-driver live sensor stream, tyre lifecycle models, and race predictions.
                 </CardDescription>
-                <div className="pt-4">
-                  <span className="text-4xl font-black text-white">$0</span>
-                  <span className="text-zinc-500 font-mono text-xs"> / month</span>
+
+                <div className="pt-4 flex items-baseline gap-2">
+                  <span className="text-5xl font-black text-white tracking-tight">$9.99</span>
+                  <span className="text-zinc-400 font-mono text-sm"> / month</span>
+                  <span className="text-xs font-mono text-emerald-400 ml-2">Cancel anytime</span>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-3 text-xs">
-                <div className="font-semibold text-zinc-300">Included features:</div>
-                <ul className="space-y-2.5 text-zinc-400">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    Full Season Race Calendar &amp; Circuit Maps
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    Official Race Classifications &amp; Grid Formations
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    Driver &amp; Constructor Championship Tables
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    Circuit Telemetry Benchmarks &amp; Turn Maps
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    Basic Driver Profiles &amp; Career Stats
-                  </li>
-                </ul>
+              <CardContent className="p-6 sm:p-8 space-y-6 text-xs">
+                <div className="font-mono text-xs font-bold text-zinc-200 uppercase tracking-wider">
+                  Complete Telemetry Suite Included:
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-zinc-300">
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/80 border border-zinc-800/60 font-mono">
+                    <Radio className="w-4 h-4 text-racing-red shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Live Race Telemetry Feed</span>
+                      <span className="text-zinc-400 text-[11px]">Real-time 10Hz streaming car data across all 20 drivers.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/80 border border-zinc-800/60 font-mono">
+                    <Activity className="w-4 h-4 text-racing-cyan shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Dual-Driver Telemetry Traces</span>
+                      <span className="text-zinc-400 text-[11px]">Synchronized speed, throttle %, brake &amp; gear curves.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/80 border border-zinc-800/60 font-mono">
+                    <Flame className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">4-Corner Thermals &amp; Brakes</span>
+                      <span className="text-zinc-400 text-[11px]">Tyre carcass temps, brake rotor glow, and degradation cliff.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/80 border border-zinc-800/60 font-mono">
+                    <Layers className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Session Replay Tower</span>
+                      <span className="text-zinc-400 text-[11px]">Lap-by-lap timing tower, gap deltas, and pit stops.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/80 border border-zinc-800/60 font-mono">
+                    <Sparkles className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">AI Race Outcome Predictor</span>
+                      <span className="text-zinc-400 text-[11px]">Monte Carlo simulation calculating win and podium odds.</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-carbon-950/80 border border-zinc-800/60 font-mono">
+                    <Zap className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block">Full Season Calendar &amp; Circuits</span>
+                      <span className="text-zinc-400 text-[11px]">All 23 rounds, circuit specs, and driver standings.</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-zinc-400 font-mono text-[11px]">
+                  <span className="flex items-center gap-1.5 text-emerald-400">
+                    <ShieldCheck className="w-4 h-4" />
+                    256-Bit SSL Encrypted Checkout
+                  </span>
+                  <span>Instant Automatic Activation</span>
+                </div>
               </CardContent>
             </div>
 
-            <CardFooter className="pt-6">
-              <Link href="/races" className="w-full">
-                <Button variant="outline" className="w-full text-xs font-semibold">
-                  Access Free Calendar &amp; Standings
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
-
-          {/* PRO TIER */}
-          <Card className="border-racing-red/60 bg-gradient-to-b from-carbon-900 via-carbon-900 to-carbon-950 flex flex-col justify-between relative shadow-2xl shadow-racing-red/10 w-full">
-            <div className="absolute -top-3 right-6">
-              <ProBadge className="py-1 px-3 text-xs" />
-            </div>
-
-            <div>
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle className="text-xl font-extrabold text-white flex items-center gap-1.5">
-                    Pro Analytics <Zap className="w-4 h-4 text-amber-400 fill-amber-400" />
-                  </CardTitle>
-                  <Badge variant="racing" className="text-xs font-mono">MOST POPULAR</Badge>
-                </div>
-                <CardDescription className="text-xs text-zinc-400">
-                  Full telemetry suite, tyre strategies, and race prediction heuristics.
-                </CardDescription>
-                <div className="pt-4">
-                  <span className="text-4xl font-black text-white">$9.99</span>
-                  <span className="text-zinc-400 font-mono text-xs"> / month (cancel anytime)</span>
-                </div>
-              </CardHeader>
-
-              <CardContent className="space-y-3 text-xs">
-                <div className="font-semibold text-zinc-200">Everything in Free, plus:</div>
-                <ul className="space-y-2.5 text-zinc-300">
-                  <li className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-amber-400 shrink-0" />
-                    Lap-by-Lap Synchronized Telemetry Overlays
-                  </li>
-                  <li className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-amber-400 shrink-0" />
-                    Tyre Stint Degradation Curves &amp; Cliff Analysis
-                  </li>
-                  <li className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-amber-400 shrink-0" />
-                    Interactive Session Replay Timing Tower
-                  </li>
-                  <li className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-amber-400 shrink-0" />
-                    Monte Carlo Race Outcome &amp; Podium Predictor
-                  </li>
-                  <li className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-amber-400 shrink-0" />
-                    Pit Stop Window &amp; Undercut Optimizer
-                  </li>
-                  <li className="flex items-center gap-2 font-medium">
-                    <Check className="w-4 h-4 text-amber-400 shrink-0" />
-                    Self-Service Customer Billing &amp; Subscriptions
-                  </li>
-                </ul>
-              </CardContent>
-            </div>
-
-            <CardFooter className="pt-6">
-              <SubscribeButton size="lg" text="Unlock Pro Monthly ($9.99/mo)" />
+            <CardFooter className="p-6 sm:p-8 pt-0">
+              <SubscribeButton size="lg" text="Unlock Pro All-Access ($9.99/mo)" />
             </CardFooter>
           </Card>
         </div>

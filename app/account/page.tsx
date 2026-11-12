@@ -23,7 +23,7 @@ import { useRouter } from "next/navigation";
 export default function AccountPage() {
   const router = useRouter();
   const { user, loading: authLoading, logout } = useAuth();
-  const { subscription, isPro, loading: subLoading } = useSubscription();
+  const { subscription, isPro, isTempAccess, toggleTempProAccess, loading: subLoading } = useSubscription();
   const [isUpgrading, setIsUpgrading] = useState(false);
 
   if (authLoading || subLoading) {
@@ -124,15 +124,15 @@ export default function AccountPage() {
                 {isPro ? (
                   <ProBadge />
                 ) : (
-                  <Badge variant="outline" className="text-[10px] font-mono">
-                    FREE TIER
+                  <Badge variant="outline" className="text-[10px] font-mono text-amber-400 border-amber-500/40">
+                    SUBSCRIPTION INACTIVE
                   </Badge>
                 )}
               </div>
               <CardDescription className="text-xs text-zinc-400">
                 {isPro
-                  ? "You have full access to high-frequency car telemetry, tyre strategy simulator, and AI predictions."
-                  : "You are currently on the Free Paddock plan with calendar and standings access."}
+                  ? "You have full access to high-frequency car telemetry, live race feeds, tyre strategy simulator, and AI predictions."
+                  : "You do not have an active Pro subscription. Upgrade to unlock all live race telemetry, sensor streams, driver profiles, and engineering tools."}
               </CardDescription>
             </CardHeader>
 
@@ -141,7 +141,7 @@ export default function AccountPage() {
                 <div className="p-3 rounded-lg bg-zinc-950 border border-zinc-800">
                   <span className="text-zinc-500 block text-[10px] uppercase">Plan</span>
                   <span className="font-bold text-white capitalize">
-                    {subscription?.plan || "free"}
+                    {isPro ? "Pro All-Access" : "No Active Plan"}
                   </span>
                 </div>
 
@@ -188,37 +188,59 @@ export default function AccountPage() {
             </CardContent>
           </div>
 
-          <CardFooter className="pt-4 border-t border-zinc-800 flex items-center justify-between">
+          <CardFooter className="pt-4 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3">
             {isPro ? (
-              <div className="flex items-center justify-between w-full text-xs font-mono text-zinc-400">
-                <span className="flex items-center gap-1.5 text-emerald-400">
+              <div className="flex flex-col sm:flex-row items-center justify-between w-full text-xs font-mono text-zinc-400 gap-2">
+                <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
                   <ShieldCheck className="w-4 h-4" />
-                  Active Pro Membership
+                  Active Pro Membership Unlocked
                 </span>
-                <span className="text-[11px] text-zinc-500 font-mono">
-                  Full Telemetry Suite Unlocked
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-zinc-500 font-mono">
+                    Full Telemetry Suite Unlocked
+                  </span>
+                  {isTempAccess && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={toggleTempProAccess}
+                      className="text-[10px] h-7 px-2 text-zinc-400 hover:text-white"
+                    >
+                      Disable Test Pro
+                    </Button>
+                  )}
+                </div>
               </div>
             ) : (
               <>
-                <Button
-                  onClick={handleUpgrade}
-                  disabled={isUpgrading}
-                  variant="racing"
-                  className="w-full sm:w-auto text-xs font-bold gap-1.5"
-                >
-                  {isUpgrading ? (
-                    <>
-                      <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
-                      <span>Opening Direct Payment...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>Upgrade to Pro ($9.99/mo)</span>
-                    </>
-                  )}
-                </Button>
+                <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <Button
+                    onClick={handleUpgrade}
+                    disabled={isUpgrading}
+                    variant="racing"
+                    className="w-full sm:w-auto text-xs font-bold gap-1.5"
+                  >
+                    {isUpgrading ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
+                        <span>Opening Direct Payment...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>Upgrade to Pro ($9.99/mo)</span>
+                      </>
+                    )}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={toggleTempProAccess}
+                    className="text-[11px] h-9 text-zinc-300 font-mono shrink-0"
+                  >
+                    Test Pro Access
+                  </Button>
+                </div>
                 <span className="text-[11px] text-zinc-500 font-mono">
                   Instant access to all telemetry
                 </span>

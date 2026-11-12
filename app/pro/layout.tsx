@@ -18,6 +18,7 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
 
   const proNavItems = [
     { href: "/pro", label: "Overview", icon: LayoutGrid, exact: true },
+    { href: "/pro/live", label: "Live Telemetry", icon: Radio, isLive: true },
     { href: "/pro/telemetry", label: "Telemetry Trace", icon: Activity },
     { href: "/pro/laps", label: "Lap Charts", icon: BarChart2 },
     { href: "/pro/strategy", label: "Tyre Strategy", icon: Disc3 },
@@ -49,6 +50,12 @@ export default function ProLayout({ children }: { children: React.ReactNode }) {
                 >
                   <Icon className="w-3.5 h-3.5 opacity-80" />
                   <span>{item.label}</span>
+                  {item.isLive && (
+                    <span className="flex items-center gap-1 text-[9px] font-bold text-racing-red bg-racing-red/10 border border-racing-red/30 px-1.5 py-0.2 rounded uppercase">
+                      <span className="w-1.5 h-1.5 rounded-full bg-racing-red animate-pulse" />
+                      LIVE
+                    </span>
+                  )}
                 </Link>
               );
             })}

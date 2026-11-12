@@ -6,6 +6,7 @@ import { Calendar, MapPin, ChevronRight, Flag, Activity, Gauge } from "lucide-re
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
+import { ProGate } from "@/components/pro/pro-gate";
 import { GRAND_PRIX_LIST } from "@/lib/grand-prix";
 
 export const revalidate = 3600; // ISR hourly
@@ -126,75 +127,80 @@ export default function RacesPage() {
           </p>
         </header>
 
-        {/* Grid of 23 Races (Server-rendered HTML for search bots) */}
-        <section aria-label="Grand Prix Rounds" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {races.filter((r) => r.round > 0).map((race) => {
-            const isCompleted = race.status === "completed";
+        {/* Grid of 23 Races - Pro Access Only */}
+        <ProGate
+          title="Unlock Grand Prix Calendar & Race Telemetry"
+          description="Access official session timetables, circuit telemetry benchmarks, speed trap velocities, live telemetry feeds, and finishing classifications across all 23 Grand Prix rounds."
+        >
+          <section aria-label="Grand Prix Rounds" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {races.filter((r) => r.round > 0).map((race) => {
+              const isCompleted = race.status === "completed";
 
-            return (
-              <article key={race.round}>
-                <Link href={`/races/${race.round}`}>
-                  <Card className="hover:border-zinc-700 transition-all hover:-translate-y-1 bg-carbon-900/90 group h-full">
-                    <CardContent className="p-5 flex flex-col justify-between h-full space-y-4">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-bold text-zinc-500">
-                            ROUND {race.round}
-                          </span>
-                          <Badge variant={isCompleted ? "secondary" : "racing"} className="text-[10px]">
-                            {isCompleted ? "COMPLETED" : "UPCOMING"}
-                          </Badge>
-                        </div>
-                        <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-white transition-colors" />
-                      </div>
-
-                      <div>
-                        <h2 className="font-extrabold text-lg text-white group-hover:text-racing-red transition-colors tracking-tight">
-                          {race.name}
-                        </h2>
-                        <div className="flex items-center gap-1.5 text-xs text-zinc-400 mt-1 font-mono">
-                          <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
-                          <span>{race.circuitName}</span>
-                          <span>•</span>
-                          <span>{race.country}</span>
-                        </div>
-                        {race.result && (
-                          <div className="mt-2 text-xs font-mono text-amber-400 font-semibold flex items-center gap-1">
-                            <Flag className="w-3 h-3 text-racing-red" />
-                            <span>Winner: {race.result.winner}</span>
+              return (
+                <article key={race.round}>
+                  <Link href={`/races/${race.round}`}>
+                    <Card className="hover:border-zinc-700 transition-all hover:-translate-y-1 bg-carbon-900/90 group h-full">
+                      <CardContent className="p-5 flex flex-col justify-between h-full space-y-4">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono text-xs font-bold text-zinc-500">
+                              ROUND {race.round}
+                            </span>
+                            <Badge variant={isCompleted ? "secondary" : "racing"} className="text-[10px]">
+                              {isCompleted ? "COMPLETED" : "UPCOMING"}
+                            </Badge>
                           </div>
-                        )}
-                      </div>
+                          <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-white transition-colors" />
+                        </div>
 
-                      <div className="space-y-2 pt-3 border-t border-zinc-800/80 text-xs font-mono text-zinc-400">
-                        <div className="flex items-center justify-between">
-                          <span className="text-zinc-500">Circuit Specs:</span>
-                          <span className="text-zinc-200">{race.lapDistanceMeters}m • {race.turns} Turns</span>
+                        <div>
+                          <h2 className="font-extrabold text-lg text-white group-hover:text-racing-red transition-colors tracking-tight">
+                            {race.name}
+                          </h2>
+                          <div className="flex items-center gap-1.5 text-xs text-zinc-400 mt-1 font-mono">
+                            <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                            <span>{race.circuitName}</span>
+                            <span>•</span>
+                            <span>{race.country}</span>
+                          </div>
+                          {race.result && (
+                            <div className="mt-2 text-xs font-mono text-amber-400 font-semibold flex items-center gap-1">
+                              <Flag className="w-3 h-3 text-racing-red" />
+                              <span>Winner: {race.result.winner}</span>
+                            </div>
+                          )}
                         </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-zinc-500">Speed Trap:</span>
-                          <span className="text-amber-400 font-semibold">{race.topSpeedTrapKmH} km/h</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-zinc-500">Overtaking:</span>
-                          <span className="text-zinc-300">{race.overtakingDifficulty} ({race.drsZones} DRS)</span>
-                        </div>
-                      </div>
 
-                      <div className="pt-2 flex items-center justify-between text-xs font-mono text-racing-cyan">
-                        <span className="flex items-center gap-1">
-                          <Activity className="w-3.5 h-3.5" />
-                          <span>Telemetry Profile</span>
-                        </span>
-                        <span className="text-[11px] text-zinc-500">Lap Record: {race.lapRecord.time}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </article>
-            );
-          })}
-        </section>
+                        <div className="space-y-2 pt-3 border-t border-zinc-800/80 text-xs font-mono text-zinc-400">
+                          <div className="flex items-center justify-between">
+                            <span className="text-zinc-500">Circuit Specs:</span>
+                            <span className="text-zinc-200">{race.lapDistanceMeters}m • {race.turns} Turns</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-zinc-500">Speed Trap:</span>
+                            <span className="text-amber-400 font-semibold">{race.topSpeedTrapKmH} km/h</span>
+                          </div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-zinc-500">Overtaking:</span>
+                            <span className="text-zinc-300">{race.overtakingDifficulty} ({race.drsZones} DRS)</span>
+                          </div>
+                        </div>
+
+                        <div className="pt-2 flex items-center justify-between text-xs font-mono text-racing-cyan">
+                          <span className="flex items-center gap-1">
+                            <Activity className="w-3.5 h-3.5" />
+                            <span>Telemetry Profile</span>
+                          </span>
+                          <span className="text-[11px] text-zinc-500">Lap Record: {race.lapRecord.time}</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </article>
+              );
+            })}
+          </section>
+        </ProGate>
 
         {/* Pro Marketing Banner for Race Calendar */}
         <ProMarketingCard

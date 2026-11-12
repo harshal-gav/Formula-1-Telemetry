@@ -6,6 +6,7 @@ import { Trophy, Users, Shield, Calendar, ArrowRight } from "lucide-react";
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
+import { ProGate } from "@/components/pro/pro-gate";
 import { PRO_DRIVERS } from "@/lib/drivers";
 import { getTeamColor } from "@/lib/utils";
 
@@ -171,6 +172,11 @@ export default function StandingsPage() {
           </p>
         </header>
 
+        {/* Pro Gated Championship Standings */}
+        <ProGate
+          title="Unlock Pro Championship Standings & Title Battle Analytics"
+          description="Access official Driver & Constructor World Championship standings, points differentials, race victory logs, and pace telemetry deltas."
+        >
         {/* 1. Driver Standings Section */}
         <section aria-label="Drivers' Championship Standings" className="space-y-4">
           <div className="flex items-center justify-between">
@@ -320,6 +326,7 @@ export default function StandingsPage() {
             </CardContent>
           </Card>
         </section>
+        </ProGate>
 
         {/* Pro Marketing Card */}
         <ProMarketingCard

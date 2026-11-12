@@ -43,7 +43,7 @@ const CHANGELOG_ITEMS = [
     title: "Dual-Driver Overlay Engine & High-Frequency Throttle Logging",
     badge: "FEATURE",
     changes: [
-      "Engineered client-side dual-driver dropdown selection across the full 20-driver grid.",
+      "Engineered client-side dual-driver dropdown selection across the full 22-driver grid (11 teams).",
       "Optimized DOM rendering with single-data source interaction-based option population.",
       "Added accessible data table alternatives for all telemetry curves.",
       "Upgraded server components for instant bot crawlability and sub-2.5s LCP on mobile.",

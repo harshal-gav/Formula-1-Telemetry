@@ -6,6 +6,7 @@ import { MapPin, ChevronRight, Activity, Timer, ArrowRight } from "lucide-react"
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { FAQAccordion } from "@/components/ui/faq-accordion";
 import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
+import { ProGate } from "@/components/pro/pro-gate";
 import { GRAND_PRIX_LIST } from "@/lib/grand-prix";
 
 export const revalidate = 86400; // Static revalidation daily
@@ -126,7 +127,11 @@ export default function CircuitsDirectoryPage() {
           </p>
         </header>
 
-        {/* 23 Circuits Grid */}
+        {/* 23 Circuits Grid - Pro Gated */}
+        <ProGate
+          title="Unlock 2026 Circuit Architecture & Telemetry Benchmarks"
+          description="Access track lengths, turn counts, DRS corridors, speed trap benchmarks, heavy deceleration zones, and lap records across all 23 Grand Prix tracks."
+        >
         <section aria-label="23 Formula 1 Circuits" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {circuits.filter((c) => c.round > 0).map((c) => (
             <article key={c.id}>
@@ -186,6 +191,7 @@ export default function CircuitsDirectoryPage() {
             </article>
           ))}
         </section>
+        </ProGate>
 
         {/* Pro Marketing Card */}
         <ProMarketingCard

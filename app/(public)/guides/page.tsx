@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen, ArrowRight, Activity, Layers, Zap, Timer } from "lucide-react";
+import { ProGate } from "@/components/pro/pro-gate";
 
 export const revalidate = 86400;
 
@@ -125,7 +126,11 @@ export default function GuidesIndexPage() {
           </p>
         </header>
 
-        {/* Guides Grid */}
+        {/* Guides Grid - Pro Access Only */}
+        <ProGate
+          title="Unlock Pro Race Engineering Guides & Telemetry Tutorials"
+          description="Access expert-level Formula 1 telemetry tutorials, speed & throttle curve interpretation, tyre degradation modeling, and pit strategy mechanics."
+        >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {GUIDES.map((guide) => {
             const Icon = guide.icon;
@@ -166,6 +171,7 @@ export default function GuidesIndexPage() {
             );
           })}
         </div>
+        </ProGate>
       </div>
     </>
   );

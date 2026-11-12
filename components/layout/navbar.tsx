@@ -21,6 +21,7 @@ import {
   MapPin,
   BookOpen,
   ArrowRight,
+  Radio,
 } from "lucide-react";
 
 export function Navbar() {
@@ -30,12 +31,13 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: "/races", label: "Races", icon: Calendar },
-    { href: "/drivers", label: "Drivers", icon: Users },
-    { href: "/standings", label: "Standings", icon: Trophy },
-    { href: "/circuits", label: "Circuits", icon: MapPin },
-    { href: "/guides", label: "Guides", icon: BookOpen },
-    { href: "/pro", label: "Pro Analytics", icon: Zap, isPro: true },
+    { href: "/pro/live", label: "Live Race", icon: Radio, isPro: true, isLive: true },
+    { href: "/races", label: "Races", icon: Calendar, isPro: true },
+    { href: "/drivers", label: "Drivers", icon: Users, isPro: true },
+    { href: "/standings", label: "Standings", icon: Trophy, isPro: true },
+    { href: "/circuits", label: "Circuits", icon: MapPin, isPro: true },
+    { href: "/guides", label: "Guides", icon: BookOpen, isPro: true },
+    { href: "/pro", label: "Pro Hub", icon: Zap, isPro: true },
     { href: "/pricing", label: "Pricing" },
   ];
 
@@ -73,11 +75,16 @@ export function Navbar() {
                 }`}
               >
                 <span>{link.label}</span>
-                {link.isPro && (
+                {link.isLive ? (
+                  <span className="flex items-center gap-1 px-1.5 py-0.2 text-[9px] font-mono font-bold uppercase rounded bg-red-600 text-white animate-pulse">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
+                    LIVE
+                  </span>
+                ) : link.isPro ? (
                   <span className="px-1 py-0.2 text-[9px] font-mono font-bold uppercase rounded bg-racing-red text-white">
                     PRO
                   </span>
-                )}
+                ) : null}
               </Link>
             );
           })}

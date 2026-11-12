@@ -9,6 +9,26 @@ export function useSubscription() {
   const { user, loading: authLoading } = useAuth();
   const [subscription, setSubscription] = useState<UserSubscription | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [tempPro, setTempPro] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("f1_pro_access");
+      if (stored === "true") {
+        setTempPro(true);
+      }
+    }
+  }, []);
+
+  const toggleTempProAccess = () => {
+    setTempPro((prev) => {
+      const next = !prev;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("f1_pro_access", next ? "true" : "false");
+      }
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (authLoading) return;
@@ -63,16 +83,17 @@ export function useSubscription() {
     : true;
 
   const isPro = Boolean(
-    subscription?.plan === "pro" &&
-    subscription?.status === "active" &&
-    isPeriodValid
+    (subscription?.plan === "pro" &&
+      subscription?.status === "active" &&
+      isPeriodValid) ||
+      tempPro
   );
 
   return {
     subscription,
     isPro,
-    isTempAccess: false,
-    toggleTempProAccess: () => {},
+    isTempAccess: tempPro,
+    toggleTempProAccess,
     loading: authLoading || loading,
   };
 }

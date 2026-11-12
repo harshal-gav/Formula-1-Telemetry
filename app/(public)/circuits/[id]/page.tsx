@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { QuickAnswer } from "@/components/ui/quick-answer";
 import { ProMarketingCard } from "@/components/pro/pro-marketing-card";
+import { ProGate } from "@/components/pro/pro-gate";
 import { GRAND_PRIX_LIST, GrandPrixCircuit } from "@/lib/grand-prix";
 
 export const revalidate = 86400; // Static revalidation daily
@@ -188,6 +189,11 @@ export default async function CircuitDetailPage({
           </div>
         </header>
 
+        {/* Pro Gated Circuit Telemetry Parameters */}
+        <ProGate
+          title={`Unlock ${c.circuitName} Telemetry Benchmarks`}
+          description={`Access telemetry speed curves, turn braking points, tyre wear profiles, and lap records for ${c.circuitName}.`}
+        >
         {/* Circuit Metric KPI Cards */}
         <section aria-label="Circuit Telemetry Parameters" className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <Card className="border-zinc-800 bg-carbon-900/90">
@@ -321,6 +327,7 @@ export default async function CircuitDetailPage({
             </table>
           </div>
         </section>
+        </ProGate>
 
         {/* Pro Circuit Telemetry Marketing Card */}
         <ProMarketingCard

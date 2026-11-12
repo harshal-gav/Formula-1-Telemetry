@@ -105,11 +105,11 @@ export default function RefundPage() {
               </div>
             ) : (
               <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800/80 text-xs text-zinc-400 space-y-2 font-mono">
-                <p>You are currently on the Free Paddock plan. There is no active recurring subscription on this account.</p>
+                <p>There is no active recurring Pro subscription on this account.</p>
                 <Link href="/pricing">
                   <Button variant="racing" size="sm" className="text-xs font-bold gap-1.5">
                     <Sparkles className="w-3.5 h-3.5" />
-                    View Pro Features
+                    Upgrade to Pro ($9.99/mo)
                   </Button>
                 </Link>
               </div>

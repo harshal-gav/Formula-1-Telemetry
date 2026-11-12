@@ -13,10 +13,19 @@ import {
   Sparkles,
   ArrowRight,
   ShieldAlert,
+  Gauge,
 } from "lucide-react";
 
 export default function ProDashboardHub() {
   const proModules = [
+    {
+      title: "Live Race Telemetry & Pit Wall Feed",
+      description: "Real-time 10Hz streaming car telemetry across all 22 drivers and 11 teams. Speed, RPM, shift lights, throttle, brake, DRS, ERS, and 4-corner thermals.",
+      href: "/pro/live",
+      icon: Gauge,
+      badge: "LIVE SENSOR STREAM",
+      color: "text-racing-red",
+    },
     {
       title: "Fastest Lap Telemetry Trace",
       description: "Dual-driver speed, throttle %, brake pressure, and gear comparison traces over single flying laps.",
